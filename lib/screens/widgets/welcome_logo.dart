@@ -1,4 +1,4 @@
-import 'package:BookBin/application/assets_paths.dart';
+import 'package:BookBin/utilitis/assets_paths.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeLogo extends StatelessWidget {
