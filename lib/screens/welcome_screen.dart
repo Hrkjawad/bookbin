@@ -1,6 +1,8 @@
+import 'package:BookBin/screens/auth_ui/signup.dart';
 import 'package:BookBin/utilitis/assets_paths.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -46,7 +48,11 @@ class WelcomePage extends StatelessWidget {
                 height: 60,
                 width: 378,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(
+                      const Signup(),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
