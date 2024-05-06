@@ -3,7 +3,9 @@ import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/screens/widgets/textformfield_customized.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../other_ui/homepage.dart';
 import '../widgets/confirm_password_textfield.dart';
 import '../widgets/elevatedbutton_customised.dart';
 import '../widgets/password_textfield.dart';
@@ -89,7 +91,9 @@ class _SignupState extends State<Signup> {
           SizedBox(
             height: 43.h,
           ),
-          const Center(child: ElevatedButtonCustomised()),
+           Center(child: ElevatedButtonCustomised(onPressed: () {
+            Get.to(const HomePage());
+          },)),
         ],
       )),
     );

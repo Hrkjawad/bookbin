@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ElevatedButtonCustomised extends StatelessWidget {
-  const ElevatedButtonCustomised({super.key});
-
+  const ElevatedButtonCustomised({super.key, required this.onPressed});
+final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -14,7 +14,7 @@ class ElevatedButtonCustomised extends StatelessWidget {
             shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50.w),
         )),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Text(
           "Create an Account",
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w800),
