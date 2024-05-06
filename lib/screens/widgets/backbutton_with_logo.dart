@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../utilitis/assets_paths.dart';
 
@@ -10,20 +11,20 @@ class BackButtonAndLogo extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 30.0, left: 18),
+          padding:  EdgeInsets.only(top: 30.h, left: 18.w),
           child: IconButton(
             onPressed: () {
               Get.back();
             },
-            icon: const Icon(
+            icon:  Icon(
               Icons.arrow_circle_left,
-              color: Color(0XFFA158AD),
-              size: 36,
+              color: const Color(0XFF8847A1),
+              size: 36.sp,
             ),),
         ),
         const Spacer(),
         Padding(
-          padding: const EdgeInsets.only(top: 30.0, left: 284),
+          padding:  EdgeInsets.only(top: 30.h, left: 284.w),
           child: Image.asset(ImagesPath.mainLogo),
         )
       ],

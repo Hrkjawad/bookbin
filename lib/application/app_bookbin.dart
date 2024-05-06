@@ -1,6 +1,7 @@
 import 'package:BookBin/screens/splash_screen.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BookBin extends StatelessWidget {
@@ -8,13 +9,16 @@ class BookBin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
-      theme: ThemeData(
-        useMaterial3: false,
-        primarySwatch: MaterialColor(
-            AppMainColor.primaryColor.value, AppMainColor().color),
+    return ScreenUtilInit(
+      designSize: const Size(412, 915),
+      builder: (context, child) => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const SplashScreen(),
+        theme: ThemeData(
+          useMaterial3: false,
+          primarySwatch: MaterialColor(
+              AppMainColor.primaryColor.value, AppMainColor().color),
+        ),
       ),
     );
   }

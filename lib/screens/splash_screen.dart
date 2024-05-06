@@ -2,6 +2,7 @@ import 'package:BookBin/screens/welcome_screen.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/screens/widgets/welcome_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,22 +29,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
         body:  ScreenBackground(
           child: Column(
             children: [
-              SizedBox(height: 300,),
-              Center(child: WelcomeLogo()),
-              Spacer(),
-              CircularProgressIndicator(
-                color: Color(0xFFA158AD),
+              SizedBox(height: 300.h,),
+              const Center(child: WelcomeLogo()),
+              const Spacer(),
+              const CircularProgressIndicator(
+                color: Color(0xFF8847A1),
               ),
-              SizedBox(height: 8,),
+              SizedBox(height: 8.h,),
               Text("Version 1.0", style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w500,
               ),),
-              SizedBox(height: 32,),
+              SizedBox(height: 32.h,),
             ],
           ),
         )

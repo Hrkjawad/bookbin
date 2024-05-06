@@ -1,11 +1,13 @@
 import 'package:BookBin/application/app_bookbin.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(
-    const SafeArea(
-      child: BookBin(),
+    SafeArea(
+      child:
+          DevicePreview(enabled: false, builder: (context) => const BookBin()),
     ),
   );
 }
