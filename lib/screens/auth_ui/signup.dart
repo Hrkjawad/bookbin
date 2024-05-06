@@ -93,7 +93,7 @@ class _SignupState extends State<Signup> {
           ),
            Center(child: ElevatedButtonCustomised(onPressed: () {
             Get.to(const HomePage());
-          },)),
+          }, text: "Create an Account",)),
         ],
       )),
     );

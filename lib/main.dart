@@ -7,7 +7,7 @@ void main() {
   runApp(
     SafeArea(
       child:
-          DevicePreview(enabled: false, builder: (context) => const BookBin()),
+          DevicePreview(enabled: true, builder: (context) => const BookBin()),
     ),
   );
 }

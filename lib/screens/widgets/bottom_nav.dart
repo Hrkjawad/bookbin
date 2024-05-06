@@ -11,7 +11,7 @@ class BottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 64.h,
+      height: 72.h,
       color: Colors.white,
       child: Padding(
         padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w, top: 10.0.h),

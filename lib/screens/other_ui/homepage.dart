@@ -52,23 +52,25 @@ class _HomePageState extends State<HomePage> {
         key: scaffoldKey,
         // drawer: NotificationEndDrawer(context),
         body: ScreenBackground(
-          child: SafeArea(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 33.h,
-                ),
-                Center(
-                  child: Text(
-                    'Hey, $_greeting!',
-                    style: TextStyle(
-                      fontSize: 26.sp,
-                      fontWeight: FontWeight.w800,
+          child: SingleChildScrollView(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 33.h,
+                  ),
+                  Center(
+                    child: Text(
+                      'Hey, $_greeting!',
+                      style: TextStyle(
+                        fontSize: 26.sp,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 32.h,),
-              ],
+                  SizedBox(height: 32.h,),
+                ],
+              ),
             ),
           ),
         ),
