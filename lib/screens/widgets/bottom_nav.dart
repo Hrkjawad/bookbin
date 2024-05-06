@@ -69,7 +69,7 @@ class BottomNav extends StatelessWidget {
                         color: const Color(0xff8847A1),
                       ),
                       Text(
-                        "Resources",
+                        "Wishlist",
                         style: TextStyle(fontSize: 16.sp, color: Colors.black),
                       ),
                     ],
