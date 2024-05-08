@@ -69,6 +69,47 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(height: 32.h,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 296.w,
+                        height: 48.h,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: "Search Textbooks",
+                            suffixIcon:  Icon(Icons.search, size: 25.w,),
+                            hintStyle:  TextStyle(
+                              fontSize: 20.sp,
+                              color: const Color(0xff6B6B6B),
+                            ),
+                            contentPadding:  EdgeInsets.symmetric(
+                              horizontal: 50.w,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                50.w,
+                              ),
+                              borderSide: const BorderSide(
+                                color: Color(0xff8847a1),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                15.w,
+                              ),
+                              borderSide: const BorderSide(
+                                color:  Color(0xff8847a1),
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: const Color(0XFFFFFFFF),
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  )
                 ],
               ),
             ),
