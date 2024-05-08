@@ -15,9 +15,9 @@ class BookBin extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
         theme: ThemeData(
-          iconTheme: const IconThemeData(
-            color: Color(0xff8847a1),
-          ),
+          // iconTheme: const IconThemeData(
+          //   color: Color(0xff8847a1),
+          // ),
           useMaterial3: false,
           primarySwatch: MaterialColor(
               AppMainColor.primaryColor.value, AppMainColor().color),

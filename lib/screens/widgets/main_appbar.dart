@@ -10,7 +10,7 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
       title: Text(
         "Your Name",
         style: TextStyle(
-          fontSize: 14.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
@@ -18,7 +18,7 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
       subtitle: Text(
         "yourname@gmail.com",
         style: TextStyle(
-          fontSize: 12.sp,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           color: const Color(0xff8847A1),
         ),
@@ -26,7 +26,7 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
       leading: IconButton(
         icon: Icon(
           Icons.person_pin,
-          size: 32.w,
+          size: 40.w,
           color: const Color(0xff8847A1),
         ),
         onPressed: () {
@@ -34,9 +34,9 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
         },
       ),
       trailing: const Icon(
-        Icons.notifications_active,
+        Icons.notifications,
         color: Color(0xff8847A1),
-        size: 32,
+        size: 35,
       ),
     ),
   );
