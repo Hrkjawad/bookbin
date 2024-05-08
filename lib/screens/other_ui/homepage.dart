@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/Categories/categories.dart';
+import '../widgets/book_card_create.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/main_appbar.dart';
 import '../widgets/screen_background.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -16,6 +16,8 @@ class HomePage extends StatefulWidget {
 var scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _HomePageState extends State<HomePage> {
+
+
   String _greeting = '';
   @override
   void initState() {
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 33.h,
+                      height: 30.h,
                     ),
                     Center(
                       child: Text(
@@ -72,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(
-                      height: 32.h,
+                      height: 30.h,
                     ),
                     Row(
                       children: [
@@ -147,9 +149,8 @@ class _HomePageState extends State<HomePage> {
                       height: 18.h,
                     ),
                     const Categories(),
-
                     SizedBox(
-                      height: 39.h,
+                      height: 20.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +174,11 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     SizedBox(
-                      height: 280.h,
+                      height: 20.h,
+                    ),
+                    const BookCardCreate(),
+                    SizedBox(
+                      height: 16.h,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -227,4 +232,19 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: const BottomNav(),
     );
   }
+}
+class CardData {
+  final String imageUrl;
+  bool isLiked;
+  final String bookPrice;
+  final String rating;
+  final String title;
+
+  CardData({
+    required this.imageUrl,
+    required this.isLiked,
+    required this.bookPrice,
+    required this.rating,
+    required this.title,
+  });
 }
