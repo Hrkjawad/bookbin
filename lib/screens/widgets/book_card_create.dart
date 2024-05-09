@@ -121,8 +121,8 @@ class _BookCardCreateState extends State<BookCardCreate> {
                       bottom: 8.h,
                       right: 11.w,
                       child: SizedBox(
-                        width: 45.w,
-                        height: 26.h,
+                        width: 50.w,
+                        height: 30.h,
                         child: Card(
                           color: const Color(0xff8847a1),
                           shape: RoundedRectangleBorder(
