@@ -139,7 +139,7 @@ class _BookCardCreateState extends State<BookCardCreate> {
                               ),
                               Icon(
                                 Icons.star,
-                                size: 10.w,
+                                size: 14.w,
                                 color: Colors.white,
                               ),
                             ],
