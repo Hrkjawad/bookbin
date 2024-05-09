@@ -176,7 +176,8 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    const BookCardCreate(),
+                    //BookCardCreate( direction: Axis.horizontal,),
+                    BookCardCreate( height: 265.h,),
                     SizedBox(
                       height: 16.h,
                     ),
