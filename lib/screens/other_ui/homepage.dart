@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:BookBin/screens/other_ui/see_all_page_and_categoris_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../widgets/Categories/categories.dart';
 import '../widgets/book_card_create.dart';
 import '../widgets/bottom_nav.dart';
@@ -16,8 +18,6 @@ class HomePage extends StatefulWidget {
 var scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _HomePageState extends State<HomePage> {
-
-
   String _greeting = '';
   @override
   void initState() {
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const Categories(),
                     SizedBox(
-                      height: 20.h,
+                      height: 16.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -163,21 +163,28 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const Spacer(),
-                        Text(
-                          "See All",
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff6B6B6B),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(const SeeAllPageAndCategorisPage());
+                          },
+                          child: Text(
+                            "See All",
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff6B6B6B),
+                            ),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 20.h,
+                      height: 15.h,
                     ),
                     //BookCardCreate( direction: Axis.horizontal,),
-                    BookCardCreate( height: 265.h,),
+                    BookCardCreate(
+                      height: 265.h,
+                    ),
                     SizedBox(
                       height: 16.h,
                     ),
@@ -233,19 +240,4 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: const BottomNav(),
     );
   }
-}
-class CardData {
-  final String imageUrl;
-  bool isLiked;
-  final String bookPrice;
-  final String rating;
-  final String title;
-
-  CardData({
-    required this.imageUrl,
-    required this.isLiked,
-    required this.bookPrice,
-    required this.rating,
-    required this.title,
-  });
 }
