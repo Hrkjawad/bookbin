@@ -35,8 +35,8 @@ class _SeeAllPageAndCategorisPageState
         key: scaffoldKey,
         // drawer: NotificationEndDrawer(context),
         body: ScreenBackground(
-          child: SingleChildScrollView(
-            child: SafeArea(
+          child: SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(left: 32.w, right: 18.w),
                 child: Column(
@@ -283,7 +283,8 @@ class _SeeAllPageAndCategorisPageState
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
+
                             ],
                           ),
                         ),
@@ -306,7 +307,7 @@ class _SeeAllPageAndCategorisPageState
                       height: 12.h,
                     ),
                     BookCardCreate(
-                      height: 564.h,
+                      height: 535.h,
                     ),
                     SizedBox(
                       height: 16.h,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:BookBin/screens/other_ui/book_listing.dart';
 import 'package:BookBin/screens/other_ui/see_all_page_and_categoris_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,8 +55,8 @@ class _HomePageState extends State<HomePage> {
         key: scaffoldKey,
         // drawer: NotificationEndDrawer(context),
         body: ScreenBackground(
-          child: SingleChildScrollView(
-            child: SafeArea(
+          child: SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(left: 32.w, right: 18.w),
                 child: Column(
@@ -190,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        //Get.to(  pageName()   ),
+                        Get.to(const BookListing());
                       },
                       child: Center(
                         child: Stack(children: [

@@ -42,6 +42,21 @@ class _BookCardCreateState extends State<BookCardCreate> {
       rating: '4.5',
       title: 'Harry Potter the Goblet of Fire',
     ),
+    CardData(
+      imageUrl:
+      'https://indobanglabook.s3.us-east-2.amazonaws.com/2109/71g2ednj0JL.jpeg',
+      isLiked: false,
+      bookPrice: '100',
+      rating: '4.0',
+      title: 'Psychology of Money Book',
+    ),
+    CardData(
+      imageUrl: 'https://m.media-amazon.com/images/I/61NP3Oa+TSL._SL500_.jpg',
+      isLiked: true,
+      bookPrice: '150',
+      rating: '4.5',
+      title: 'Harry Potter the Goblet of Fire',
+    ),
   ];
 
   @override
