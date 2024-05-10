@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utilitis/app_main_color.dart';
+
 class TextFormFieldCustomized extends StatelessWidget {
   const TextFormFieldCustomized({super.key, required this.hintText, required this.icon, required this.keyboardType});
   final String hintText;
@@ -28,20 +30,20 @@ class TextFormFieldCustomized extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 15.w,
               ),
-              borderSide: const BorderSide(
-                color: Colors.black,
+              borderSide: BorderSide(
+                color: AppMainColor.primaryColor,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(
                 15.w,
               ),
-              borderSide: const BorderSide(
-                color: Colors.black,
+              borderSide: BorderSide(
+                color: AppMainColor.primaryColor,
               ),
             ),
             filled: true,
-            fillColor: const Color(0XFFFFFFFF),
+            fillColor: Colors.white,
           ),
         ),
       ),

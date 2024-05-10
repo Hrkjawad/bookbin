@@ -1,3 +1,4 @@
+import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -30,20 +31,20 @@ class BookListingTextFormField extends StatelessWidget {
                   borderRadius: BorderRadius.circular(
                     15.w,
                   ),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
+                  borderSide: BorderSide(
+                    color: AppMainColor.primaryColor,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(
                     15.w,
                   ),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
+                  borderSide:  BorderSide(
+                    color: AppMainColor.primaryColor,
                   ),
                 ),
                 filled: true,
-                fillColor: const Color(0XFFFFFFFF),
+                fillColor: Colors.white,
               ),
             ),
           ),

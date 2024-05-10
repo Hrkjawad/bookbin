@@ -196,14 +196,14 @@ TextFormField get descriptionTextField {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.w),
-          borderSide: const BorderSide(
-            color: Colors.black,
+          borderSide:  BorderSide(
+            color: AppMainColor.primaryColor,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.w),
-          borderSide: const BorderSide(
-            color: Colors.black,
+          borderSide: BorderSide(
+            color: AppMainColor.primaryColor,
           ),
         )),
     validator: (value) {

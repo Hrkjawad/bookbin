@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utilitis/app_main_color.dart';
+
 class ConfirmPasswordTextField extends StatelessWidget {
   ConfirmPasswordTextField(
       {super.key, required this.hintText, required this.isObscure, required this.passwordController, required this.confirmPasswordController});
@@ -43,18 +45,18 @@ class ConfirmPasswordTextField extends StatelessWidget {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.w),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
+                  borderSide: BorderSide(
+                    color: AppMainColor.primaryColor,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.w),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
+                  borderSide: BorderSide(
+                    color: AppMainColor.primaryColor,
                   ),
                 ),
                 filled: true,
-                fillColor: const Color(0XFFFFFFFF),
+                fillColor: Colors.white,
                 errorStyle: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
