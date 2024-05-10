@@ -14,7 +14,7 @@ class C_page1 extends StatelessWidget {
         _buildSpacer(),
         _buildCard("Business",Icons.business_center_rounded),
         _buildSpacer(),
-        _buildCard("Health",Icons.health_and_safety_rounded),
+        _buildCard("Health",Icons.health_and_safety),
         _buildSpacer(),
       ],
     );

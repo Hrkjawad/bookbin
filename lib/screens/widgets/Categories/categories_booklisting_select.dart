@@ -1,17 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:BookBin/utilitis/app_main_color.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoriesSelect extends StatefulWidget {
-  const CategoriesSelect({Key? key}) : super(key: key);
+  const CategoriesSelect({super.key});
 
   @override
-  _CategoriesSelectState createState() => _CategoriesSelectState();
+  CategoriesSelectState createState() => CategoriesSelectState();
 }
 
-class _CategoriesSelectState extends State<CategoriesSelect> {
-  late String selectedName;
-  List<CategoriesList> categoriesList = [
+class CategoriesSelectState extends State<CategoriesSelect> {
+  late String _selectedName;
+  int _selectedIndex = 0;
+  final List<CategoriesList> _categoriesList = [
     CategoriesList(
       icon: Icons.science_outlined,
       isLiked: true,
@@ -28,29 +30,29 @@ class _CategoriesSelectState extends State<CategoriesSelect> {
       name: "Business",
     ),
     CategoriesList(
-      icon: Icons.health_and_safety_rounded,
+      icon: Icons.health_and_safety,
       isLiked: false,
       name: "Health",
     ),
     CategoriesList(
       icon: Icons.menu_book_sharp,
       isLiked: false,
-      name: "Science",
+      name: "Novels",
     ),
     CategoriesList(
       icon: Icons.text_fields_outlined,
       isLiked: false,
-      name: "Business",
+      name: "Language",
     ),
     CategoriesList(
       icon: Icons.computer,
       isLiked: false,
-      name: "Health",
+      name: "CSE",
     ),
     CategoriesList(
       icon: Icons.school,
       isLiked: false,
-      name: "Science",
+      name: "Education",
     ),
   ];
 
@@ -62,33 +64,26 @@ class _CategoriesSelectState extends State<CategoriesSelect> {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
-        itemCount: categoriesList.length,
+        itemCount: _categoriesList.length,
         itemBuilder: (context, index) {
-          final item = categoriesList[index];
+          final item = _categoriesList[index];
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
             child: Column(
               children: [
                 Card(
-                  color: item.isLiked ? const Color(0xff8847a1) : Colors.grey,
+                  color: _selectedIndex == index ? AppMainColor.primaryColor : Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.w),
                   ),
                   child: IconButton(
                     onPressed: () {
                       setState(() {
-                        if(item.isLiked = !item.isLiked)
-                          {
-                            selectedName = item.name;
-                            print(selectedName);
-                          }
-                        else
-                        {
-                          selectedName = "";
-                          print(selectedName);
+                        _selectedIndex = index;
+                        _selectedName = item.name;
+                        if (kDebugMode) {
+                          print(_selectedName);
                         }
-
-
                       });
                     },
                     icon: Icon(
