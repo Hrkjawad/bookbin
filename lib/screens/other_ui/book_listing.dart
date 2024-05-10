@@ -1,12 +1,14 @@
+import 'package:BookBin/screens/other_ui/buy_books.dart';
 import 'package:BookBin/screens/widgets/book_details_textform.dart';
 import 'package:BookBin/screens/widgets/bottom_nav.dart';
-import 'package:BookBin/screens/widgets/elevatedbutton_customised.dart';
+import 'package:BookBin/screens/widgets/icon_elevatedbutton.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../widgets/Categories/categories_booklisting_select.dart';
+import '../widgets/radio_button.dart';
 import '../widgets/textformfield_customized.dart';
 
 class BookListing extends StatefulWidget {
@@ -17,27 +19,24 @@ class BookListing extends StatefulWidget {
 }
 
 class _BookListingState extends State<BookListing> {
-  bool? _isSelected;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: (){
-            Get.back();
-          },
-          icon:  Icon(
-          Icons.arrow_circle_left_rounded,
-          size: 45.w,
-          color: AppMainColor.primaryColor,
-        ),
-        )
-      ),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_circle_left_rounded,
+              size: 45.w,
+              color: AppMainColor.primaryColor,
+            ),
+          )),
       body: ScreenBackground(
         child: SafeArea(
           child: SingleChildScrollView(
@@ -113,36 +112,12 @@ class _BookListingState extends State<BookListing> {
                 SizedBox(
                   height: 5.h,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Radio(
-                      value: true,
-                      groupValue: _isSelected,
-                      onChanged: (value) {
-                        setState(() {
-                          _isSelected = value;
-                        });
-                      },
-                    ),
-                    Text(
-                      'Yes',
-                      style: TextStyle(fontSize: 20.sp),
-                    ),
-                    Radio(
-                      value: false,
-                      groupValue: _isSelected,
-                      onChanged: (value) {
-                        setState(() {
-                          _isSelected = value;
-                        });
-                      },
-                    ),
-                    Text(
-                      'No',
-                      style: TextStyle(fontSize: 20.sp),
-                    ),
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(left: 125.w),
+                  child: const RadioButton(
+                    nameOption1: 'Yes',
+                    nameOption2: 'No',
+                  ),
                 ),
                 SizedBox(
                   height: 36.h,
@@ -154,17 +129,11 @@ class _BookListingState extends State<BookListing> {
                 SizedBox(
                   height: 36.h,
                 ),
-                Stack(
-                  children: [
-                    ElevatedButtonCustomised(onPressed: () {}, text: "Submit"),
-                    Positioned(
-                        right: 0,
-                        child: Icon(
-                          Icons.arrow_circle_right_rounded,
-                          size: 60.w,
-                          color: Colors.white,
-                        ))
-                  ],
+                IconElevatedButton(
+                  text: "Submit",
+                  onPressed: () {
+                    Get.to(const BuyBooks());
+                  },
                 ),
                 SizedBox(
                   height: 20.h,
@@ -196,7 +165,7 @@ TextFormField get descriptionTextField {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.w),
-          borderSide:  BorderSide(
+          borderSide: BorderSide(
             color: AppMainColor.primaryColor,
           ),
         ),
