@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookListingTextFormField extends StatelessWidget {
-  const BookListingTextFormField({super.key, required this.keyboardType, required this.heading});
+  const BookListingTextFormField({super.key, required this.keyboardType, required this.heading, required this.controller});
   final TextInputType keyboardType;
   final String heading;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,6 +23,7 @@ class BookListingTextFormField extends StatelessWidget {
             width: 182.w,
             height: 40.h,
             child: TextFormField(
+              controller: controller,
               keyboardType: keyboardType,
               decoration: InputDecoration(
                 contentPadding:  EdgeInsets.symmetric(

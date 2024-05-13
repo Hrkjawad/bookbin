@@ -4,10 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utilitis/app_main_color.dart';
 
 class TextFormFieldCustomized extends StatelessWidget {
-  const TextFormFieldCustomized({super.key, required this.hintText, required this.icon, required this.keyboardType});
+  const TextFormFieldCustomized({super.key, required this.hintText, required this.icon, required this.keyboardType, required this.controller});
   final String hintText;
   final Widget icon;
   final TextInputType keyboardType;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -15,6 +16,7 @@ class TextFormFieldCustomized extends StatelessWidget {
         width: 350.w,
         height: 51.h,
         child: TextFormField(
+          controller: controller,
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hintText,

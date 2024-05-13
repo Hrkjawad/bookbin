@@ -1,4 +1,4 @@
-import 'package:BookBin/screens/auth_ui/forgotten_code_send.dart';
+import 'package:BookBin/screens/auth_ui/forgotten_verification_code.dart';
 import 'package:BookBin/screens/widgets/backbutton_with_logo.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/screens/widgets/textformfield_customized.dart';
@@ -17,75 +17,81 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _passController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenBackground(
-          child: ListView(
-        shrinkWrap: true,
-        children: [
-          const BackButtonAndLogo(),
-          SizedBox(
-            height: 96.h,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 31.w),
-            child: Text(
-              "Login",
-              style: TextStyle(
-                fontSize: 40.sp,
-                fontWeight: FontWeight.w800,
-              ),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+                    shrinkWrap: true,
+                    children: [
+            const BackButtonAndLogo(),
+            SizedBox(
+              height: 96.h,
             ),
-          ),
-          SizedBox(
-            height: 65.h,
-          ),
-          const TextFormFieldCustomized(
-            hintText: "Enter your email address",
-            icon: Icon(Icons.email),
-            keyboardType: TextInputType.emailAddress,
-          ),
-          SizedBox(
-            height: 40.h,
-          ),
-          PasswordTextField(
-            passwordController: _passController,
-            isObscure: true,
-            hintText: 'Enter your password',
-          ),
-          SizedBox(
-            height: 65.h,
-          ),
-          Center(
-            child: ElevatedButtonCustomised(
-              onPressed: () {
-                Get.to(const HomePage());
-              },
-              text: "Login",
-            ),
-          ),
-          SizedBox(
-            height: 40.h,
-          ),
-          Center(
-            child: TextButton(
-              onPressed: () {
-                Get.to(const Verification());
-              },
-              child:  Text(
-                'Forgotten Password?',
+            Padding(
+              padding: EdgeInsets.only(left: 31.w),
+              child: Text(
+                "Login",
                 style: TextStyle(
-                    fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  fontSize: 40.sp,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
-          )
-        ],
-      )),
+            SizedBox(
+              height: 65.h,
+            ),
+             TextFormFieldCustomized(
+               controller: _name,
+              hintText: "Enter your email address",
+              icon: const Icon(Icons.email),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(
+              height: 40.h,
+            ),
+            PasswordTextField(
+              passwordController: _password,
+              isObscure: true,
+              hintText: 'Enter your password',
+            ),
+            SizedBox(
+              height: 65.h,
+            ),
+            Center(
+              child: ElevatedButtonCustomised(
+                onPressed: () {
+                  Get.to(const HomePage());
+                },
+                text: "Login",
+              ),
+            ),
+            SizedBox(
+              height: 40.h,
+            ),
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Get.to(const Verification());
+                },
+                child:  Text(
+                  'Forgotten Password?',
+                  style: TextStyle(
+                      fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            )
+                    ],
+                  ),
+          )),
     );
   }
 }

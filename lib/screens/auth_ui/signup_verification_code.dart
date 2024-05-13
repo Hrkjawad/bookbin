@@ -8,14 +8,14 @@ import '../other_ui/homepage.dart';
 import '../widgets/elevatedbutton_customised.dart';
 import 'package:pinput/pinput.dart';
 
-class VerificationCode extends StatefulWidget {
-  const VerificationCode({super.key});
+class SignupVerificationCode extends StatefulWidget {
+  const SignupVerificationCode({super.key});
 
   @override
-  State<VerificationCode> createState() => _VerificationCodeState();
+  State<SignupVerificationCode> createState() => _SignupVerificationCodeState();
 }
 
-class _VerificationCodeState extends State<VerificationCode> {
+class _SignupVerificationCodeState extends State<SignupVerificationCode> {
   String email = "emailaddress@gmail.com";
   @override
   Widget build(BuildContext context) {
