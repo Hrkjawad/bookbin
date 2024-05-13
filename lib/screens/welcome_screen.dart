@@ -1,3 +1,4 @@
+import 'package:BookBin/screens/auth_ui/login_page.dart';
 import 'package:BookBin/screens/auth_ui/signup.dart';
 import 'package:BookBin/utilitis/assets_paths.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
@@ -82,7 +83,9 @@ class WelcomePage extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(const LoginPage());
+                      },
                       child: Text(
                         "Login",
                         style: TextStyle(
