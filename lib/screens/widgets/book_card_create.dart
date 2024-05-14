@@ -1,5 +1,7 @@
+import 'package:BookBin/screens/other_ui/book_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class BookCardCreate extends StatefulWidget {
   const BookCardCreate({super.key, required this.height});
@@ -74,7 +76,7 @@ class _BookCardCreateState extends State<BookCardCreate> {
           final item = cardData[index];
           return GestureDetector(
             onTap: () {
-              // Get.back();
+              Get.to(const BookDetails());
             },
             child: Column(
               children: [

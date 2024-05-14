@@ -1,3 +1,4 @@
+import 'package:BookBin/application/getx_controllers.dart';
 import 'package:BookBin/screens/splash_screen.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class BookBin extends StatelessWidget {
       builder: (context, child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
+        initialBinding: GetXBindings(),
         theme: ThemeData(
           textTheme: TextTheme(
             titleMedium: TextStyle(

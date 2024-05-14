@@ -33,10 +33,15 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
           scaffoldKey.currentState!.openDrawer();
         },
       ),
-      trailing: const Icon(
-        Icons.notifications,
-        color: Color(0xff8847A1),
-        size: 35,
+      trailing: IconButton(
+        icon: Icon(
+          Icons.notifications,
+          color: const Color(0xff8847A1),
+          size: 32.sp,
+        ),
+        onPressed: () {
+          scaffoldKey.currentState!.openEndDrawer(); // Open End Drawer
+        },
       ),
     ),
   );

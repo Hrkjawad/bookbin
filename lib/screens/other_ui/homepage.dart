@@ -1,50 +1,22 @@
-import 'dart:async';
 import 'package:BookBin/screens/other_ui/book_listing.dart';
 import 'package:BookBin/screens/other_ui/see_all_page_and_categoris_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../other_ui_controllers/homepage_controller.dart';
 import '../widgets/Categories/categories.dart';
 import '../widgets/book_card_create.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/main_appbar.dart';
+import '../widgets/notification_end_drawer.dart';
 import '../widgets/screen_background.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePage();
 }
-
-var scaffoldKey = GlobalKey<ScaffoldState>();
-
-class _HomePageState extends State<HomePage> {
-  String _greeting = '';
-  @override
-  void initState() {
-    super.initState();
-    _updateGreeting();
-    Timer.periodic(const Duration(minutes: 1), (timer) {
-      _updateGreeting();
-    });
-  }
-
-  void _updateGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) {
-      setState(() {
-        _greeting = 'Good Morning';
-      });
-    } else if (hour < 17) {
-      setState(() {
-        _greeting = 'Good Afternoon';
-      });
-    } else {
-      setState(() {
-        _greeting = 'Good Evening';
-      });
-    }
-  }
+class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +24,7 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: true,
       appBar: mainAppBar(scaffoldKey, context),
       body: Scaffold(
-        key: scaffoldKey,
-        // drawer: NotificationEndDrawer(context),
+        // drawer: const NotificationEndDrawer(),
         body: ScreenBackground(
           child: SafeArea(
             child: SingleChildScrollView(
@@ -66,13 +37,19 @@ class _HomePageState extends State<HomePage> {
                       height: 30.h,
                     ),
                     Center(
-                      child: Text(
-                        'Hey, $_greeting!',
-                        style: TextStyle(
-                          fontSize: 26.sp,
-                          fontWeight: FontWeight.w800,
-                        ),
+                      child: GetBuilder<HomeController>(
+                        builder: (controller) {
+                          final greeting = controller.greeting.value;
+                          return Text(
+                            'Hey, $greeting!',
+                            style: TextStyle(
+                              fontSize: 26.sp,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          );
+                        },
                       ),
+
                     ),
                     SizedBox(
                       height: 30.h,
@@ -237,8 +214,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+        endDrawer: const NotificationEndDrawer(),
       ),
       bottomNavigationBar: const BottomNav(),
     );
   }
 }
+
+
