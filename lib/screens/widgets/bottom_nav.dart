@@ -24,7 +24,7 @@ class BottomNav extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => const HomePage());
+                    Get.to(() =>  HomePage());
                   },
                   child: Column(
                     children: [

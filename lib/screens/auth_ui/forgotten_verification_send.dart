@@ -1,4 +1,4 @@
-import 'package:BookBin/screens/auth_ui/forgot_pass_verification.dart';
+import 'package:BookBin/screens/auth_ui/forgotpass_verification_code.dart';
 import 'package:BookBin/screens/widgets/backbutton_with_logo.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/screens/widgets/textformfield_customized.dart';

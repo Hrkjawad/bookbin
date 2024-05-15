@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/book_card_create.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/main_appbar.dart';
+import '../widgets/notification_end_drawer.dart';
 import '../widgets/screen_background.dart';
 
 class SeeAllPageAndCategorisPage extends StatefulWidget {
@@ -31,9 +32,8 @@ class _SeeAllPageAndCategorisPageState
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: mainAppBar(scaffoldKey, context),
-      body: Scaffold(
-        key: scaffoldKey,
-        // drawer: NotificationEndDrawer(context),
+      key: scaffoldKey,
+      endDrawer: const NotificationEndDrawer(),
         body: ScreenBackground(
           child: SafeArea(
             child: SingleChildScrollView(
@@ -318,9 +318,8 @@ class _SeeAllPageAndCategorisPageState
             ),
           ),
         ),
-      ),
       bottomNavigationBar: const BottomNav(),
-    );
+      );
   }
 }
 

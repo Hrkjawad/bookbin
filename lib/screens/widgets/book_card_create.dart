@@ -76,7 +76,7 @@ class _BookCardCreateState extends State<BookCardCreate> {
           final item = cardData[index];
           return GestureDetector(
             onTap: () {
-              Get.to(const BookDetails());
+              Get.to( BookDetails());
             },
             child: Column(
               children: [

@@ -1,4 +1,3 @@
-import 'package:BookBin/screens/auth_ui/forgotten_verification_code.dart';
 import 'package:BookBin/screens/widgets/backbutton_with_logo.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/screens/widgets/textformfield_customized.dart';
@@ -8,6 +7,7 @@ import 'package:get/get.dart';
 import '../other_ui/homepage.dart';
 import '../widgets/elevatedbutton_customised.dart';
 import '../widgets/password_textfield.dart';
+import 'forgotten_verification_send.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             Center(
               child: ElevatedButtonCustomised(
                 onPressed: () {
-                  Get.to(const HomePage());
+                  Get.to( HomePage());
                 },
                 text: "Login",
               ),

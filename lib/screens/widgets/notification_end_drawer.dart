@@ -1,4 +1,6 @@
+import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationEndDrawer extends StatelessWidget {
   const NotificationEndDrawer({super.key});
@@ -6,29 +8,37 @@ class NotificationEndDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.7, // Adjust the height as needed
+      height: 750.h,
       child: Drawer(
-        shape: const RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              bottomLeft: Radius.circular(20)),
+              topLeft: Radius.circular(20.w),
+              bottomLeft: Radius.circular(20.w)),
         ),
         child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
+          children: [
             ListTile(
-              title: const Text('Swap Request Chat'),
-              onTap: () {
-                // Handle item 1 tap
-              },
+              title: Text(
+                'Swap Request Chat',
+                style: TextStyle(
+                    color: AppMainColor.primaryColor, fontSize: 22.sp),
+              ),
+              onTap: () {},
+            ),
+            Divider(
+              thickness: 2.h,
             ),
             ListTile(
-              title: const Text('One Book Sell Request'),
-              onTap: () {
-                // Handle item 2 tap
-              },
+              title: Text(
+                'One Book Sell Request',
+                style: TextStyle(
+                    color: AppMainColor.primaryColor, fontSize: 22.sp),
+              ),
+              onTap: () {},
             ),
-            // Add more items as needed
+            Divider(
+              thickness: 2.h,
+            ),
           ],
         ),
       ),

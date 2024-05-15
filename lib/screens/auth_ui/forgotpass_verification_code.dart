@@ -29,7 +29,7 @@ class _ForgotPassVerificationState extends State<ForgotPassVerification> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.transparent),
+        border: Border.all(color: AppMainColor.primaryColor),
       ),
     );
     return Scaffold(

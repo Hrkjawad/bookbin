@@ -29,7 +29,7 @@ class _SignupVerificationCodeState extends State<SignupVerificationCode> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.transparent),
+        border: Border.all(color: AppMainColor.primaryColor),
       ),
     );
     return Scaffold(
@@ -120,7 +120,7 @@ class _SignupVerificationCodeState extends State<SignupVerificationCode> {
             Center(
                 child: ElevatedButtonCustomised(
               onPressed: () {
-                Get.to(const HomePage());
+                Get.to( HomePage());
               },
               text: "Verify",
             )),
