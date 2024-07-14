@@ -1,9 +1,9 @@
-import 'package:BookBin/screens/widgets/Categories/c_page1.dart';
+import 'package:BookBin/screens/widgets/Categories/category_page1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'c_page2.dart';
+import 'category_page2.dart';
 
 class Categories extends StatefulWidget {
   const Categories({super.key});
@@ -30,8 +30,8 @@ class _CategoriesState extends State<Categories> {
           child: PageView(
             controller: _pageController,
             children: const [
-              C_page1(),
-              C_page2(),
+              CategoryPage1(),
+              CategoryPage2(),
             ],
           ),
         ),

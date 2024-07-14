@@ -1,3 +1,4 @@
+import 'package:BookBin/screens/other_ui/homepage.dart';
 import 'package:BookBin/screens/widgets/bottom_nav.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/screens/widgets/textformfield_customized.dart';
@@ -11,7 +12,8 @@ import '../widgets/icon_elevatedbutton.dart';
 import '../widgets/radio_button.dart';
 
 class BuyBooks extends StatefulWidget {
-  const BuyBooks({super.key});
+  const BuyBooks({super.key, required this.bookCost});
+  final String bookCost;
 
   @override
   State<BuyBooks> createState() => _BuyBooksState();
@@ -23,12 +25,13 @@ class _BuyBooksState extends State<BuyBooks> {
   final TextEditingController _receivedLocation = TextEditingController();
   final TextEditingController _phone = TextEditingController();
 
-  late double bookPrice = 0;
-  late double chargePrice = 0;
+  late double deliveryCharge = 100;
   late double totalPrice = 0;
 
   @override
   Widget build(BuildContext context) {
+    late double bookPrice = double.parse(widget.bookCost);
+    totalPrice = bookPrice + deliveryCharge;
     return Scaffold(
       body: ScreenBackground(
         child: SingleChildScrollView(
@@ -55,57 +58,61 @@ class _BuyBooksState extends State<BuyBooks> {
                   padding: EdgeInsets.only(left: 30.w, right: 30.w),
                   child: RichText(
                     text: TextSpan(
-                        text:
-                            "1. Buyers will send the book through Sundarbans Courier Service.\n2. Carefully submit your received location, receiver name and number.\n3. ",
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xff565656),
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Delivery charge 100৳ in Cash on delivery.\n",
-                            style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.red),
-                          ),
-                          TextSpan(
-                            text:
-                                "4. This time only cash on delivery available.\n5. Delivery time from today to next 7 days.",
-                            style: TextStyle(
+                      text:
+                          "1. Buyers will send the book through Sundarbans Courier Service.\n2. Carefully submit your received location, receiver name and number.\n3. ",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xff565656),
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "Delivery charge 100৳ in Cash on delivery.\n",
+                          style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w700,
-                              color: const Color(0xff565656),
-                            ),
+                              color: Colors.red),
+                        ),
+                        TextSpan(
+                          text:
+                              "4. This time only cash on delivery available.\n5. Delivery time from today to next 7 days.",
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff565656),
                           ),
-                        ]),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                 TextFormFieldCustomized(
+                TextFormFieldCustomized(
                   controller: _receiverName,
-                    hintText: "Enter receiver name",
-                    icon: const Icon(Icons.person),
-                    keyboardType: TextInputType.text),
+                  hintText: "Enter receiver name",
+                  icon: const Icon(Icons.person),
+                  keyboardType: TextInputType.text,
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
-                 TextFormFieldCustomized(
-                   controller: _phone,
-                    hintText: "Enter your phone number",
-                    icon: const Icon(Icons.phone),
-                    keyboardType: TextInputType.number),
+                TextFormFieldCustomized(
+                  controller: _phone,
+                  hintText: "Enter your phone number",
+                  icon: const Icon(Icons.phone),
+                  keyboardType: TextInputType.number,
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
-                 TextFormFieldCustomized(
-                   controller: _receivedLocation,
-                    hintText: "Enter your received Location",
-                    icon: const Icon(Icons.location_on),
-                    keyboardType: TextInputType.text),
+                TextFormFieldCustomized(
+                  controller: _receivedLocation,
+                  hintText: "Enter your received Location",
+                  icon: const Icon(Icons.location_on),
+                  keyboardType: TextInputType.text,
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -136,7 +143,7 @@ class _BuyBooksState extends State<BuyBooks> {
                   child: Column(
                     children: [
                       Text(
-                        "Book         :  $bookPrice  ৳",
+                        "Book         :  ${widget.bookCost}  ৳",
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
@@ -144,7 +151,7 @@ class _BuyBooksState extends State<BuyBooks> {
                         ),
                       ),
                       Text(
-                        "Charge      :  $chargePrice  ৳",
+                        "Charge      :  $deliveryCharge  ৳",
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
@@ -159,7 +166,7 @@ class _BuyBooksState extends State<BuyBooks> {
                         ),
                       ),
                       Text(
-                        "Total        :  $totalPrice  ৳",
+                        "Total        :  ${totalPrice.toString()}  ৳",
                         style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.w700,
@@ -176,7 +183,15 @@ class _BuyBooksState extends State<BuyBooks> {
                   child: IconElevatedButton(
                     text: "Proceed",
                     onPressed: () {
-                      //Get.to(const BuyBooks());
+                      Get.snackbar(
+                        "Successful",
+                        "Your payment was done, within a day you will receive your delivery",
+                        snackPosition: SnackPosition.TOP,
+                        backgroundColor: Colors.green,
+                        colorText: Colors.white,
+                        duration: const Duration(seconds: 4),
+                      );
+                      Get.to(const HomePage());
                     },
                   ),
                 ),

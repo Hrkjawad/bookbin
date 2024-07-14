@@ -3,33 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:BookBin/screens/other_ui/book_details.dart';
+import 'package:rxdart/rxdart.dart';
 
-class BookCardCreate extends StatelessWidget {
-  const BookCardCreate(
-      {super.key, required this.height, required this.collections});
+class RecommendedBookCardCreate extends StatelessWidget {
+  const RecommendedBookCardCreate({super.key, required this.height, this.itemCount, required this.collections});
 
   final double height;
-  final String collections;
+  final int? itemCount;
+  final List<CollectionReference> collections;
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection(collections).snapshots(),
-      builder: (context, snapshot) {
+    // Create a list of streams for each collection
+    List<Stream<QuerySnapshot>> streams = collections
+        .map((collection) =>
+            collection.where('bookRating', isGreaterThan: 4.4).snapshots())
+        .toList();
+
+    // Combine all streams into a single stream using combineLatest
+    Stream<List<QuerySnapshot>> combinedStream =
+        CombineLatestStream.list(streams);
+
+    return StreamBuilder<List<QuerySnapshot>>(
+      stream: combinedStream,
+      builder: (context, AsyncSnapshot<List<QuerySnapshot>> snapshot) {
         if (snapshot.hasError) {
           return const Center(child: Text('Something is wrong'));
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        final documents = snapshot.data!.docs;
+
+        // Convert the list of QuerySnapshots into a single list of DocumentSnapshots
+        List<DocumentSnapshot> documents = snapshot.data!
+            .expand((querySnapshot) => querySnapshot.docs)
+            .toList();
+
         //manage favorite statuses/wishlist
         RxList<RxBool> isLikedList = documents
             .map((document) {
               bool initialValue = document['isLikedList'] ?? false;
               return RxBool(initialValue);
-            })
-            .toList()
-            .obs;
+            }).toList().obs;
 
         return SizedBox(
           height: height,
@@ -39,26 +53,23 @@ class BookCardCreate extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisExtent: 260,
             ),
-            itemCount: documents.length,
+            itemCount: itemCount ?? documents.length,
             itemBuilder: (context, index) {
               final DocumentSnapshot document = documents[index];
               final data = document.data() as Map<String, dynamic>;
 
-              String imageUrl = data.containsKey("bookPicURL")
-                  ? data["bookPicURL"]
-                  : "https://i.pinimg.com/736x/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.jpg";
+              String imageUrl = data.containsKey("bookPicURL") ? data["bookPicURL"] : "https://i.pinimg.com/736x/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.jpg";
 
-              String bookName =
-                  data.containsKey("bookName") ? data["bookName"] : "No Data";
+              String bookName = data.containsKey("bookName") ? data["bookName"] : "No Data";
 
               String bookPrice = data.containsKey("bookPrice") ? data["bookPrice"] : "0";
 
-              double bookRating = data.containsKey("bookRating")
-                  ? data["bookRating"].toDouble()
-                  : 0.0;
+              double bookRating = data.containsKey("bookRating") ? data["bookRating"].toDouble() : 0.0;
+              String bookCategory = collections.firstWhere(
+                    (collection) => document.reference.path.contains(collection.path.split('/').last),
+              ).id;
               String sell = documents[index]['Sell'];
               String swap = documents[index]['Swap'];
-              String bookCategory = collections;
               String bookPicURL = documents[index]['bookPicURL'];
               String description = documents[index]['description'];
               String edition = documents[index]['edition'];
@@ -122,9 +133,7 @@ class BookCardCreate extends StatelessWidget {
                             },
                             child: Obx(() => Icon(
                                   Icons.favorite,
-                                  color: isLikedList[index].value
-                                      ? Colors.red
-                                      : Colors.grey,
+                                  color: isLikedList[index].value ? Colors.red : Colors.grey,
                                 )),
                           ),
                         ),

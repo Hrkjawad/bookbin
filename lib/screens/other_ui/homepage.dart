@@ -1,26 +1,31 @@
 import 'package:BookBin/screens/other_ui/book_listing.dart';
-import 'package:BookBin/screens/other_ui/see_all_page_and_categoris_page.dart';
+import 'package:BookBin/screens/other_ui/see_all_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../other_ui_controllers/homepage_controller.dart';
 import '../widgets/Categories/categories.dart';
-import '../widgets/book_card_create.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/main_appbar.dart';
 import '../widgets/notification_end_drawer.dart';
+import '../widgets/recommended_book_card.dart';
 import '../widgets/screen_background.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
-
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePage();
 }
 class _HomePage extends State<HomePage> {
+  CollectionReference business = FirebaseFirestore.instance.collection('Business');
+  CollectionReference novels = FirebaseFirestore.instance.collection('Novels');
+  CollectionReference health = FirebaseFirestore.instance.collection('Health');
+  CollectionReference language = FirebaseFirestore.instance.collection('Language');
 
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +112,7 @@ class _HomePage extends State<HomePage> {
                         color: const Color(0xff8847a1),
                         child: IconButton(
                             onPressed: () {
-                              widget.scaffoldKey.currentState?.openEndDrawer();
+                              scaffoldKey.currentState?.openEndDrawer();
                             },
                             icon: Icon(
                               Icons.filter_alt_rounded,
@@ -147,7 +152,8 @@ class _HomePage extends State<HomePage> {
                       const Spacer(),
                       TextButton(
                         onPressed: () {
-                          Get.to(const SeeAllPageAndCategorisPage());
+                          //Get.to(RecommendedBookCardCreate(height: 265.h, collections: [business,novels,health,language],),);
+                          Get.to( SeeAllPageRecommendedPage(collections: [business,novels,health,language], name: 'Recommended',));
                         },
                         child: Text(
                           "See All",
@@ -163,9 +169,11 @@ class _HomePage extends State<HomePage> {
                   SizedBox(
                     height: 15.h,
                   ),
-                  BookCardCreate(
-                    height: 265.h,
-                  ),
+                  // BookCardCreate(
+                  //   height: 265.h,
+                  //   collection: "Business",
+                  // ),
+                  RecommendedBookCardCreate(height: 265.h, itemCount: 6, collections: [business,novels,health,language],),
                   SizedBox(
                     height: 16.h,
                   ),

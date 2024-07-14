@@ -1,5 +1,6 @@
+import 'dart:ffi';
+
 import 'package:BookBin/screens/other_ui/buy_books.dart';
-import 'package:BookBin/screens/other_ui/see_all_page_and_categoris_page.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,31 +12,29 @@ import '../widgets/notification_end_drawer.dart';
 import '../widgets/screen_background.dart';
 
 class BookDetails extends StatefulWidget {
-  BookDetails({super.key});
-
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
+  const BookDetails({super.key, required this.sell, required this.swap, required this.bookPicURL, required this.description, required this.edition, required this.isbn_10, required this.isbn_13, required this.language, required this.publisherName, required this.releaseDate, required this.stock, required this.writerName, required this.bookPrice, required this.bookRating, required this.bookName, required this.bookCategory});
+  final String sell;
+  final String swap;
+  final String bookName;
+  final String bookCategory;
+  final String bookPicURL;
+  final String description;
+  final String edition;
+  final String isbn_10;
+  final String isbn_13;
+  final String language;
+  final String publisherName;
+  final String releaseDate;
+  final String stock;
+  final String writerName;
+  final String bookPrice;
+  final double bookRating;
   @override
   State<BookDetails> createState() => _BookDetails();
 }
 
-double bookPrice = 100;
-double bookRating = 4.5;
-String bookName = "The Psychology of Money";
-String writerName = "Book Writer";
-String bookCategory = "Science";
-String publisherName = "Global Brother.";
-String edition = "Standard Edition";
-String releaseDate = "January 1, 2019";
-String language = "English";
-String isbn_10 = "1732557101";
-String isbn_13 = "978-1732557109";
-String stock = "16";
-String description =
-    "Doing well with money isn’t necessarily about what you know. It’s about how you behave. And behavior is hard to teach, even to really smart people.Money - investing, personal finance, and business decisions - is typically taught as a math-based field, where data and formulas tell us exactly what to do. But in the real world people don’t make financial decisions on a spreadsheet. They make them at the dinner table, or in a meeting room, where personal history, your own unique view of the world, ego, pride, marketing, and odd incentives are scrambled together. In NBSP The Psychology of Money, award-winning author Morgan Housel shares 19 short stories exploring the strange ways people think about money and teaches you how to make better sense of one of life’s most important topics.";
-
-
 class _BookDetails extends State<BookDetails> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +67,7 @@ class _BookDetails extends State<BookDetails> {
                       ),
                       child: Center(
                         child: Text(
-                          "৳ $bookPrice",
+                          "৳ ${widget.bookPrice}",
                           style: TextStyle(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.w700,
@@ -77,7 +76,7 @@ class _BookDetails extends State<BookDetails> {
                       ),
                     ),
                   ),
-                  const Center(child: ImageSliders()),
+                  Center(child: ImageSliders(bookPicURL: widget.bookPicURL,)),
                   SizedBox(
                     height: 50.h,
                     width: 100.w,
@@ -91,7 +90,7 @@ class _BookDetails extends State<BookDetails> {
                       ),
                       child: Center(
                         child: Text(
-                          "★ $bookRating",
+                          "★ ${widget.bookRating}",
                           style: TextStyle(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.w700,
@@ -110,18 +109,21 @@ class _BookDetails extends State<BookDetails> {
                     SizedBox(
                       height: 25.h,
                     ),
-                    Text(
-                      bookName,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24.sp,
+                    Padding(
+                      padding: EdgeInsets.only(right: 24.w),
+                      child: Text(
+                        widget.bookName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24.sp,
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
                     Text(
-                      "$writerName | $bookCategory",
+                      "${widget.writerName} | ${widget.bookCategory}",
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 18.sp,
@@ -174,7 +176,7 @@ class _BookDetails extends State<BookDetails> {
                                   ),
                                 )),
                             onPressed: () {
-                              Get.to(const BuyBooks());
+                              Get.to( BuyBooks(bookCost: widget.bookPrice,));
                             },
                             child: Text(
                               "Buy",
@@ -189,25 +191,10 @@ class _BookDetails extends State<BookDetails> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Publisher Name : $publisherName",
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    Wrap(
                       children: [
                         Text(
-                          "Edition                 : $edition",
+                          "Publisher Name : ${widget.publisherName}.",
                           style: TextStyle(
                             fontSize: 20.sp,
                           ),
@@ -218,7 +205,7 @@ class _BookDetails extends State<BookDetails> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Release Date      : $releaseDate",
+                          "Edition                 : ${widget.edition}",
                           style: TextStyle(
                             fontSize: 20.sp,
                           ),
@@ -229,7 +216,7 @@ class _BookDetails extends State<BookDetails> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Language            : $language",
+                          "Release Date      : ${widget.releaseDate}",
                           style: TextStyle(
                             fontSize: 20.sp,
                           ),
@@ -240,7 +227,7 @@ class _BookDetails extends State<BookDetails> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "ISBN-10               : $isbn_10",
+                          "Language            : ${widget.language}",
                           style: TextStyle(
                             fontSize: 20.sp,
                           ),
@@ -251,7 +238,7 @@ class _BookDetails extends State<BookDetails> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "ISBN-13               : $isbn_13",
+                          "ISBN-10               : ${widget.isbn_10}",
                           style: TextStyle(
                             fontSize: 20.sp,
                           ),
@@ -262,7 +249,18 @@ class _BookDetails extends State<BookDetails> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Stock                   : $stock",
+                          "ISBN-13               : ${widget.isbn_13}",
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Stock                   : ${widget.stock}",
                           style: TextStyle(
                             fontSize: 20.sp,
                           ),
@@ -284,14 +282,12 @@ class _BookDetails extends State<BookDetails> {
                     ),
                     SizedBox(
                       width: 363.w,
-                      height: 170.h,
-                      child: SingleChildScrollView(
-                        child: Text(
-                          textAlign: TextAlign.justify,
-                          description,
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                          ),
+                      //height: 170.h,
+                      child: Text(
+                        textAlign: TextAlign.justify,
+                        widget.description,
+                        style: TextStyle(
+                          fontSize: 20.sp,
                         ),
                       ),
                     ),
@@ -311,8 +307,8 @@ class _BookDetails extends State<BookDetails> {
 }
 
 class ImageSliders extends StatefulWidget {
-  const ImageSliders({super.key});
-
+  const ImageSliders({super.key, required this.bookPicURL});
+final String bookPicURL;
   @override
   State<ImageSliders> createState() => _ImageSlidersState();
 }
@@ -339,11 +335,11 @@ class _ImageSlidersState extends State<ImageSliders> {
               controller: _pageController,
               children: [
                 Image.network(
-                  'https://indobanglabook.s3.us-east-2.amazonaws.com/2109/71g2ednj0JL.jpeg',
+                  widget.bookPicURL,
                   fit: BoxFit.fill,
                 ),
                 Image.network(
-                  'https://m.media-amazon.com/images/I/61NP3Oa+TSL._SL500_.jpg',
+                  'https://nomore.org.au/sites/default/files/logo-fb.png',
                   fit: BoxFit.fill,
                 ),
                 // Add more Image.network widgets for additional images
