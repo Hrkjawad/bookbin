@@ -1,10 +1,9 @@
+import 'package:BookBin/screens/widgets/wishlist.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final ValueNotifier<bool> isLikedNotifier = ValueNotifier<bool>(false);
-
-AppBar bookListAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
+AppBar bookListAppBar(scaffoldKey, BuildContext context, bool wishList) {
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent,
@@ -52,22 +51,16 @@ AppBar bookListAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context
       },
     ),
     actions: [
-      ValueListenableBuilder(
-        valueListenable: isLikedNotifier,
-        builder: (context, isLiked, child) {
-          return IconButton(
-            icon: Icon(
-              Icons.favorite,
-              color: isLiked ? Colors.red : Colors.grey,
-              size: 32.sp,
-            ),
-            onPressed: () {
-              isLikedNotifier.value = !isLikedNotifier.value;
-              _bottomSheetWishlist(context);
-            },
-          );
+      wishList == true ? IconButton(
+        icon: Icon(
+          Icons.favorite,
+          color: Colors.red,
+          size: 32.sp,
+        ),
+        onPressed: () {
+          bottomSheetWishlist(context);
         },
-      ),
+      ) : const SizedBox(),
       IconButton(
         icon: Icon(
           Icons.notifications,
@@ -79,39 +72,5 @@ AppBar bookListAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context
         },
       ),
     ],
-  );
-}
-
-Future<void> _bottomSheetWishlist(BuildContext context) async {
-  var book1Text = ListTile(
-    title: const Center(child: Text('Book 1')),
-    onTap: () {},
-  );
-
-  var book2Text = ListTile(
-    title: const Center(child: Text('Book 2')),
-    onTap: () {
-    },
-  );
-
-  var divider = const Divider();
-
-  await showModalBottomSheet(
-    context: context,
-    barrierColor: Colors.transparent.withOpacity(0.8),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(30.sp)),
-    ),
-    builder: (context) => SizedBox(
-      height: 200.h,
-      child: Column(
-        children: [
-          book1Text,
-          divider,
-          book2Text,
-          divider,
-        ],
-      ),
-    ),
   );
 }

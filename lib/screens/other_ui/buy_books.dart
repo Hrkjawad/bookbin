@@ -6,7 +6,6 @@ import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../widgets/backbutton_with_logo.dart';
 import '../widgets/icon_elevatedbutton.dart';
 import '../widgets/radio_button.dart';

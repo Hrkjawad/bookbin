@@ -6,7 +6,11 @@ import 'package:BookBin/screens/other_ui/book_details.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RecommendedBookCardCreate extends StatelessWidget {
-  const RecommendedBookCardCreate({super.key, required this.height, this.itemCount, required this.collections});
+  const RecommendedBookCardCreate(
+      {super.key,
+      required this.height,
+      this.itemCount,
+      required this.collections});
 
   final double height;
   final int? itemCount;
@@ -43,7 +47,9 @@ class RecommendedBookCardCreate extends StatelessWidget {
             .map((document) {
               bool initialValue = document['isLikedList'] ?? false;
               return RxBool(initialValue);
-            }).toList().obs;
+            })
+            .toList()
+            .obs;
 
         return SizedBox(
           height: height,
@@ -58,16 +64,24 @@ class RecommendedBookCardCreate extends StatelessWidget {
               final DocumentSnapshot document = documents[index];
               final data = document.data() as Map<String, dynamic>;
 
-              String imageUrl = data.containsKey("bookPicURL") ? data["bookPicURL"] : "https://i.pinimg.com/736x/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.jpg";
+              String imageUrl = data.containsKey("bookPicURL")
+                  ? data["bookPicURL"]
+                  : "https://i.pinimg.com/736x/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.jpg";
 
-              String bookName = data.containsKey("bookName") ? data["bookName"] : "No Data";
+              String bookName =
+                  data.containsKey("bookName") ? data["bookName"] : "No Data";
+              String bookPrice =
+                  data.containsKey("bookPrice") ? data["bookPrice"] : "0";
 
-              String bookPrice = data.containsKey("bookPrice") ? data["bookPrice"] : "0";
-
-              double bookRating = data.containsKey("bookRating") ? data["bookRating"].toDouble() : 0.0;
-              String bookCategory = collections.firstWhere(
-                    (collection) => document.reference.path.contains(collection.path.split('/').last),
-              ).id;
+              double bookRating = data.containsKey("bookRating")
+                  ? data["bookRating"].toDouble()
+                  : 0.0;
+              String bookCategory = collections
+                  .firstWhere(
+                    (collection) => document.reference.path
+                        .contains(collection.path.split('/').last),
+                  )
+                  .id;
               String sell = documents[index]['Sell'];
               String swap = documents[index]['Swap'];
               String bookPicURL = documents[index]['bookPicURL'];
@@ -80,6 +94,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
               String releaseDate = documents[index]['releaseDate'];
               String stock = documents[index]['stock'];
               String writerName = documents[index]['writerName'];
+              //bool wishList = document[index]['isLikedList'];
               return GestureDetector(
                 onTap: () {
                   Get.to(BookDetails(
@@ -99,6 +114,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
                     bookRating: bookRating,
                     bookName: bookName,
                     bookCategory: bookCategory,
+                    wishlist: isLikedList[index].value,
                   ));
                 },
                 child: Column(
@@ -133,7 +149,9 @@ class RecommendedBookCardCreate extends StatelessWidget {
                             },
                             child: Obx(() => Icon(
                                   Icons.favorite,
-                                  color: isLikedList[index].value ? Colors.red : Colors.grey,
+                                  color: isLikedList[index].value
+                                      ? Colors.red
+                                      : Colors.grey,
                                 )),
                           ),
                         ),
@@ -151,7 +169,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  bookPrice,
+                                  "৳ $bookPrice",
                                   style: TextStyle(
                                       fontSize: 16.sp, color: Colors.white),
                                 ),

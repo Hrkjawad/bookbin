@@ -51,11 +51,12 @@ class BookCardCreate extends StatelessWidget {
               String bookName =
                   data.containsKey("bookName") ? data["bookName"] : "No Data";
 
-              String bookPrice = data.containsKey("bookPrice") ? data["bookPrice"] : "0";
-
+              String bookPrice =
+                  data.containsKey("bookPrice") ? data["bookPrice"] : "0";
               double bookRating = data.containsKey("bookRating")
                   ? data["bookRating"].toDouble()
                   : 0.0;
+
               String sell = documents[index]['Sell'];
               String swap = documents[index]['Swap'];
               String bookCategory = collections;
@@ -88,6 +89,7 @@ class BookCardCreate extends StatelessWidget {
                     bookRating: bookRating,
                     bookName: bookName,
                     bookCategory: bookCategory,
+                    wishlist: isLikedList[index].value,
                   ));
                 },
                 child: Column(
@@ -115,7 +117,7 @@ class BookCardCreate extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
                               isLikedList[index].toggle();
-                              // Update with new favorite status
+                              // Update with new wishlist status
                               document.reference.update({
                                 'isLikedList': isLikedList[index].value,
                               });
@@ -142,7 +144,7 @@ class BookCardCreate extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  bookPrice,
+                                  "৳ $bookPrice",
                                   style: TextStyle(
                                       fontSize: 16.sp, color: Colors.white),
                                 ),

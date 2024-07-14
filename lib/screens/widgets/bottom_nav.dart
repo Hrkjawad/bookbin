@@ -2,8 +2,8 @@ import 'package:BookBin/screens/other_ui/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../welcome_screen.dart';
+import 'wishlist.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({super.key});
@@ -24,7 +24,7 @@ class BottomNav extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(() =>  HomePage());
+                    Get.to(() => const HomePage());
                   },
                   child: Column(
                     children: [
@@ -63,8 +63,7 @@ class BottomNav extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    //Get.to(() => pagename );
-                    _bottomSheetWishlist(context);
+                    bottomSheetWishlist(context);
                   },
                   child: Column(
                     children: [
@@ -89,41 +88,4 @@ class BottomNav extends StatelessWidget {
   }
 }
 
-Future _bottomSheetWishlist(BuildContext context) {
-  // Define the Text and Divider variables
-  var book1Text = ListTile(
-    title: const Center(child: Text('Book 1')),
-    onTap: () {
-      // Do something when Book 1 is tapped
-    },
-  );
 
-  var book2Text = ListTile(
-    title: const Center(child: Text('Book 2')),
-    onTap: () {
-      // Do something when Book 2 is tapped
-    },
-  );
-
-  var divider = const Divider();
-
-  return showModalBottomSheet(
-    context: context,
-    barrierColor: Colors.transparent.withOpacity(0.8),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(30.w)),
-    ),
-    builder: (context) => SizedBox(
-      height: 200,
-      child: Column(
-        children: [
-          book1Text,
-          divider,
-          book2Text, // Add Book 2 below Book 1
-          divider,
-          // Add other items as needed
-        ],
-      ),
-    ),
-  );
-}

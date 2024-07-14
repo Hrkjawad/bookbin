@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:BookBin/screens/other_ui/buy_books.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +10,7 @@ import '../widgets/notification_end_drawer.dart';
 import '../widgets/screen_background.dart';
 
 class BookDetails extends StatefulWidget {
-  const BookDetails({super.key, required this.sell, required this.swap, required this.bookPicURL, required this.description, required this.edition, required this.isbn_10, required this.isbn_13, required this.language, required this.publisherName, required this.releaseDate, required this.stock, required this.writerName, required this.bookPrice, required this.bookRating, required this.bookName, required this.bookCategory});
+  const BookDetails({super.key, required this.sell, required this.swap, required this.bookPicURL, required this.description, required this.edition, required this.isbn_10, required this.isbn_13, required this.language, required this.publisherName, required this.releaseDate, required this.stock, required this.writerName, required this.bookPrice, required this.bookRating, required this.bookName, required this.bookCategory, required this.wishlist});
   final String sell;
   final String swap;
   final String bookName;
@@ -29,6 +27,7 @@ class BookDetails extends StatefulWidget {
   final String writerName;
   final String bookPrice;
   final double bookRating;
+  final bool wishlist;
   @override
   State<BookDetails> createState() => _BookDetails();
 }
@@ -40,7 +39,7 @@ class _BookDetails extends State<BookDetails> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: scaffoldKey,
-      appBar: bookListAppBar(scaffoldKey, context),
+      appBar: bookListAppBar(scaffoldKey, context, widget.wishlist),
       endDrawer: const NotificationEndDrawer(),
       body: ScreenBackground(
         child: SafeArea(
