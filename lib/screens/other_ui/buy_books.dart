@@ -1,15 +1,15 @@
 import 'package:BookBin/screens/other_ui/homepage.dart';
-import 'package:BookBin/screens/widgets/bottom_nav.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
-import 'package:BookBin/screens/widgets/textformfield_customized.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../widgets/backbutton_with_logo.dart';
-import '../widgets/icon_elevatedbutton.dart';
-import '../widgets/radio_button.dart';
 
+import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
+import '../widgets/Buttons/backbutton_with_logo.dart';
+import '../widgets/Buttons/icon_elevatedbutton.dart';
+import '../widgets/Buttons/radio_button.dart';
+import '../widgets/TextFields/textformfield_customized.dart';
 class BuyBooks extends StatefulWidget {
   const BuyBooks({super.key, required this.bookCost});
   final String bookCost;
@@ -129,7 +129,7 @@ class _BuyBooksState extends State<BuyBooks> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 50.w),
-                  child: const RadioButton(
+                  child:  RadioButton(
                     nameOption1: 'Cash on delivery',
                     nameOption2: 'Bkash',
                   ),

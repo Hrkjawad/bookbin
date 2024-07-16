@@ -1,12 +1,12 @@
 import 'package:BookBin/screens/auth_ui/login_page.dart';
-import 'package:BookBin/screens/widgets/backbutton_with_logo.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../widgets/confirm_password_textfield.dart';
-import '../widgets/elevatedbutton_customised.dart';
-import '../widgets/password_textfield.dart';
+import '../widgets/Buttons/backbutton_with_logo.dart';
+import '../widgets/Buttons/elevatedbutton_customised.dart';
+import '../widgets/TextFields/confirm_password_textfield.dart';
+import '../widgets/TextFields/password_textfield.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});

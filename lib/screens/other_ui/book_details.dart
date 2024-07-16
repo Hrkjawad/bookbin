@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../widgets/booklist_appbar.dart';
-import '../widgets/bottom_nav.dart';
+import '../widgets/Appbar_and_BottomNav/booklist_appbar.dart';
+import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/notification_end_drawer.dart';
 import '../widgets/screen_background.dart';
 

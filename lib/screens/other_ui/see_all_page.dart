@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/bottom_nav.dart';
-import '../widgets/main_appbar.dart';
+import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
+import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
 import '../widgets/notification_end_drawer.dart';
 import '../widgets/recommended_book_card.dart';
 import '../widgets/screen_background.dart';

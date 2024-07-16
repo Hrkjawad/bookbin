@@ -1,11 +1,11 @@
-import 'package:BookBin/screens/widgets/backbutton_with_logo.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../other_ui/homepage.dart';
-import '../widgets/elevatedbutton_customised.dart';
+import '../widgets/Buttons/backbutton_with_logo.dart';
+import '../widgets/Buttons/elevatedbutton_customised.dart';
 import 'package:pinput/pinput.dart';
 
 class SignupVerificationCode extends StatefulWidget {
@@ -120,7 +120,7 @@ class _SignupVerificationCodeState extends State<SignupVerificationCode> {
             Center(
                 child: ElevatedButtonCustomised(
               onPressed: () {
-                Get.to( HomePage());
+                Get.to( const HomePage());
               },
               text: "Verify",
             )),

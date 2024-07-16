@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookListingTextFormField extends StatelessWidget {
-  const BookListingTextFormField({super.key, required this.keyboardType, required this.heading, required this.controller});
+  const BookListingTextFormField({super.key, required this.keyboardType, required this.heading, required this.controller, this.validator});
   final TextInputType keyboardType;
   final String heading;
   final TextEditingController controller;
+  final FormFieldValidator? validator;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,15 +17,16 @@ class BookListingTextFormField extends StatelessWidget {
         children: [
           Text(heading, style: TextStyle(
             fontSize: 20.sp,
-            fontWeight: FontWeight.w400
+            fontWeight: FontWeight.w600
           ),),
           SizedBox(width: 16.w,),
           SizedBox(
             width: 182.w,
-            height: 40.h,
             child: TextFormField(
               controller: controller,
               keyboardType: keyboardType,
+              validator: validator,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 contentPadding:  EdgeInsets.symmetric(
                   horizontal: 15.w,
@@ -45,6 +47,19 @@ class BookListingTextFormField extends StatelessWidget {
                     color: AppMainColor.primaryColor,
                   ),
                 ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius:  BorderRadius.circular(15.w),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.w),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                  )
+                ),
+                errorStyle: TextStyle(fontSize: 14.sp),
                 filled: true,
                 fillColor: Colors.white,
               ),

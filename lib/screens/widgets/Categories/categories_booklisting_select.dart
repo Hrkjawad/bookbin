@@ -2,17 +2,11 @@ import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
-class CategoriesSelect extends StatefulWidget {
-  const CategoriesSelect({super.key});
+class CategoriesSelect extends StatelessWidget {
+  final CategoryController categoryController = Get.put(CategoryController());
 
-  @override
-  CategoriesSelectState createState() => CategoriesSelectState();
-}
-
-class CategoriesSelectState extends State<CategoriesSelect> {
-  late String _selectedName;
-  int _selectedIndex = 0;
   final List<CategoriesList> _categoriesList = [
     CategoriesList(
       icon: Icons.science_outlined,
@@ -56,6 +50,8 @@ class CategoriesSelectState extends State<CategoriesSelect> {
     ),
   ];
 
+   CategoriesSelect({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -69,38 +65,39 @@ class CategoriesSelectState extends State<CategoriesSelect> {
           final item = _categoriesList[index];
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
-            child: Column(
-              children: [
-                Card(
-                  color: _selectedIndex == index ? AppMainColor.primaryColor : Colors.grey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.w),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedIndex = index;
-                        _selectedName = item.name;
+            child: Obx(() {
+              return Column(
+                children: [
+                  Card(
+                    color: categoryController.selectedIndex.value == index
+                        ? AppMainColor.primaryColor
+                        : Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.w),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        categoryController.updateCategory(item.name, index);
                         if (kDebugMode) {
-                          print(_selectedName);
+                          print(item.name);
                         }
-                      });
-                    },
-                    icon: Icon(
-                      item.icon,
-                      size: 33.w,
-                      color: Colors.white,
+                      },
+                      icon: Icon(
+                        item.icon,
+                        size: 33.w,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  item.name,
-                  style: TextStyle(
-                    fontSize: 18.sp,
+                  Text(
+                    item.name,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
           );
         },
       ),
@@ -118,4 +115,14 @@ class CategoriesList {
     required this.name,
     required this.icon,
   });
+}
+
+class CategoryController extends GetxController {
+  var selectedCategory = ''.obs;
+  var selectedIndex = 0.obs;
+
+  void updateCategory(String category, int index) {
+    selectedCategory.value = category;
+    selectedIndex.value = index;
+  }
 }

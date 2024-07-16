@@ -1,12 +1,12 @@
-import 'package:BookBin/screens/widgets/backbutton_with_logo.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
-import 'package:BookBin/screens/widgets/textformfield_customized.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../other_ui/homepage.dart';
-import '../widgets/elevatedbutton_customised.dart';
-import '../widgets/password_textfield.dart';
+import '../widgets/Buttons/backbutton_with_logo.dart';
+import '../widgets/Buttons/elevatedbutton_customised.dart';
+import '../widgets/TextFields/password_textfield.dart';
+import '../widgets/TextFields/textformfield_customized.dart';
 import 'forgotten_verification_send.dart';
 
 class LoginPage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             Center(
               child: ElevatedButtonCustomised(
                 onPressed: () {
-                  Get.to( HomePage());
+                  Get.to( const HomePage());
                 },
                 text: "Login",
               ),

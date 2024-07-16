@@ -2,8 +2,8 @@ import 'package:BookBin/screens/other_ui/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../welcome_screen.dart';
-import 'wishlist.dart';
+import '../../welcome_screen.dart';
+import '../wishlist.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({super.key});

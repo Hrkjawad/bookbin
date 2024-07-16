@@ -1,11 +1,11 @@
 import 'package:BookBin/screens/auth_ui/forgotpass_verification_code.dart';
-import 'package:BookBin/screens/widgets/backbutton_with_logo.dart';
+import 'package:BookBin/screens/widgets/Buttons/elevatedbutton_customised.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
-import 'package:BookBin/screens/widgets/textformfield_customized.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../widgets/elevatedbutton_customised.dart';
+import '../widgets/Buttons/backbutton_with_logo.dart';
+import '../widgets/TextFields/textformfield_customized.dart';
 
 class Verification extends StatefulWidget {
   const Verification({super.key});
