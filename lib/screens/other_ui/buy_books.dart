@@ -88,29 +88,35 @@ class _BuyBooksState extends State<BuyBooks> {
                 SizedBox(
                   height: 20.h,
                 ),
-                TextFormFieldCustomized(
-                  controller: _receiverName,
-                  hintText: "Enter receiver name",
-                  icon: const Icon(Icons.person),
-                  keyboardType: TextInputType.text,
+                Center(
+                  child: TextFormFieldCustomized(
+                    controller: _receiverName,
+                    hintText: "Enter receiver name",
+                    icon: const Icon(Icons.person),
+                    keyboardType: TextInputType.text,
+                  ),
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                TextFormFieldCustomized(
-                  controller: _phone,
-                  hintText: "Enter your phone number",
-                  icon: const Icon(Icons.phone),
-                  keyboardType: TextInputType.number,
+                Center(
+                  child: TextFormFieldCustomized(
+                    controller: _phone,
+                    hintText: "Enter your phone number",
+                    icon: const Icon(Icons.phone),
+                    keyboardType: TextInputType.number,
+                  ),
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                TextFormFieldCustomized(
-                  controller: _receivedLocation,
-                  hintText: "Enter your received Location",
-                  icon: const Icon(Icons.location_on),
-                  keyboardType: TextInputType.text,
+                Center(
+                  child: TextFormFieldCustomized(
+                    controller: _receivedLocation,
+                    hintText: "Enter your received Location",
+                    icon: const Icon(Icons.location_on),
+                    keyboardType: TextInputType.text,
+                  ),
                 ),
                 SizedBox(
                   height: 20.h,

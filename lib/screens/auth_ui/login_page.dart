@@ -46,12 +46,14 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 65.h,
             ),
-             TextFormFieldCustomized(
-               controller: _name,
-              hintText: "Enter your email address",
-              icon: const Icon(Icons.email),
-              keyboardType: TextInputType.emailAddress,
-            ),
+             Center(
+               child: TextFormFieldCustomized(
+                 controller: _name,
+                hintText: "Enter your email address",
+                icon: const Icon(Icons.email),
+                keyboardType: TextInputType.emailAddress,
+                           ),
+             ),
             SizedBox(
               height: 40.h,
             ),

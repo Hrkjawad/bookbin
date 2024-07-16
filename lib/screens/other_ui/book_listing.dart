@@ -3,11 +3,11 @@ import 'package:BookBin/screens/widgets/TextFields/book_details_textform.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
+import '../widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/Buttons/icon_elevatedbutton.dart';
 import '../widgets/Buttons/radio_button.dart';
 import '../widgets/Categories/categories_booklisting_select.dart';
@@ -37,7 +37,7 @@ class _BookListingState extends State<BookListing> {
   final TextEditingController _description = TextEditingController();
   final CategoryController categoryController = Get.put(CategoryController());
   final RadioButtonController radioButtonController = Get.put(RadioButtonController());
-
+  final FormController formController = Get.put(FormController());
 
   @override
   void dispose() {
@@ -141,17 +141,39 @@ class _BookListingState extends State<BookListing> {
                     controller: _isbn10,
                     keyboardType: TextInputType.number,
                     heading: "ISBN-10               :",
-                    validator: (isbn10) => isbn10!.length != 10
-                        ? "Give 10 digit ISBN"
-                        : null,
+                    validator: (isbn10) {
+                      if (isbn10 == null || isbn10.isEmpty) {
+                        return "Please fill this";
+                      }
+                      if (isbn10.length != 10) {
+                        return "Please enter a 10-digit ISBN Number";
+                      }
+                      final numValue = int.tryParse(isbn10);
+                      if (numValue == null) {
+                        return "Please enter a valid number";
+                      }
+                      return null;
+                    },
+
                   ),
                   BookListingTextFormField(
                     controller: _isbn13,
                     keyboardType: TextInputType.number,
                     heading: "ISBN-13               :",
-                    validator: (isbn13) => isbn13!.length != 13
-                        ? "Give 13 digit ISBN"
-                        : null,
+                    validator: (isbn13) {
+                      if (isbn13 == null || isbn13.isEmpty) {
+                        return "Please fill this";
+                      }
+                      if (isbn13.length != 13) {
+                        return "Please enter a 13-digit ISBN Number";
+                      }
+                      final numValue = int.tryParse(isbn13);
+                      if (numValue == null) {
+                        return "Please enter a valid number";
+                      }
+                      return null;
+                    },
+
                   ),
                   BookListingTextFormField(
                     controller: _stock,
@@ -197,7 +219,7 @@ class _BookListingState extends State<BookListing> {
                       controller: _description,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: InputDecoration(
-                          hintText: "Enter minimum 150 words description.",
+                          hintText: "Enter minimum 100 words description.",
                           fillColor: Colors.white,
                           filled: true,
                           hintStyle: TextStyle(
@@ -237,8 +259,8 @@ class _BookListingState extends State<BookListing> {
                           return 'Please enter your book description';
                         }
                         int wordCount = value.split(' ').where((word) => word.isNotEmpty).length;
-                        if (wordCount < 150) {
-                          return 'Minimum 150 words required.';
+                        if (wordCount < 100) {
+                          return 'Minimum 100 words required.';
                         }
                         return null;
                       },
@@ -292,12 +314,12 @@ class _BookListingState extends State<BookListing> {
                   SizedBox(
                     height: 36.h,
                   ),
-            Obx(() => Text(
+            Text(
                     "Do you want to swap your books?",
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Theme.of(context).primaryColor,
                         ),
-                  )),
+                  ),
                   SizedBox(
                     height: 5.h,
                   ),
@@ -321,30 +343,33 @@ class _BookListingState extends State<BookListing> {
                   ),
                   IconElevatedButton(
                     text: "Submit",
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
+                        final formController = Get.find<FormController>();
                         FirebaseFirestore firebase = FirebaseFirestore.instance;
                         String selectedOption = radioButtonController.selectedOption.value == 'Yes' ? 'Yes' : 'No';
-                        firebase.collection(categoryController.selectedCategory.value).add({
-                          "Sell" : "Yes",
-                          "Swap" : selectedOption,
-                          "bookName" : _bookName.text,
-                          "bookPicURL" : _bookUrl.text,
-                          "bookPrice" : _price.text,
-                          "bookRating" : 5.0,
-                          "description": _description.text,
-                          "edition" : _edition.text,
-                          "isLikedList" : false,
-                          "isbn_10" : _isbn10.text,
-                          "isbn_13" : _isbn13.text,
-                          "language" : _language.text,
-                          "listerName" : "listerName",
-                          "publisherName" : _publisherName.text,
-                          "releaseDate" : _releaseDate.text,
-                          "stock" : _stock.text,
-                          "swapLocation" : _swapLocation.text,
-                          "writerName" : _writerName.text
-                        }).then((value) {
+                        try {
+                          await firebase.collection(categoryController.selectedCategory.value).add({
+                            "Sell": "Yes",
+                            "Swap": selectedOption,
+                            "bookName": _bookName.text,
+                            "bookPicURL": _bookUrl.text,
+                            "bookPrice": _price.text,
+                            "bookRating": 5.0,
+                            "description": _description.text,
+                            "edition": _edition.text,
+                            "isLikedList": false,
+                            "isbn_10": _isbn10.text,
+                            "isbn_13": _isbn13.text,
+                            "language": _language.text,
+                            "listerName": "listerName",
+                            "publisherName": _publisherName.text,
+                            "releaseDate": _releaseDate.text,
+                            "stock": _stock.text,
+                            "swapLocation": _swapLocation.text,
+                            "writerName": _writerName.text
+                          });
+                          formController.setLoading(false);
                           Get.to(const LoginPage());
                           _bookName.clear();
                           _bookUrl.clear();
@@ -358,9 +383,6 @@ class _BookListingState extends State<BookListing> {
                           _isbn13.clear();
                           _stock.clear();
                           _price.clear();
-                          if (kDebugMode) {
-                            print("Data added successfully");
-                          }
                           Get.showSnackbar(const GetSnackBar(
                               title: "Successfully Added data",
                               message: "Now your book is online",
@@ -368,10 +390,8 @@ class _BookListingState extends State<BookListing> {
                               backgroundColor: Colors.green,
                               duration: Duration(seconds: 4)
                           ));
-                        }).catchError((error) {
-                          if (kDebugMode) {
-                            print("Failed to add data: $error");
-                          }
+                        } catch (error) {
+                          formController.setLoading(false);
                           Get.showSnackbar(const GetSnackBar(
                               title: "Failed to add data",
                               message: "Please try again",
@@ -379,11 +399,11 @@ class _BookListingState extends State<BookListing> {
                               backgroundColor: Colors.red,
                               duration: Duration(seconds: 4)
                           ));
-                        });
+                        }
                       }
-                      // Get.to(const BuyBooks());
                     },
                   ),
+
                   SizedBox(
                     height: 20.h,
                   ),
@@ -397,4 +417,3 @@ class _BookListingState extends State<BookListing> {
     );
   }
 }
-

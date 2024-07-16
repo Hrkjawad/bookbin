@@ -58,11 +58,13 @@ class _SignupState extends State<Verification> {
             SizedBox(
               height: 80.h,
             ),
-             TextFormFieldCustomized(
-               controller: _email,
-                hintText: "Enter your email address",
-                icon: const Icon(Icons.email),
-                keyboardType: TextInputType.emailAddress),
+             Center(
+               child: TextFormFieldCustomized(
+                 controller: _email,
+                  hintText: "Enter your email address",
+                  icon: const Icon(Icons.email),
+                  keyboardType: TextInputType.emailAddress),
+             ),
             SizedBox(
               height: 80.h,
             ),

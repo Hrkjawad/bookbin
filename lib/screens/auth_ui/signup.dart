@@ -51,36 +51,44 @@ class _SignupState extends State<Signup> {
             SizedBox(
               height: 43.h,
             ),
-            TextFormFieldCustomized(
-              hintText: "Enter your full name",
-              icon: const Icon(Icons.person),
-              keyboardType: TextInputType.text,
-              controller: _fullName,
+            Center(
+              child: TextFormFieldCustomized(
+                hintText: "Enter your full name",
+                icon: const Icon(Icons.person),
+                keyboardType: TextInputType.text,
+                controller: _fullName,
+              ),
             ),
             SizedBox(
               height: 30.h,
             ),
-            TextFormFieldCustomized(
-                controller: _location,
-                hintText: "Enter your location",
-                icon: const Icon(Icons.person_pin_circle),
-                keyboardType: TextInputType.text),
+            Center(
+              child: TextFormFieldCustomized(
+                  controller: _location,
+                  hintText: "Enter your location",
+                  icon: const Icon(Icons.person_pin_circle),
+                  keyboardType: TextInputType.text),
+            ),
             SizedBox(
               height: 30.h,
             ),
-            TextFormFieldCustomized(
-                controller: _email,
-                hintText: "Enter your email address",
-                icon: const Icon(Icons.email),
-                keyboardType: TextInputType.emailAddress),
+            Center(
+              child: TextFormFieldCustomized(
+                  controller: _email,
+                  hintText: "Enter your email address",
+                  icon: const Icon(Icons.email),
+                  keyboardType: TextInputType.emailAddress),
+            ),
             SizedBox(
               height: 30.h,
             ),
-            TextFormFieldCustomized(
-                controller: _phone,
-                hintText: "Enter your phone number",
-                icon: const Icon(Icons.phone),
-                keyboardType: TextInputType.phone),
+            Center(
+              child: TextFormFieldCustomized(
+                  controller: _phone,
+                  hintText: "Enter your phone number",
+                  icon: const Icon(Icons.phone),
+                  keyboardType: TextInputType.phone),
+            ),
             SizedBox(
               height: 30.h,
             ),
