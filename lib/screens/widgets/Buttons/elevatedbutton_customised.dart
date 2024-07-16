@@ -27,7 +27,7 @@ class ElevatedButtonCustomised extends StatelessWidget {
               : () {
                   formController.setLoading(true);
                   onPressed();
-                  Timer(const Duration(seconds: 4), () {
+                  Timer(const Duration(seconds: 1), () {
                     formController.setLoading(false);
                   });
                 },

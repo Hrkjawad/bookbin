@@ -9,11 +9,12 @@ class BackButtonAndLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding:  EdgeInsets.only(top: 30.h, left: 18.w),
-          child: IconButton(
+    return Padding(
+      padding: EdgeInsets.only(top: 10.w, left: 15.w, right: 24.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
             onPressed: () {
               Get.back();
             },
@@ -22,13 +23,9 @@ class BackButtonAndLogo extends StatelessWidget {
               color: const Color(0XFF8847A1),
               size: 36.sp,
             ),),
-        ),
-        const Spacer(),
-        Padding(
-          padding:  EdgeInsets.only(top: 30.h, left: 284.w),
-          child: Image.asset(ImagesPath.mainLogo),
-        )
-      ],
+          Image.asset(ImagesPath.mainLogo)
+        ],
+      ),
     );
   }
 }
