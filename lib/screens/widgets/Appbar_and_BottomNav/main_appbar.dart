@@ -1,16 +1,31 @@
-import 'package:BookBin/screens/welcome_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:BookBin/application//globals.dart' as globals;
+import '../../welcome_screen.dart';
 
-AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
+AppBar mainAppBar(
+  GlobalKey<ScaffoldState> scaffoldKey,
+  BuildContext context, {
+  TabBar? tabBar,
+}) {
   return AppBar(
+    bottom: tabBar != null
+        ? PreferredSize(
+            preferredSize:
+                Size.fromHeight(70.w),
+            child: SizedBox(
+              child: tabBar,
+            ),
+          )
+        : null,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent,
     elevation: 0,
     title: ListTile(
       title: Text(
-        "Your Name",
+        globals.userName,
         style: TextStyle(
           fontSize: 20.sp,
           fontWeight: FontWeight.w500,
@@ -18,7 +33,7 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
         ),
       ),
       subtitle: Text(
-        "yourname@gmail.com",
+        globals.userEmail,
         style: TextStyle(
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,
@@ -27,10 +42,11 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
       ),
     ),
     leading: IconButton(
-      icon: Icon(
-        Icons.person_pin,
-        size: 40.w,
-        color: const Color(0xff8847A1),
+      icon: CircleAvatar(
+        child: Icon(
+          Icons.person,
+          size: 30.w,
+        ),
       ),
       onPressed: () {
         scaffoldKey.currentState!.openDrawer();

@@ -32,7 +32,7 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: mainAppBar(scaffoldKey, context),
+      appBar: mainAppBar(scaffoldKey, context,),
       key: scaffoldKey,
       endDrawer: const NotificationEndDrawer(),
       body: ScreenBackground(

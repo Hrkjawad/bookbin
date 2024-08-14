@@ -4,20 +4,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utilitis/app_main_color.dart';
 
 class ConfirmPasswordTextField extends StatelessWidget {
-  ConfirmPasswordTextField(
-      {super.key, required this.hintText, required this.isObscure, required this.passwordController, required this.confirmPasswordController});
+  const ConfirmPasswordTextField(
+      {super.key, required this.hintText, required this.passwordController, required this.confirmPasswordController});
 
   final String hintText;
-  late bool isObscure;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
 
   @override
   Widget build(BuildContext context) {
+    bool isObscure = true;
     return Center(
       child: SizedBox(
         width: 350.w,
-        height: 51.h,
         child: StatefulBuilder(
           builder: (context, setState) {
             return TextFormField(
@@ -54,6 +53,18 @@ class ConfirmPasswordTextField extends StatelessWidget {
                   borderSide: BorderSide(
                     color: AppMainColor.primaryColor,
                   ),
+                ),
+                errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.w),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                    )
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.w),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                    )
                 ),
                 filled: true,
                 fillColor: Colors.white,

@@ -3,31 +3,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utilitis/app_main_color.dart';
 
 class PasswordTextField extends StatelessWidget {
-  PasswordTextField(
-      {super.key, required this.hintText, required this.isObscure, required this.passwordController});
+  const PasswordTextField(
+      {super.key, required this.hintText, required this.passwordController});
 
   final String hintText;
-  late bool isObscure;
   final TextEditingController passwordController;
 
   @override
   Widget build(BuildContext context) {
+    bool isObscure = true;
     return Center(
       child: SizedBox(
         width: 350.w,
-        height: 51.h,
         child: StatefulBuilder(
           builder: (context, setState) {
             return TextFormField(
               keyboardType: TextInputType.visiblePassword,
               obscureText: isObscure,
               controller: passwordController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 hintText: hintText,
                 prefixIcon: IconButton(
                   onPressed: () {
                     setState(() {
-                      isObscure = !isObscure;
+                      isObscure = ! isObscure;
                     });
                   },
                   icon: Icon(isObscure
@@ -53,6 +53,18 @@ class PasswordTextField extends StatelessWidget {
                     color: AppMainColor.primaryColor,
                   ),
                 ),
+                errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.w),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                    )
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.w),
+                    borderSide: const BorderSide(
+                        color: Colors.red
+                    )
+                ),
                 filled: true,
                 fillColor: const Color(0XFFFFFFFF),
                 errorStyle:  TextStyle(
@@ -63,7 +75,7 @@ class PasswordTextField extends StatelessWidget {
               ),
               validator: (String? value) {
                 if (value!.length < 8) {
-                  return 'Password is too short';
+                  return 'Password is too short and weak';
                 }
                 if (value != passwordController.text) {
                   return "Password didn't match";

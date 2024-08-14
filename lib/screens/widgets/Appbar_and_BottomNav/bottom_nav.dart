@@ -1,8 +1,8 @@
-import 'package:BookBin/screens/other_ui/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../welcome_screen.dart';
+import '../../other_ui/chat_section_page.dart';
+import '../../other_ui/homepage.dart';
 import '../wishlist.dart';
 
 class BottomNav extends StatelessWidget {
@@ -45,7 +45,7 @@ class BottomNav extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(const WelcomePage());
+                    Get.to( ChatSectionPage());
                   },
                   child: Column(
                     children: [

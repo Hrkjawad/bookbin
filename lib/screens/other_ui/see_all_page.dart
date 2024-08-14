@@ -33,7 +33,7 @@ class _SeeAllPageAndCategoriesPageState
     final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: mainAppBar(scaffoldKey, context),
+      appBar: mainAppBar(scaffoldKey, context,),
       key: scaffoldKey,
       endDrawer: const NotificationEndDrawer(),
       body: ScreenBackground(
