@@ -62,7 +62,7 @@ class TextFormFieldCustomized extends StatelessWidget {
                 color: Colors.red,
               ),
             ),
-            errorStyle: TextStyle(fontSize: 14.sp),
+            errorStyle: TextStyle(fontSize: 16.sp),
             filled: true,
             fillColor: Colors.white,
           ),

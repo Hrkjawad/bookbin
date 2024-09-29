@@ -297,20 +297,6 @@ class _BookListingState extends State<BookListing> {
                       return null;
                     },
                   ),
-                  // SizedBox(
-                  //   height: 16.h,
-                  // ),
-                  // SizedBox(
-                  //   width: 80,
-                  //   height: 80,
-                  //   child: IconButton(
-                  //     onPressed: () {},
-                  //     icon: Icon(
-                  //       Icons.add_photo_alternate_rounded,
-                  //       size: 80.w,
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
                     height: 36.h,
                   ),

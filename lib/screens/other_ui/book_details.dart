@@ -1,5 +1,7 @@
 import 'package:BookBin/screens/other_ui/buy_books.dart';
+import 'package:BookBin/screens/other_ui/swap_chat_request.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,7 +12,29 @@ import '../widgets/notification_end_drawer.dart';
 import '../widgets/screen_background.dart';
 
 class BookDetails extends StatefulWidget {
-  const BookDetails({super.key, required this.sell, required this.swap, required this.bookPicURL, required this.description, required this.edition, required this.isbn_10, required this.isbn_13, required this.language, required this.publisherName, required this.releaseDate, required this.stock, required this.writerName, required this.bookPrice, required this.bookRating, required this.bookName, required this.bookCategory, required this.wishlist});
+  const BookDetails(
+      {super.key,
+      required this.sell,
+      required this.swap,
+      required this.bookPicURL,
+      required this.description,
+      required this.edition,
+      required this.isbn_10,
+      required this.isbn_13,
+      required this.language,
+      required this.publisherName,
+      required this.releaseDate,
+      required this.stock,
+      required this.writerName,
+      required this.bookPrice,
+      required this.bookRating,
+      required this.bookName,
+      required this.bookCategory,
+      required this.wishlist,
+      required this.listerName,
+      required this.listerLocation,
+      required this.listerUID,
+      required this.listerEmail});
   final String sell;
   final String swap;
   final String bookName;
@@ -28,18 +52,29 @@ class BookDetails extends StatefulWidget {
   final String bookPrice;
   final double bookRating;
   final bool wishlist;
+  final String listerName;
+  final String listerLocation;
+  final String listerUID;
+  final String listerEmail;
+
   @override
   State<BookDetails> createState() => _BookDetails();
 }
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+String currentUserID = _auth.currentUser?.uid ?? '';
 
 class _BookDetails extends State<BookDetails> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    print(currentUserID);
+    print(widget.listerUID);
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: scaffoldKey,
-      appBar: bookListAppBar(scaffoldKey, context, widget.wishlist),
+      appBar: bookListAppBar(scaffoldKey, context, widget.listerName,
+          widget.listerLocation, widget.wishlist),
       endDrawer: const NotificationEndDrawer(),
       body: ScreenBackground(
         child: SafeArea(
@@ -75,7 +110,10 @@ class _BookDetails extends State<BookDetails> {
                       ),
                     ),
                   ),
-                  Center(child: ImageSliders(bookPicURL: widget.bookPicURL,)),
+                  Center(
+                      child: ImageSliders(
+                    bookPicURL: widget.bookPicURL,
+                  )),
                   SizedBox(
                     height: 50.h,
                     width: 100.w,
@@ -145,46 +183,70 @@ class _BookDetails extends State<BookDetails> {
                         SizedBox(
                           width: 59.w,
                         ),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: Colors.white,
-                                side: BorderSide(
-                                    color: AppMainColor.primaryColor),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.w),
-                                )),
-                            onPressed: () {},
-                            child: Text(
-                              "Swap",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 26.sp,
-                                color: const Color(0xff9C51A8),
-                              ),
-                            )),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: const Color(0xff089B31),
-                                side: const BorderSide(color: Colors.black),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15.w),
-                                    bottomLeft: Radius.circular(15.w),
+                        widget.swap == "Yes" &&
+                                widget.listerUID != currentUserID
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                        color: AppMainColor.primaryColor),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.w),
+                                    )),
+                                onPressed: () {
+                                  Get.to(SwapChatRequest(
+                                      receiverId: widget.listerUID,
+                                      receiverEmail: widget.listerEmail,
+                                      bookName: widget.bookName,
+                                      bookPicURL: widget.bookPicURL,
+                                      receiverName: widget.listerName));
+                                },
+                                child: Text(
+                                  "Swap",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 26.sp,
+                                    color: const Color(0xff9C51A8),
                                   ),
-                                )),
-                            onPressed: () {
-                              Get.to( BuyBooks(bookCost: widget.bookPrice,));
-                            },
-                            child: Text(
-                              "Buy",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 26.sp,
-                                color: Colors.white,
+                                ))
+                            : Card(
+                                color: Colors.green,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.w),
+                                  child: Text("This is added by me",
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white)),
+                                ),
                               ),
-                            ))
+                        widget.listerUID != currentUserID
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: const Color(0xff089B31),
+                                    side: const BorderSide(color: Colors.black),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(15.w),
+                                        bottomLeft: Radius.circular(15.w),
+                                      ),
+                                    )),
+                                onPressed: () {
+                                  Get.to(BuyBooks(
+                                    bookCost: widget.bookPrice,
+                                  ));
+                                },
+                                child: Text(
+                                  "Buy",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 26.sp,
+                                    color: Colors.white,
+                                  ),
+                                ))
+                            : const SizedBox(),
                       ],
                     ),
                     SizedBox(
@@ -307,7 +369,7 @@ class _BookDetails extends State<BookDetails> {
 
 class ImageSliders extends StatefulWidget {
   const ImageSliders({super.key, required this.bookPicURL});
-final String bookPicURL;
+  final String bookPicURL;
   @override
   State<ImageSliders> createState() => _ImageSlidersState();
 }

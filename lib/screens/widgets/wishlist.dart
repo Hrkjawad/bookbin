@@ -15,11 +15,11 @@ Future bottomSheetWishlist(BuildContext context) {
   ];
   List<Stream<QuerySnapshot>> streams = collections
       .map((collection) =>
-      collection.where('isLikedList', isEqualTo: true).snapshots())
+          collection.where('isLikedList', isEqualTo: true).snapshots())
       .toList();
 
   Stream<List<QuerySnapshot>> combinedStream =
-  CombineLatestStream.list(streams);
+      CombineLatestStream.list(streams);
   return showModalBottomSheet(
     context: context,
     barrierColor: Colors.transparent.withOpacity(0.8),
@@ -43,9 +43,9 @@ Future bottomSheetWishlist(BuildContext context) {
                   .toList();
               RxList<RxBool> isLikedList = documents
                   .map((document) {
-                bool initialValue = document['isLikedList'] ?? false;
-                return RxBool(initialValue);
-              })
+                    bool initialValue = document['isLikedList'] ?? false;
+                    return RxBool(initialValue);
+                  })
                   .toList()
                   .obs;
               return Padding(
@@ -75,8 +75,8 @@ Future bottomSheetWishlist(BuildContext context) {
                       String bookCategory = collections
                           .firstWhere(
                             (collection) => document.reference.path
-                            .contains(collection.path.split('/').last),
-                      )
+                                .contains(collection.path.split('/').last),
+                          )
                           .id;
 
                       String sell = documents[index]['Sell'];
@@ -91,9 +91,17 @@ Future bottomSheetWishlist(BuildContext context) {
                       String releaseDate = documents[index]['releaseDate'];
                       String stock = documents[index]['stock'];
                       String writerName = documents[index]['writerName'];
+                      String listerName = documents[index]['listerName'];
+                      String listerLocation = documents[index]['listerLocation'];
+                      String listerUID = documents[index]['listerUID'];
+                      String listerEmail = documents[index]['listerEmail'];
                       return ListTile(
                         onTap: () {
                           Get.offAll(BookDetails(
+                            listerUID: listerUID,
+                            listerEmail: listerEmail,
+                            listerName: listerName,
+                            listerLocation: listerLocation,
                             sell: sell,
                             swap: swap,
                             bookPicURL: bookPicURL,
@@ -109,7 +117,8 @@ Future bottomSheetWishlist(BuildContext context) {
                             bookPrice: bookPrice,
                             bookRating: bookRating,
                             bookName: bookName,
-                            bookCategory: bookCategory, wishlist: wishList,
+                            bookCategory: bookCategory,
+                            wishlist: wishList,
                           ));
                         },
                         leading: ClipOval(
@@ -134,11 +143,11 @@ Future bottomSheetWishlist(BuildContext context) {
                             });
                           },
                           child: Obx(() => Icon(
-                            Icons.favorite,
-                            color: isLikedList[index].value
-                                ? Colors.red
-                                : Colors.grey,
-                          )),
+                                Icons.favorite,
+                                color: isLikedList[index].value
+                                    ? Colors.red
+                                    : Colors.grey,
+                              )),
                         ),
                       );
                     }),

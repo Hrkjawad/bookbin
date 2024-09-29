@@ -94,10 +94,17 @@ class RecommendedBookCardCreate extends StatelessWidget {
               String releaseDate = documents[index]['releaseDate'];
               String stock = documents[index]['stock'];
               String writerName = documents[index]['writerName'];
-              //bool wishList = document[index]['isLikedList'];
+              String listerName = documents[index]['listerName'];
+              String listerLocation = documents[index]['listerLocation'];
+              String listerUID = documents[index]['listerUID'];
+              String listerEmail = documents[index]['listerEmail'];
               return GestureDetector(
                 onTap: () {
                   Get.to(BookDetails(
+                    listerUID: listerUID,
+                    listerEmail: listerEmail,
+                    listerName: listerName,
+                    listerLocation: listerLocation,
                     sell: sell,
                     swap: swap,
                     bookPicURL: bookPicURL,

@@ -177,6 +177,7 @@ class _SignupState extends State<Signup> {
             'Location': _location.text,
             'Email': _emailController.text,
             'Phone': _phone.text,
+            'UserUID': user.uid,
           });
           Get.snackbar("Success", "User Created successfully.",
               snackPosition: SnackPosition.BOTTOM,

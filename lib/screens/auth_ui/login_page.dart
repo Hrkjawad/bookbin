@@ -62,6 +62,15 @@ class _LoginPageState extends State<LoginPage> {
               hintText: "Enter your email address",
               icon: const Icon(Icons.email),
               keyboardType: TextInputType.emailAddress,
+              validator: (email) {
+                if (email == null || email.isEmpty) {
+                  return "Please fill this";
+                }
+                if (email.length < 5) {
+                  return "Please enter a email address";
+                }
+                return null;
+              },
             ),
             SizedBox(
               height: 40.h,

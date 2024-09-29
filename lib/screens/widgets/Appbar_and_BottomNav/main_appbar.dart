@@ -11,16 +11,16 @@ AppBar mainAppBar(
   TabBar? tabBar,
 }) {
   return AppBar(
-    bottom: tabBar != null
-        ? PreferredSize(
-            preferredSize:
-                Size.fromHeight(70.w),
-            child: SizedBox(
-              child: tabBar,
-            ),
-          )
-        : null,
-    automaticallyImplyLeading: false,
+    // bottom: tabBar != null
+    //     ? PreferredSize(
+    //         preferredSize:
+    //             Size.fromHeight(70.w),
+    //         child: SizedBox(
+    //           child: tabBar,
+    //         ),
+    //       )
+    //     : null,
+    // automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent,
     elevation: 0,
     title: ListTile(
@@ -35,7 +35,7 @@ AppBar mainAppBar(
       subtitle: Text(
         globals.userEmail,
         style: TextStyle(
-          fontSize: 16.sp,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           color: const Color(0xff8847A1),
         ),

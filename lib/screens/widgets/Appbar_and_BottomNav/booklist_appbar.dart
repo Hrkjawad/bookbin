@@ -3,7 +3,7 @@ import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-AppBar bookListAppBar(scaffoldKey, BuildContext context, bool wishList) {
+AppBar bookListAppBar(scaffoldKey, BuildContext context, String listerName, String listerLocation, [bool wishList = false]) {
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent,
@@ -12,7 +12,7 @@ AppBar bookListAppBar(scaffoldKey, BuildContext context, bool wishList) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Lister name",
+          listerName,
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.w500,
@@ -28,7 +28,7 @@ AppBar bookListAppBar(scaffoldKey, BuildContext context, bool wishList) {
             ),
             SingleChildScrollView(
               child: Text(
-                "Sylhet Sadar, Sylhet, Bangladesh",
+                listerLocation,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w700,
