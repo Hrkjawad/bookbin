@@ -2,9 +2,11 @@ import 'package:BookBin/screens/widgets/wishlist.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 AppBar bookListAppBar(scaffoldKey, BuildContext context, String listerName, String listerLocation, [bool wishList = false]) {
   return AppBar(
+    key: scaffoldKey,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent,
     elevation: 0,
@@ -40,36 +42,38 @@ AppBar bookListAppBar(scaffoldKey, BuildContext context, String listerName, Stri
         ),
       ],
     ),
-    leading: IconButton(
-      icon: Icon(
-        Icons.person_pin,
-        size: 40.sp,
-        color: const Color(0xff8847A1),
+    leading:  Padding(
+      padding:  EdgeInsets.only(left: 8.w),
+      child: IconButton(
+        onPressed: (){
+          Get.back();
+        },
+        icon: Icon(Icons.arrow_circle_left_rounded, size: 40.w, color: AppMainColor.primaryColor,),
       ),
-      onPressed: () {
-        scaffoldKey.currentState!.openDrawer();
-      },
     ),
     actions: [
       wishList == true ? IconButton(
         icon: Icon(
           Icons.favorite,
           color: Colors.red,
-          size: 32.sp,
+          size: 40.w,
         ),
         onPressed: () {
           bottomSheetWishlist(context);
         },
       ) : const SizedBox(),
-      IconButton(
-        icon: Icon(
-          Icons.notifications,
-          color: const Color(0xff8847A1),
-          size: 32.sp,
+      Padding(
+        padding:  EdgeInsets.only(right: 10.w),
+        child: IconButton(
+          icon: Icon(
+            Icons.notifications,
+            color: const Color(0xff8847A1),
+            size: 40.w,
+          ),
+          onPressed: () {
+            scaffoldKey.currentState!.openEndDrawer();
+          },
         ),
-        onPressed: () {
-          scaffoldKey.currentState!.openEndDrawer();
-        },
       ),
     ],
   );

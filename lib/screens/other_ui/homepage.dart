@@ -4,9 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../application/globals.dart';
 import '../../utilitis/app_main_color.dart';
 import '../other_ui_controllers/homepage_controller.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
+import '../widgets/Appbar_and_BottomNav/custom_drawer.dart';
 import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
 import '../widgets/Buttons/icon_elevatedbutton.dart';
 import '../widgets/Categories/categories.dart';
@@ -20,21 +22,30 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePage();
 }
+
 class _HomePage extends State<HomePage> {
   CollectionReference business = FirebaseFirestore.instance.collection('Business');
   CollectionReference novels = FirebaseFirestore.instance.collection('Novels');
   CollectionReference health = FirebaseFirestore.instance.collection('Health');
   CollectionReference language = FirebaseFirestore.instance.collection('Language');
-
-
+  CollectionReference science = FirebaseFirestore.instance.collection('Science');
+  CollectionReference history = FirebaseFirestore.instance.collection('History');
+  CollectionReference cse = FirebaseFirestore.instance.collection('CSE');
+  CollectionReference education = FirebaseFirestore.instance.collection('Education');
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: mainAppBar(scaffoldKey, context,),
-      key: scaffoldKey,
+      appBar: mainAppBar(scaffoldKey, context),
       endDrawer: const NotificationEndDrawer(),
+      key: scaffoldKey,
+      drawer: customDrawer(context),
       body: ScreenBackground(
         child: SafeArea(
           child: SingleChildScrollView(
@@ -156,7 +167,10 @@ class _HomePage extends State<HomePage> {
                       TextButton(
                         onPressed: () {
                           //Get.to(RecommendedBookCardCreate(height: 265.h, collections: [business,novels,health,language],),);
-                          Get.to( SeeAllPageRecommendedPage(collections: [business,novels,health,language], name: 'Recommended',));
+                          Get.to(SeeAllPageRecommendedPage(
+                            collections: [business, novels, health, language, science, history, cse, education],
+                            pageName: 'Recommended',
+                          ));
                         },
                         child: Text(
                           "See All",
@@ -176,7 +190,11 @@ class _HomePage extends State<HomePage> {
                   //   height: 265.h,
                   //   collection: "Business",
                   // ),
-                  RecommendedBookCardCreate(height: 265.h, itemCount: 6, collections: [business,novels,health,language],),
+                  RecommendedBookCardCreate(
+                    height: 265.h,
+                    itemCount: 6,
+                    collections: [business, novels, health, language, cse, history, science, education]
+                  ),
                   SizedBox(
                     height: 16.h,
                   ),
@@ -232,6 +250,7 @@ class _HomePage extends State<HomePage> {
     );
   }
 }
+
 void _bottomsheetfilter(BuildContext context) {
   RangeValues values = const RangeValues(50, 1000);
   String minPrice = "50", maxPrice = "1000";
@@ -272,7 +291,8 @@ void _bottomsheetfilter(BuildContext context) {
                       child: Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 9.w),
+                            padding: EdgeInsets.only(
+                                left: 20.w, right: 20.w, top: 9.w),
                             child: Row(
                               children: [
                                 Text(

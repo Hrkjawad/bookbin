@@ -11,7 +11,11 @@ Future bottomSheetWishlist(BuildContext context) {
     FirebaseFirestore.instance.collection('Business'),
     FirebaseFirestore.instance.collection('Health'),
     FirebaseFirestore.instance.collection('Novels'),
-    FirebaseFirestore.instance.collection('Language')
+    FirebaseFirestore.instance.collection('Language'),
+    FirebaseFirestore.instance.collection('History'),
+    FirebaseFirestore.instance.collection('CSE'),
+    FirebaseFirestore.instance.collection('Education'),
+    FirebaseFirestore.instance.collection('Science')
   ];
   List<Stream<QuerySnapshot>> streams = collections
       .map((collection) =>
@@ -97,7 +101,7 @@ Future bottomSheetWishlist(BuildContext context) {
                       String listerEmail = documents[index]['listerEmail'];
                       return ListTile(
                         onTap: () {
-                          Get.offAll(BookDetails(
+                          Get.to(BookDetails(
                             listerUID: listerUID,
                             listerEmail: listerEmail,
                             listerName: listerName,

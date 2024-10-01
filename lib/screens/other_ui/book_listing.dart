@@ -1,3 +1,4 @@
+import 'package:BookBin/application/globals.dart%20';
 import 'package:BookBin/screens/auth_ui/login_page.dart';
 import 'package:BookBin/screens/widgets/TextFields/book_details_textform.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
@@ -353,7 +354,8 @@ class _BookListingState extends State<BookListing> {
                             "releaseDate": _releaseDate.text,
                             "stock": _stock.text,
                             "swapLocation": _swapLocation.text,
-                            "writerName": _writerName.text
+                            "writerName": _writerName.text,
+                            "listerEmail": userEmail
                           });
                           formController.setLoading(false);
                           Get.to(const LoginPage());

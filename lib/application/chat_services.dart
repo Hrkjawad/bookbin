@@ -1,20 +1,19 @@
+import 'package:BookBin/application/globals.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatServices {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Send message
   Future<void> sendMessage(String receiverID, String message) async {
     // Get current user info
-    final String currentUserID = _auth.currentUser!.uid;
+   // final String currentUserID = _auth.currentUser!.uid;
     final Timestamp timestamp = Timestamp.now();
 
     // Retrieve current user's fullName
     final currentUserSnapshot = await _fireStore
         .collection("UserInfo")
-        .where("UserUID", isEqualTo: currentUserID)
+        .where("UserUID", isEqualTo: userUID)
         .get();
 
     // Get current user name
@@ -35,12 +34,12 @@ class ChatServices {
         : "ReceiverName";
 
     // Create Room ID
-    List<String> id = [currentUserID, receiverID];
+    List<String> id = [userUID, receiverID];
     id.sort();
     String chatRoomId = id.join('_');
     // Create new message with metadata
     final newMessage = {
-      'senderID': currentUserID,
+      'senderID': userUID,
       'senderName': currentUserName,
       'receiverID': receiverID,
       'receiverName': receiverUserName,
@@ -57,7 +56,7 @@ class ChatServices {
 
     // Update chat_rooms metadata with usernames instead of IDs
     await _fireStore.collection("chat_rooms").doc(chatRoomId).set({
-      'users': [currentUserName,currentUserID, receiverUserName,receiverID],
+      'users': [currentUserName,userUID, receiverUserName,receiverID],
       'lastMessage': message,
       'lastUpdated': timestamp,
     }, SetOptions(merge: true));
@@ -79,12 +78,11 @@ class ChatServices {
 
   // Fetch inbox list based on the current user
   Stream<List<Map<String, dynamic>>> getInboxList() {
-    final String currentUserID = _auth.currentUser!.uid;
 
     // Query to find chat rooms that involve the current user
     return _fireStore
         .collection("chat_rooms")
-        .where("users", arrayContains: currentUserID)
+        .where("users", arrayContains: userUID)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

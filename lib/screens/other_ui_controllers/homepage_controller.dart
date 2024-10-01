@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'package:get/get.dart';
 
+import '../../application/globals.dart ';
+
 class HomeController extends GetxController {
   var greeting = ''.obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     _updateGreeting();
     Timer.periodic(const Duration(minutes: 1), (timer) {
       _updateGreeting();
     });
+    await fetchUserInfo();
   }
 
   void _updateGreeting() {
@@ -27,4 +30,7 @@ class HomeController extends GetxController {
       greeting.value = 'Good Evening';
     }
   }
+}
+void deleteUID(){
+  userUID ="";
 }

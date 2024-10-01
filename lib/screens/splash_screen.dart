@@ -1,4 +1,3 @@
-import 'package:BookBin/screens/other_ui/homepage.dart';
 import 'package:BookBin/screens/welcome_screen.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/screens/widgets/welcome_logo.dart';
@@ -23,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void goToNextScreen() {
     Future.delayed(const Duration(seconds: 3)).then(
           (value) => Get.offAll(
-            () =>  const HomePage(), //WelcomePage(),
+            () =>  const WelcomePage(),
       ),
     );
   }

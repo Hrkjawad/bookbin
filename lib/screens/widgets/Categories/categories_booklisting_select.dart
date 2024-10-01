@@ -1,5 +1,4 @@
 import 'package:BookBin/utilitis/app_main_color.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -78,9 +77,6 @@ class CategoriesSelect extends StatelessWidget {
                     child: IconButton(
                       onPressed: () {
                         categoryController.updateCategory(item.name, index);
-                        if (kDebugMode) {
-                          print(item.name);
-                        }
                       },
                       icon: Icon(
                         item.icon,

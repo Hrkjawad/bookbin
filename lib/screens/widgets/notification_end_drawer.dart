@@ -7,40 +7,37 @@ class NotificationEndDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 750.h,
-      child: Drawer(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.w),
-              bottomLeft: Radius.circular(20.w)),
-        ),
-        child: ListView(
-          children: [
-            ListTile(
-              title: Text(
-                'Swap Request Chat',
-                style: TextStyle(
-                    color: AppMainColor.primaryColor, fontSize: 22.sp),
-              ),
-              onTap: () {},
+    return Drawer(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.w),
+            bottomLeft: Radius.circular(20.w)),
+      ),
+      child: ListView(
+        children: [
+          ListTile(
+            title: Text(
+              'Swap Request Chat',
+              style: TextStyle(
+                  color: AppMainColor.primaryColor, fontSize: 22.sp),
             ),
-            Divider(
-              thickness: 2.h,
+            onTap: () {},
+          ),
+          Divider(
+            thickness: 2.h,
+          ),
+          ListTile(
+            title: Text(
+              'One Book Sell Request',
+              style: TextStyle(
+                  color: AppMainColor.primaryColor, fontSize: 22.sp),
             ),
-            ListTile(
-              title: Text(
-                'One Book Sell Request',
-                style: TextStyle(
-                    color: AppMainColor.primaryColor, fontSize: 22.sp),
-              ),
-              onTap: () {},
-            ),
-            Divider(
-              thickness: 2.h,
-            ),
-          ],
-        ),
+            onTap: () {},
+          ),
+          Divider(
+            thickness: 2.h,
+          ),
+        ],
       ),
     );
   }

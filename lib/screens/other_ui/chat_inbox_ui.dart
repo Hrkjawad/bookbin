@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class ChatInboxUi extends StatelessWidget {
@@ -39,8 +40,15 @@ class ChatInboxUi extends StatelessWidget {
   Widget build(BuildContext context) {
     messageSent();
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         elevation: 0,
+        leading:  IconButton(
+          onPressed: (){
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_circle_left_rounded, size: 40.w, color: Colors.white),
+        ),
         title: ListTile(
           title: Text(
             receiverName,
@@ -58,7 +66,7 @@ class ChatInboxUi extends StatelessWidget {
           ),
         ),
         actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.mark_unread_chat_alt))
+          IconButton(onPressed: (){}, icon: Icon(Icons.mark_unread_chat_alt, size: 30.w,))
         ],
 
       ),

@@ -1,11 +1,11 @@
 import 'package:BookBin/screens/other_ui/buy_books.dart';
 import 'package:BookBin/screens/other_ui/swap_chat_request.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../../application/globals.dart';
 import '../widgets/Appbar_and_BottomNav/booklist_appbar.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/notification_end_drawer.dart';
@@ -60,19 +60,12 @@ class BookDetails extends StatefulWidget {
   @override
   State<BookDetails> createState() => _BookDetails();
 }
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-String currentUserID = _auth.currentUser?.uid ?? '';
-
 class _BookDetails extends State<BookDetails> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    print(currentUserID);
-    print(widget.listerUID);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      key: scaffoldKey,
       appBar: bookListAppBar(scaffoldKey, context, widget.listerName,
           widget.listerLocation, widget.wishlist),
       endDrawer: const NotificationEndDrawer(),
@@ -183,8 +176,19 @@ class _BookDetails extends State<BookDetails> {
                         SizedBox(
                           width: 59.w,
                         ),
+                        widget.listerUID == userUID ? Card(
+                          color: Colors.green,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.w),
+                            child: Text("This is added by me",
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white)),
+                          ),
+                        ) : const SizedBox(),
                         widget.swap == "Yes" &&
-                                widget.listerUID != currentUserID
+                                widget.listerUID != userUID
                             ? ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     elevation: 0,
@@ -210,18 +214,8 @@ class _BookDetails extends State<BookDetails> {
                                     color: const Color(0xff9C51A8),
                                   ),
                                 ))
-                            : Card(
-                                color: Colors.green,
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.w),
-                                  child: Text("This is added by me",
-                                      style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white)),
-                                ),
-                              ),
-                        widget.listerUID != currentUserID
+                            : const SizedBox(),
+                        widget.listerUID != userUID
                             ? ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     elevation: 0,
@@ -247,6 +241,7 @@ class _BookDetails extends State<BookDetails> {
                                   ),
                                 ))
                             : const SizedBox(),
+
                       ],
                     ),
                     SizedBox(

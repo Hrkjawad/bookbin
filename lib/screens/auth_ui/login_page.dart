@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../application/globals.dart';
 import '../auth_ui_controllers/signup_controller.dart';
 import '../other_ui/homepage.dart';
 import '../widgets/Buttons/backbutton_with_logo.dart';
@@ -10,7 +11,6 @@ import '../widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/TextFields/password_textfield.dart';
 import '../widgets/TextFields/textformfield_customized.dart';
 import 'forgotpass_verification_code.dart';
-import 'package:BookBin/application//globals.dart' as globals;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -125,14 +125,12 @@ class _LoginPageState extends State<LoginPage> {
           .get();
       try {
         if (user != null && result.docs.isNotEmpty) {
+          userUID = user.uid;
+         await fetchUserInfo();
           Get.snackbar("Login", "User Logged In Successfully.",
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.green,
               colorText: Colors.white);
-            final DocumentSnapshot documentSnapshot = result.docs.first;
-            final String fullName = documentSnapshot.get("Full_Name");
-            globals.userEmail = _email.text;
-            globals.userName = fullName;
           await Future.delayed(const Duration(seconds: 2));
             Get.offAll(const HomePage());
           _email.clear();
