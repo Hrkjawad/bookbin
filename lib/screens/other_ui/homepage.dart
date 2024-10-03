@@ -13,6 +13,7 @@ import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
 import '../widgets/Buttons/icon_elevatedbutton.dart';
 import '../widgets/Categories/categories.dart';
 import '../widgets/notification_end_drawer.dart';
+import '../widgets/pricerange_and_rating.dart';
 import '../widgets/recommended_book_card.dart';
 import '../widgets/screen_background.dart';
 
@@ -125,7 +126,6 @@ class _HomePage extends State<HomePage> {
                         color: const Color(0xff8847a1),
                         child: IconButton(
                             onPressed: () {
-                              //scaffoldKey.currentState?.openEndDrawer();
                               _bottomsheetfilter(context);
                             },
                             icon: Icon(
@@ -252,13 +252,6 @@ class _HomePage extends State<HomePage> {
 }
 
 void _bottomsheetfilter(BuildContext context) {
-  RangeValues values = const RangeValues(50, 1000);
-  String minPrice = "50", maxPrice = "1000";
-  bool isLiked1 = false;
-  bool isLiked2 = false;
-  bool isLiked3 = false;
-  bool isLiked4 = false;
-  bool isLiked5 = false;
 
   showModalBottomSheet(
     context: context,
@@ -280,98 +273,9 @@ void _bottomsheetfilter(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20.h),
-                Center(
-                  child: SizedBox(
-                    width: 323.w,
-                    height: 90.h,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.w),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 20.w, right: 20.w, top: 9.w),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Price Range",
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  "$minPrice - $maxPrice ৳",
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          RangeSlider(
-                            min: 50,
-                            max: 1000,
-                            values: values,
-                            onChanged: (newValues) {
-                              setState(() {
-                                values = newValues;
-                                minPrice = newValues.start.toStringAsFixed(0);
-                                maxPrice = newValues.end.toStringAsFixed(0);
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                const PriceRangeAndRating(),
                 SizedBox(height: 20.h),
-                const Center(
-                  child: CategoriesSelect(),
-                ),
-                SizedBox(height: 20.h),
-                Center(
-                  child: SizedBox(
-                    width: 323.w,
-                    height: 70.h,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.w),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.w, top: 9.w),
-                            child: Text(
-                              "Rating",
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              buildRatingCard(1, isLiked1, setState),
-                              buildRatingCard(2, isLiked2, setState),
-                              buildRatingCard(3, isLiked3, setState),
-                              buildRatingCard(4, isLiked4, setState),
-                              buildRatingCard(5, isLiked5, setState),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20.h),
+                const Center(child: CategoriesSelect()),
                 Center(
                   child: IconElevatedButton(
                     text: "Apply",

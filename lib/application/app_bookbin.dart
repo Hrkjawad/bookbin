@@ -7,12 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import 'globals.dart ';
+
 class BookBin extends StatelessWidget {
   const BookBin({super.key});
 
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
+    fetchUserInfo();
     return ScreenUtilInit(
       designSize: const Size(412, 915),
       builder: (context, child) => GetMaterialApp(

@@ -44,7 +44,6 @@ class _SwapChatRequestState extends State<SwapChatRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      key: scaffoldKey,
       appBar: bookListAppBar(scaffoldKey, context, widget.receiverName, widget.receiverEmail),
       endDrawer: const NotificationEndDrawer(),
       bottomNavigationBar: const BottomNav(),

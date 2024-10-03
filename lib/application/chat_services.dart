@@ -6,8 +6,6 @@ class ChatServices {
 
   // Send message
   Future<void> sendMessage(String receiverID, String message) async {
-    // Get current user info
-   // final String currentUserID = _auth.currentUser!.uid;
     final Timestamp timestamp = Timestamp.now();
 
     // Retrieve current user's fullName
@@ -16,7 +14,6 @@ class ChatServices {
         .where("UserUID", isEqualTo: userUID)
         .get();
 
-    // Get current user name
     final String currentUserName = currentUserSnapshot.docs.isNotEmpty
         ? currentUserSnapshot.docs.first["Full_Name"] ?? "SenderName"
         : "SenderName";
@@ -27,8 +24,6 @@ class ChatServices {
         .where("UserUID", isEqualTo: receiverID)
         .get();
 
-
-    // Get receiver user name
     final String receiverUserName = receiverUserSnapshot.docs.isNotEmpty
         ? receiverUserSnapshot.docs.first["Full_Name"] ?? "ReceiverName"
         : "ReceiverName";
@@ -37,6 +32,7 @@ class ChatServices {
     List<String> id = [userUID, receiverID];
     id.sort();
     String chatRoomId = id.join('_');
+
     // Create new message with metadata
     final newMessage = {
       'senderID': userUID,
@@ -56,12 +52,33 @@ class ChatServices {
 
     // Update chat_rooms metadata with usernames instead of IDs
     await _fireStore.collection("chat_rooms").doc(chatRoomId).set({
-      'users': [currentUserName,userUID, receiverUserName,receiverID],
+      'users': [currentUserName, userUID, receiverUserName, receiverID],
       'lastMessage': message,
       'lastUpdated': timestamp,
     }, SetOptions(merge: true));
   }
 
+  // Delete chat room and all associated messages
+  Future<void> deleteChatRoom(String receiverID) async {
+    // Create Room ID
+    List<String> id = [userUID, receiverID];
+    id.sort();
+    String chatRoomId = id.join('_');
+
+    // Delete all messages in the chat room
+    final messagesSnapshot = await _fireStore
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("messages")
+        .get();
+
+    for (var doc in messagesSnapshot.docs) {
+      await doc.reference.delete();
+    }
+
+    // Now delete the chat room
+    await _fireStore.collection("chat_rooms").doc(chatRoomId).delete();
+  }
 
   // Get messages stream for a particular chat
   Stream<QuerySnapshot> getMessages(String userID, otherUserID) {
@@ -78,8 +95,6 @@ class ChatServices {
 
   // Fetch inbox list based on the current user
   Stream<List<Map<String, dynamic>>> getInboxList() {
-
-    // Query to find chat rooms that involve the current user
     return _fireStore
         .collection("chat_rooms")
         .where("users", arrayContains: userUID)

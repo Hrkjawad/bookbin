@@ -13,7 +13,7 @@ class HomeController extends GetxController {
     Timer.periodic(const Duration(minutes: 1), (timer) {
       _updateGreeting();
     });
-    await fetchUserInfo();
+     fetchUserInfo();
   }
 
   void _updateGreeting() {

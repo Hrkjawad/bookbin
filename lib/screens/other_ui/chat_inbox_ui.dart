@@ -1,4 +1,5 @@
 import 'package:BookBin/application/chat_services.dart';
+import 'package:BookBin/screens/other_ui/chat_list_page.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +28,7 @@ class ChatInboxUi extends StatefulWidget {
 }
 
 class _ChatInboxUiState extends State<ChatInboxUi> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   final TextEditingController _messagesTextController = TextEditingController();
 
@@ -43,136 +45,225 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
   @override
   void initState() {
     super.initState();
-
-    // Listen to focus changes in the TextField
+    messageSent();
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         Future.delayed(
           const Duration(milliseconds: 200),
-              () => scrollToBottom(),
+          () => scrollToBottom(),
         );
       }
     });
 
-    Future.delayed(const Duration(milliseconds: 200), ()=> scrollToBottom());
+    Future.delayed(const Duration(milliseconds: 200), () => scrollToBottom());
   }
 
   void scrollToBottom() {
-        _scrollController.animateTo(
-          _scrollController.position.minScrollExtent,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.fastOutSlowIn,
-        );
-
+    _scrollController.animateTo(
+      _scrollController.position.minScrollExtent,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.fastOutSlowIn,
+    );
   }
 
   void sendMessages() async {
     if (_messagesTextController.text.isNotEmpty) {
-      await _chatServices.sendMessage(widget.receiverID, _messagesTextController.text);
+      await _chatServices.sendMessage(
+          widget.receiverID, _messagesTextController.text);
     }
     scrollToBottom();
   }
+
   void messageSent() async {
     if (widget.requestCheck == true) {
       await _chatServices.sendMessage(widget.receiverID, widget.requestMessage!);
+      Future.delayed(
+        const Duration(milliseconds: 200),
+        () => scrollToBottom(),
+      );
       widget.requestCheck = false;
       widget.requestMessage = "";
-      scrollToBottom();
     }
   }
+
   @override
-  void dispose(){
+  void dispose() {
     _focusNode.dispose();
     _messagesTextController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
+  RxBool isDrawerOpen = false.obs;
+  void setDrawerState(bool isOpen) {
+    isDrawerOpen.value = isOpen;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
           onPressed: () {
             Get.back();
           },
-          icon: Icon(Icons.arrow_circle_left_rounded, size: 40.w, color: Colors.white),
+          icon: Icon(Icons.arrow_circle_left_rounded,
+              size: 40.w, color: Colors.white),
         ),
         title: ListTile(
           title: Text(
             widget.receiverName,
-            style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w800, color: Colors.white),
+            style: TextStyle(
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w800,
+                color: Colors.white),
           ),
           subtitle: Text(
             "Online",
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp, color: Colors.white70),
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16.sp,
+                color: Colors.white70),
           ),
         ),
         actions: [
           IconButton(
             onPressed: () {
-
+              if (_scaffoldKey.currentState!.isEndDrawerOpen) {
+                _scaffoldKey.currentState!.closeEndDrawer();
+              } else {
+                _scaffoldKey.currentState!.openEndDrawer();
+              }
             },
-            icon: Icon(Icons.mark_unread_chat_alt, size: 30.w),
+            icon: Icon(Icons.more_vert_rounded, size: 30.w),
           )
         ],
       ),
-      body: ScreenBackground(
-        child: Column(
-          children: [
-            Expanded(child: _buildMessagesList()),
-            Padding(
-              padding: EdgeInsets.all(8.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      focusNode: _focusNode,
-                      controller: _messagesTextController,
-                      keyboardType: TextInputType.multiline,
-                      style: TextStyle(fontSize: 18.sp),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(10.w),
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.attach_file_rounded,
-                            size: 30.w,
+      body: Scaffold(
+        key: _scaffoldKey,
+        onDrawerChanged: (isOpen) {
+          isDrawerOpen.value = false;
+        },
+        endDrawer: Align(
+          alignment: Alignment.topRight,
+          child: SizedBox(
+              height: 50.h,
+              child: Drawer(
+                width: 200.w,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15.w),
+                        bottomLeft: Radius.circular(15.w))),
+                child: TextButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Column(
+                              children: [
+                                Text(
+                                  "Are you sure?",
+                                  style: TextStyle(
+                                      fontSize: 22.sp,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.red),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                    onPressed: () async {
+                                      await _chatServices.deleteChatRoom(widget.receiverID);
+                                      Get.offAll(ChatListPage());
+                                    },
+                                    icon: Icon(
+                                      Icons.check_box,
+                                      size: 40.w,
+                                    )),
+                                IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: Icon(
+                                      Icons.cancel,
+                                      size: 40.w,
+                                      color: Colors.black54,
+                                    ))
+                              ],
+                            ),
+                          );
+                        });
+                  },
+                  child: Text(
+                    "Delete chat for everyone",
+                    style:
+                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              )),
+        ),
+        body: ScreenBackground(
+          child: Column(
+            children: [
+              Expanded(child: _buildMessagesList()),
+              Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        focusNode: _focusNode,
+                        controller: _messagesTextController,
+                        keyboardType: TextInputType.multiline,
+                        style: TextStyle(fontSize: 18.sp),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(10.w),
+                          suffixIcon: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.attach_file_rounded,
+                              size: 30.w,
+                            ),
+                          ),
+                          hintText: "Type Message",
+                          hintStyle: TextStyle(fontSize: 18.sp),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50.w),
+                            borderSide:
+                                BorderSide(color: AppMainColor.primaryColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50.w),
+                            borderSide:
+                                BorderSide(color: AppMainColor.primaryColor),
                           ),
                         ),
-                        hintText: "Type Message",
-                        hintStyle: TextStyle(fontSize: 18.sp),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.w),
-                          borderSide: BorderSide(color: AppMainColor.primaryColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.w),
-                          borderSide: BorderSide(color: AppMainColor.primaryColor),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10.w),
+                      child: IconButton(
+                        onPressed: () {
+                          sendMessages();
+                          _messagesTextController.clear();
+                        },
+                        icon: Icon(
+                          Icons.send,
+                          size: 36.w,
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 10.w),
-                    child: IconButton(
-                      onPressed: () {
-                        sendMessages();
-                        _messagesTextController.clear();
-                      },
-                      icon: Icon(
-                        Icons.send,
-                        size: 36.w,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -198,11 +289,13 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
           if (snapshot.data!.docs.isNotEmpty) {
             Future.delayed(
               const Duration(milliseconds: 200),
-                  () => scrollToBottom(),
+              () => scrollToBottom(),
             );
           }
           return Column(
-            children: snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
+            children: snapshot.data!.docs
+                .map((doc) => _buildMessageItem(doc))
+                .toList(),
             // itemCount: snapshot.data!.docs.length,
             // itemBuilder: (BuildContext context, int index) {
             //   return _buildMessageItem(snapshot.data!.docs[index]);
@@ -223,25 +316,31 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
       child: Align(
-        alignment: data?['senderID'] == _auth.currentUser?.uid ? Alignment.centerRight : Alignment.centerLeft,
+        alignment: data?['senderID'] == _auth.currentUser?.uid
+            ? Alignment.centerRight
+            : Alignment.centerLeft,
         child: Padding(
-          padding: data?['senderID'] == _auth.currentUser?.uid ? EdgeInsets.only(left: 25.w) : EdgeInsets.only(right: 25.w),
+          padding: data?['senderID'] == _auth.currentUser?.uid
+              ? EdgeInsets.only(left: 25.w)
+              : EdgeInsets.only(right: 25.w),
           child: Container(
             decoration: BoxDecoration(
-              color: data?['senderID'] == _auth.currentUser?.uid ? appColor.color[800] : Colors.white70,
+              color: data?['senderID'] == _auth.currentUser?.uid
+                  ? appColor.color[800]
+                  : Colors.white70,
               borderRadius: data?['senderID'] == _auth.currentUser?.uid
                   ? BorderRadius.only(
-                topRight: Radius.circular(0.w),
-                topLeft: Radius.circular(15.w),
-                bottomLeft: Radius.circular(15.w),
-                bottomRight: Radius.circular(15.w),
-              )
+                      topRight: Radius.circular(0.w),
+                      topLeft: Radius.circular(15.w),
+                      bottomLeft: Radius.circular(15.w),
+                      bottomRight: Radius.circular(15.w),
+                    )
                   : BorderRadius.only(
-                topRight: Radius.circular(15.w),
-                topLeft: Radius.circular(0.w),
-                bottomLeft: Radius.circular(15.w),
-                bottomRight: Radius.circular(15.w),
-              ),
+                      topRight: Radius.circular(15.w),
+                      topLeft: Radius.circular(0.w),
+                      bottomLeft: Radius.circular(15.w),
+                      bottomRight: Radius.circular(15.w),
+                    ),
             ),
             padding: EdgeInsets.all(12.w),
             child: Column(
@@ -257,7 +356,9 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w500,
-                          color: data?['senderID'] == _auth.currentUser?.uid ? Colors.white : Colors.black,
+                          color: data?['senderID'] == _auth.currentUser?.uid
+                              ? Colors.white
+                              : Colors.black,
                         ),
                       ),
                     ),
@@ -266,7 +367,9 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                       formattedTime,
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: data?['senderID'] == _auth.currentUser?.uid ? Colors.white : Colors.black87,
+                        color: data?['senderID'] == _auth.currentUser?.uid
+                            ? Colors.white
+                            : Colors.black87,
                       ),
                     ),
                   ],
