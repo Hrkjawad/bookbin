@@ -51,7 +51,14 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+            universalApk true
+        }
+    }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

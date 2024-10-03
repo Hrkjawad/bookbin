@@ -8,86 +8,131 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class ChatInboxUi extends StatelessWidget {
-  ChatInboxUi(
-      {super.key, required this.receiverID, required this.receiverName, this.requestCheck, this.requestMessage});
+class ChatInboxUi extends StatefulWidget {
+  ChatInboxUi({
+    super.key,
+    required this.receiverID,
+    required this.receiverName,
+    this.requestCheck,
+    this.requestMessage,
+  });
 
-   bool? requestCheck;
-   String? requestMessage;
+  bool? requestCheck;
+  String? requestMessage;
   final String receiverID;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final TextEditingController _messagesTextController = TextEditingController();
-  final ChatServices _chatServices = ChatServices();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final String receiverName;
+
+  @override
+  State<ChatInboxUi> createState() => _ChatInboxUiState();
+}
+
+class _ChatInboxUiState extends State<ChatInboxUi> {
+
+  final TextEditingController _messagesTextController = TextEditingController();
+
+  final FocusNode _focusNode = FocusNode();
+
+  final ChatServices _chatServices = ChatServices();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final AppMainColor appColor = AppMainColor();
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen to focus changes in the TextField
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        Future.delayed(
+          const Duration(milliseconds: 200),
+              () => scrollToBottom(),
+        );
+      }
+    });
+
+    Future.delayed(const Duration(milliseconds: 200), ()=> scrollToBottom());
+  }
+
+  void scrollToBottom() {
+        _scrollController.animateTo(
+          _scrollController.position.minScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.fastOutSlowIn,
+        );
+
+  }
 
   void sendMessages() async {
     if (_messagesTextController.text.isNotEmpty) {
-      await _chatServices.sendMessage(receiverID, _messagesTextController.text);
-      _messagesTextController.clear();
+      await _chatServices.sendMessage(widget.receiverID, _messagesTextController.text);
+    }
+    scrollToBottom();
+  }
+  void messageSent() async {
+    if (widget.requestCheck == true) {
+      await _chatServices.sendMessage(widget.receiverID, widget.requestMessage!);
+      widget.requestCheck = false;
+      widget.requestMessage = "";
+      scrollToBottom();
     }
   }
-  void messageSent() async{
-    if(requestCheck == true){
-    await  _chatServices.sendMessage(receiverID, requestMessage!);
-    requestCheck =  false;
-    requestMessage = "";
-    }
+  @override
+  void dispose(){
+    _focusNode.dispose();
+    _messagesTextController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    messageSent();
     return Scaffold(
-      key: scaffoldKey,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         elevation: 0,
-        leading:  IconButton(
-          onPressed: (){
+        leading: IconButton(
+          onPressed: () {
             Get.back();
           },
           icon: Icon(Icons.arrow_circle_left_rounded, size: 40.w, color: Colors.white),
         ),
         title: ListTile(
           title: Text(
-            receiverName,
-            style: TextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w800,
-                color: Colors.white),
+            widget.receiverName,
+            style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w800, color: Colors.white),
           ),
           subtitle: Text(
             "Online",
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16.sp,
-                color: Colors.white70),
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp, color: Colors.white70),
           ),
         ),
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.mark_unread_chat_alt, size: 30.w,))
-        ],
+          IconButton(
+            onPressed: () {
 
+            },
+            icon: Icon(Icons.mark_unread_chat_alt, size: 30.w),
+          )
+        ],
       ),
       body: ScreenBackground(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(
-              height: 10.h,
-            ),
             Expanded(child: _buildMessagesList()),
             Padding(
               padding: EdgeInsets.all(8.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                    height: 55.w,
-                    width: 340.w,
+                  Expanded(
                     child: TextFormField(
+                      focusNode: _focusNode,
                       controller: _messagesTextController,
+                      keyboardType: TextInputType.multiline,
                       style: TextStyle(fontSize: 18.sp),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10.w),
@@ -102,13 +147,11 @@ class ChatInboxUi extends StatelessWidget {
                         hintStyle: TextStyle(fontSize: 18.sp),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.w),
-                          borderSide:
-                              BorderSide(color: AppMainColor.primaryColor),
+                          borderSide: BorderSide(color: AppMainColor.primaryColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50.w),
-                          borderSide:
-                              BorderSide(color: AppMainColor.primaryColor),
+                          borderSide: BorderSide(color: AppMainColor.primaryColor),
                         ),
                       ),
                     ),
@@ -118,6 +161,7 @@ class ChatInboxUi extends StatelessWidget {
                     child: IconButton(
                       onPressed: () {
                         sendMessages();
+                        _messagesTextController.clear();
                       },
                       icon: Icon(
                         Icons.send,
@@ -127,7 +171,7 @@ class ChatInboxUi extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -136,24 +180,36 @@ class ChatInboxUi extends StatelessWidget {
 
   Widget _buildMessagesList() {
     String senderID = _auth.currentUser?.uid ?? '';
-    return StreamBuilder<QuerySnapshot>(
-      stream: _chatServices.getMessages(receiverID, senderID),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Center(child: Text("Error"));
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text("No messages yet"));
-        }
-
-        return ListView(
-          children:
-              snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
-        );
-      },
+    return SingleChildScrollView(
+      reverse: true,
+      controller: _scrollController,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _chatServices.getMessages(widget.receiverID, senderID),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text("Error"));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("No messages yet"));
+          }
+          if (snapshot.data!.docs.isNotEmpty) {
+            Future.delayed(
+              const Duration(milliseconds: 200),
+                  () => scrollToBottom(),
+            );
+          }
+          return Column(
+            children: snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
+            // itemCount: snapshot.data!.docs.length,
+            // itemBuilder: (BuildContext context, int index) {
+            //   return _buildMessageItem(snapshot.data!.docs[index]);
+            // },
+          );
+        },
+      ),
     );
   }
 
@@ -167,64 +223,57 @@ class ChatInboxUi extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
       child: Align(
-        alignment: data?['senderID'] == _auth.currentUser?.uid
-            ? Alignment.centerRight
-            : Alignment.centerLeft,
+        alignment: data?['senderID'] == _auth.currentUser?.uid ? Alignment.centerRight : Alignment.centerLeft,
         child: Padding(
-          padding: data?['senderID'] == _auth.currentUser?.uid ? EdgeInsets.only(left: 25.w): EdgeInsets.only(right: 25.w),
+          padding: data?['senderID'] == _auth.currentUser?.uid ? EdgeInsets.only(left: 25.w) : EdgeInsets.only(right: 25.w),
           child: Container(
-              decoration: BoxDecoration(
-                color: data?['senderID'] == _auth.currentUser?.uid
-                    ? appColor.color[800]
-                    : Colors.white70,
-                borderRadius: data?['senderID'] == _auth.currentUser?.uid
-                    ? BorderRadius.only(
-                        topRight: Radius.circular(0.w),
-                        topLeft: Radius.circular(15.w),
-                        bottomLeft: Radius.circular(15.w),
-                        bottomRight: Radius.circular(15.w),
-                      )
-                    : BorderRadius.only(
-                        topRight: Radius.circular(15.w),
-                        topLeft: Radius.circular(0.w),
-                        bottomLeft: Radius.circular(15.w),
-                        bottomRight: Radius.circular(15.w),
-                      ),
+            decoration: BoxDecoration(
+              color: data?['senderID'] == _auth.currentUser?.uid ? appColor.color[800] : Colors.white70,
+              borderRadius: data?['senderID'] == _auth.currentUser?.uid
+                  ? BorderRadius.only(
+                topRight: Radius.circular(0.w),
+                topLeft: Radius.circular(15.w),
+                bottomLeft: Radius.circular(15.w),
+                bottomRight: Radius.circular(15.w),
+              )
+                  : BorderRadius.only(
+                topRight: Radius.circular(15.w),
+                topLeft: Radius.circular(0.w),
+                bottomLeft: Radius.circular(15.w),
+                bottomRight: Radius.circular(15.w),
               ),
-              padding: EdgeInsets.all(12.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          message,
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: data?['senderID'] == _auth.currentUser?.uid
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        formattedTime,
+            ),
+            padding: EdgeInsets.all(12.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        message,
                         style: TextStyle(
-                          fontSize: 12.sp,
-                          color: data?['senderID'] == _auth.currentUser?.uid
-                              ? Colors.white
-                              : Colors.black87,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w500,
+                          color: data?['senderID'] == _auth.currentUser?.uid ? Colors.white : Colors.black,
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              )),
+                    ),
+                    SizedBox(width: 10.w),
+                    Text(
+                      formattedTime,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: data?['senderID'] == _auth.currentUser?.uid ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
