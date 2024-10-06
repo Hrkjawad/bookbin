@@ -54,7 +54,7 @@ void bottomSheetFilter(BuildContext context) {
                         'Please select a valid price range, rating, and category.',
                         backgroundColor: Colors.redAccent,
                         colorText: Colors.white,
-                        snackPosition: SnackPosition.TOP,
+                        snackPosition: SnackPosition.BOTTOM,
                       );
                     }
                   },

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../auth_ui_controllers/signup_controller.dart';
 import '../other_ui/homepage.dart';
+import '../other_ui_controllers/homepage_controller.dart';
 import '../widgets/Buttons/backbutton_with_logo.dart';
 import '../widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/TextFields/password_textfield.dart';
@@ -129,7 +130,8 @@ class _LoginPageState extends State<LoginPage> {
               backgroundColor: Colors.green,
               colorText: Colors.white);
           await Future.delayed(const Duration(seconds: 2));
-            Get.offAll(const HomePage());
+          Get.put(HomeController());
+          Get.offAll(const HomePage());
           _email.clear();
           _password.clear();
         }

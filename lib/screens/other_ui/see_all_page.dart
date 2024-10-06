@@ -32,7 +32,7 @@ class _SeeAllPageAndCategoriesPageState
       appBar: mainAppBar(scaffoldKey, context,),
       key: scaffoldKey,
       drawer: customDrawer(context),
-      endDrawer: const NotificationEndDrawer(),
+      endDrawer: NotificationEndDrawer(),
       body: ScreenBackground(
         child: SafeArea(
           child: SingleChildScrollView(

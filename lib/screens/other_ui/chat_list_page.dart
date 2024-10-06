@@ -25,7 +25,7 @@ class ChatListPage extends StatelessWidget {
       key: scaffoldKey,
       drawer: customDrawer(context),
       appBar: mainAppBar(scaffoldKey, context),
-      endDrawer: const NotificationEndDrawer(),
+      endDrawer:  NotificationEndDrawer(),
       body: ScreenBackground(
         child: StreamBuilder<List<Map<String, dynamic>>>(
           stream: _chatServices.getInboxList(),

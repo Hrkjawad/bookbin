@@ -36,14 +36,16 @@ class _HomePage extends State<HomePage> {
   CollectionReference education =
       FirebaseFirestore.instance.collection('Education');
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final HomeController _userController = Get.put(HomeController());
 
 
   @override
   Widget build(BuildContext context) {
+    print(_userController.userFullName);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: mainAppBar(scaffoldKey, context),
-      endDrawer: const NotificationEndDrawer(),
+      endDrawer:  NotificationEndDrawer(),
       key: scaffoldKey,
       drawer: customDrawer(context),
       body: ScreenBackground(

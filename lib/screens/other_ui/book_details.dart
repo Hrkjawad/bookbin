@@ -49,7 +49,7 @@ class BookDetails extends StatefulWidget {
   final String releaseDate;
   final String stock;
   final String writerName;
-  final String bookPrice;
+  final double bookPrice;
   final double bookRating;
   final bool wishlist;
   final String listerName;
@@ -69,7 +69,7 @@ class _BookDetails extends State<BookDetails> {
       extendBodyBehindAppBar: true,
       appBar: bookListAppBar(scaffoldKey, context, widget.listerName,
           widget.listerLocation, widget.wishlist),
-      endDrawer: const NotificationEndDrawer(),
+      endDrawer: NotificationEndDrawer(),
       body: ScreenBackground(
         child: SafeArea(
           child: SingleChildScrollView(
@@ -230,7 +230,7 @@ class _BookDetails extends State<BookDetails> {
                                     )),
                                 onPressed: () {
                                   Get.to(BuyBooks(
-                                    bookCost: widget.bookPrice,
+                                    bookCost: widget.bookPrice, name: widget.bookName, bookPicURL: widget.bookPicURL, listerUID: widget.listerUID,
                                   ));
                                 },
                                 child: Text(

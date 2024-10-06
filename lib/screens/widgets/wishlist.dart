@@ -68,9 +68,9 @@ Future bottomSheetWishlist(BuildContext context) {
                           ? data["bookName"]
                           : "No Data";
 
-                      String bookPrice = data.containsKey("bookPrice")
-                          ? data["bookPrice"]
-                          : "0";
+                      double bookPrice = data.containsKey("bookPrice")
+                          ? data["bookPrice"].toDouble()
+                          : 0.0;
                       bool wishList = data.containsKey("isLikedList");
                       double bookRating = data.containsKey("bookRating")
                           ? data["bookRating"].toDouble()

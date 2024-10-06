@@ -111,7 +111,7 @@ class BookCardCreate extends StatelessWidget {
                     releaseDate: releaseDate,
                     stock: stock,
                     writerName: writerName,
-                    bookPrice: bookPrice.toString(),
+                    bookPrice: bookPrice,
                     bookRating: bookRating,
                     bookName: bookName,
                     bookCategory: bookCategory,

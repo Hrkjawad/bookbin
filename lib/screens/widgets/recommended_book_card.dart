@@ -89,9 +89,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
 
               String bookName =
                   data.containsKey("bookName") ? data["bookName"] : "No Data";
-              double bookPrice = data.containsKey("bookPrice")
-                  ? data["bookPrice"].toDouble()
-                  : 0.0;
+              double bookPrice = data.containsKey("bookPrice") ? data["bookPrice"].toDouble() : 0.0;
 
               double bookRating = data.containsKey("bookRating")
                   ? data["bookRating"].toDouble()
@@ -137,7 +135,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
                     releaseDate: releaseDate,
                     stock: stock,
                     writerName: writerName,
-                    bookPrice: bookPrice.toString(),
+                    bookPrice: bookPrice,
                     bookRating: bookRating,
                     bookName: bookName,
                     bookCategory: bookCategory,
