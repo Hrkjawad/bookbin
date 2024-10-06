@@ -150,6 +150,8 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
           child: SizedBox(
               height: 50.h,
               child: Drawer(
+                surfaceTintColor: Colors.transparent,
+                elevation: 0,
                 width: 200.w,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
@@ -158,6 +160,7 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                 child: TextButton(
                   onPressed: () {
                     showDialog(
+                      barrierColor: Colors.transparent,
                         context: context,
                         builder: (context) {
                           return AlertDialog(
@@ -325,6 +328,9 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
               : EdgeInsets.only(right: 25.w),
           child: Container(
             decoration: BoxDecoration(
+              border: Border.all(
+                color: data?['senderID'] == _auth.currentUser?.uid ? const Color(0x00000000) : Colors.grey.shade400,
+              ),
               color: data?['senderID'] == _auth.currentUser?.uid
                   ? appColor.color[800]
                   : Colors.white70,

@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../application/globals.dart';
 import '../auth_ui_controllers/signup_controller.dart';
 import '../other_ui/homepage.dart';
 import '../widgets/Buttons/backbutton_with_logo.dart';
@@ -125,8 +124,6 @@ class _LoginPageState extends State<LoginPage> {
           .get();
       try {
         if (user != null && result.docs.isNotEmpty) {
-          userUID = user.uid;
-         await fetchUserInfo();
           Get.snackbar("Login", "User Logged In Successfully.",
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.green,

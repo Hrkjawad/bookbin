@@ -5,25 +5,44 @@ import 'package:get/get.dart';
 import 'package:BookBin/screens/other_ui/book_details.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RecommendedBookCardCreate extends StatelessWidget {
-  const RecommendedBookCardCreate(
-      {super.key,
-      required this.height,
-      this.itemCount,
-      required this.collections});
+import '../../utilitis/app_main_color.dart';
 
-  final double height;
+class RecommendedBookCardCreate extends StatelessWidget {
+  const RecommendedBookCardCreate({
+    super.key,
+    required this.height,
+    this.itemCount,
+    required this.collections,
+    required this.rating,
+    this.priceMin = 100.0,
+    this.priceMax = 600.0,
+  });
+
+  final double height, rating;
   final int? itemCount;
+  final double priceMin, priceMax;
   final List<CollectionReference> collections;
+
   @override
   Widget build(BuildContext context) {
-    // Create a list of streams for each collection
-    List<Stream<QuerySnapshot>> streams = collections
-        .map((collection) =>
-            collection.where('bookRating', isGreaterThan: 4.4).snapshots())
-        .toList();
+    List<Stream<QuerySnapshot>> streams = [];
 
-    // Combine all streams into a single stream using combineLatest
+    if (rating > 0) {
+      streams.addAll(
+        collections.map(
+              (collection) =>
+              collection.where('bookRating', isGreaterThan: 4.8).snapshots(),
+        ),
+      );
+    }
+    streams.addAll(
+      collections.map(
+        (collection) => collection
+            .where('bookPrice', isGreaterThan: priceMin, isLessThan: priceMax)
+            .snapshots(),
+      ),
+    );
+
     Stream<List<QuerySnapshot>> combinedStream =
         CombineLatestStream.list(streams);
 
@@ -31,18 +50,32 @@ class RecommendedBookCardCreate extends StatelessWidget {
       stream: combinedStream,
       builder: (context, AsyncSnapshot<List<QuerySnapshot>> snapshot) {
         if (snapshot.hasError) {
-          return const Center(child: Text('Something is wrong'));
+          return const Center(
+              child: Text('Something went wrong. Please try again.'));
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // Convert the list of QuerySnapshots into a single list of DocumentSnapshots
         List<DocumentSnapshot> documents = snapshot.data!
             .expand((querySnapshot) => querySnapshot.docs)
             .toList();
 
-        //manage favorite statuses/wishlist
+        if (documents.isEmpty) {
+          return Center(
+            child: Text(
+              'No books are available within the price range: ৳${priceMin.toStringAsFixed(0)} - ৳${priceMax.toStringAsFixed(0)} and the rating: $rating',
+              style: TextStyle(
+                color: AppMainColor.primaryColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 20.sp,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
+
+// Manage favorite statuses/wishlist using RxList
         RxList<RxBool> isLikedList = documents
             .map((document) {
               bool initialValue = document['isLikedList'] ?? false;
@@ -70,8 +103,9 @@ class RecommendedBookCardCreate extends StatelessWidget {
 
               String bookName =
                   data.containsKey("bookName") ? data["bookName"] : "No Data";
-              String bookPrice =
-                  data.containsKey("bookPrice") ? data["bookPrice"] : "0";
+              double bookPrice = data.containsKey("bookPrice")
+                  ? data["bookPrice"].toDouble()
+                  : 0.0;
 
               double bookRating = data.containsKey("bookRating")
                   ? data["bookRating"].toDouble()
@@ -117,7 +151,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
                     releaseDate: releaseDate,
                     stock: stock,
                     writerName: writerName,
-                    bookPrice: bookPrice,
+                    bookPrice: bookPrice.toString(),
                     bookRating: bookRating,
                     bookName: bookName,
                     bookCategory: bookCategory,
@@ -149,7 +183,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
                               isLikedList[index].toggle();
-                              // Update with new favorite status
+// Update favorite status in Firestore
                               document.reference.update({
                                 'isLikedList': isLikedList[index].value,
                               });
@@ -166,7 +200,6 @@ class RecommendedBookCardCreate extends StatelessWidget {
                           top: 8.h,
                           left: 10.w,
                           child: SizedBox(
-                            width: 65.w,
                             height: 28.h,
                             child: Card(
                               color: const Color(0xff8847a1),
@@ -176,9 +209,9 @@ class RecommendedBookCardCreate extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  "৳ $bookPrice",
+                                  "  ৳ $bookPrice  ",
                                   style: TextStyle(
-                                      fontSize: 16.sp, color: Colors.white),
+                                      fontSize: 15.sp, color: Colors.white),
                                 ),
                               ),
                             ),
@@ -188,7 +221,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
                           bottom: 8.h,
                           right: 11.w,
                           child: SizedBox(
-                            width: 50.w,
+                            width: 55.w,
                             height: 30.h,
                             child: Card(
                               color: const Color(0xff8847a1),
@@ -202,7 +235,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
                                   Text(
                                     bookRating.toString(),
                                     style: TextStyle(
-                                        fontSize: 14.sp, color: Colors.white),
+                                        fontSize: 15.sp, color: Colors.white),
                                   ),
                                   Icon(
                                     Icons.star,

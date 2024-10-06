@@ -5,7 +5,10 @@ import 'package:get/get.dart';
 import '../../other_ui/categories_page.dart';
 
 class CategoryPage2 extends StatelessWidget {
-  const CategoryPage2 ({super.key});
+  const CategoryPage2(
+      {super.key, required this.minPrice, required this.maxPrice, required this.rating});
+
+  final double minPrice, maxPrice, rating;
 
   @override
   Widget build(BuildContext context) {
@@ -21,42 +24,47 @@ class CategoryPage2 extends StatelessWidget {
       ],
     );
   }
-}
 
-Widget _buildCard(String? name, IconData iconData) {
-  return Column(
-    children: [
-      Card(
-        color: const Color(0xff8847a1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.w),
-        ),
-        child: Column(
-          children: [
-            IconButton(
-              onPressed: () {
-                Get.to( CategoriesPage(collection: name.toString(), name: name.toString(),));
-              },
-              icon: Icon(
-                iconData,
-                size: 33.w,
-                color: Colors.white,
+  Widget _buildCard(String? name, IconData iconData) {
+    return Column(
+      children: [
+        Card(
+          color: const Color(0xff8847a1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.w),
+          ),
+          child: Column(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Get.to(CategoriesPage(collection: name.toString(),
+                    name: name.toString(),
+                    priceMin: minPrice,
+                    priceMax: maxPrice,
+                    rating: rating,));
+                },
+                icon: Icon(
+                  iconData,
+                  size: 33.w,
+                  color: Colors.white,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      Text(
-        name ?? "No name",
-        style: TextStyle(
-          fontSize: 18.sp,
+        Text(
+          name ?? "No name",
+          style: TextStyle(
+            fontSize: 18.sp,
+          ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
 
-Widget _buildSpacer() {
-  return SizedBox(width: 28.w);
+  Widget _buildSpacer() {
+    return SizedBox(width: 28.w);
+  }
+
 }

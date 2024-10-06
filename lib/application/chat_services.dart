@@ -1,14 +1,13 @@
-import 'package:BookBin/application/globals.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatServices {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-
+  String userUID = FirebaseAuth.instance.currentUser!.uid;
   // Send message
   Future<void> sendMessage(String receiverID, String message) async {
     final Timestamp timestamp = Timestamp.now();
 
-    // Retrieve current user's fullName
     final currentUserSnapshot = await _fireStore
         .collection("UserInfo")
         .where("UserUID", isEqualTo: userUID)

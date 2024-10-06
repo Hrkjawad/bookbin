@@ -54,9 +54,10 @@ class ChatListPage extends StatelessWidget {
                 List<dynamic> users = chatData['users'];
                 String lastMessage = chatData['lastMessage'] ?? '';
                 Timestamp lastUpdated = chatData['lastUpdated'] ?? Timestamp.now();
-        
+
                 String currentUserID = _auth.currentUser?.uid ?? '';
-        
+                //User? user = FirebaseAuth.instance.currentUser;
+                //String currentUserID = user!.uid;
                 // Find the index of the current user in the users list
                 int currentUserIndex = users.indexWhere((user) => user == currentUserID);
         

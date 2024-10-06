@@ -10,10 +10,11 @@ import '../widgets/recommended_book_card.dart';
 import '../widgets/screen_background.dart';
 
 class SeeAllPageRecommendedPage extends StatefulWidget {
-  const SeeAllPageRecommendedPage(
-      {super.key, required this.collections, required this.pageName});
+   const SeeAllPageRecommendedPage(
+      {super.key, required this.collections, required this.pageName, this.rating});
   final List<CollectionReference>? collections;
   final String pageName;
+  final double? rating;
 
   @override
   State<SeeAllPageRecommendedPage> createState() =>
@@ -55,7 +56,7 @@ class _SeeAllPageAndCategoriesPageState
                     height: 12.h,
                   ),
                   RecommendedBookCardCreate(
-                      height: 535.h, collections: widget.collections!),
+                      height: 535.h, collections: widget.collections!, rating: widget.rating ?? 4.5,),
                   SizedBox(
                     height: 16.h,
                   ),

@@ -6,7 +6,9 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'category_page2.dart';
 
 class Categories extends StatefulWidget {
-  const Categories({super.key});
+  const Categories({super.key, required this.minPrice, required this.maxPrice, required this.rating});
+
+  final double minPrice, maxPrice, rating;
 
   @override
   _CategoriesState createState() => _CategoriesState();
@@ -14,6 +16,7 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   late PageController _pageController;
+
 
   @override
   void initState() {
@@ -29,9 +32,9 @@ class _CategoriesState extends State<Categories> {
           height: 100.h,
           child: PageView(
             controller: _pageController,
-            children: const [
-              CategoryPage1(),
-              CategoryPage2(),
+            children: [
+              CategoryPage1(minPrice: widget.minPrice, maxPrice: widget.maxPrice, rating: widget.rating,),
+              CategoryPage2(minPrice: widget.minPrice, maxPrice: widget.maxPrice, rating: widget.rating,),
             ],
           ),
         ),

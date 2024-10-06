@@ -10,16 +10,17 @@ class PriceRangeAndRating extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(PriceRangeAndRatingController());
 
-    return Column(
-      children: [
-        SizedBox(
-          height: 8.h,
-        ),
-        Center(
-          child: SizedBox(
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 8.h,
+          ),
+          SizedBox(
             width: 323.w,
             height: 90.h,
             child: Card(
+              elevation: 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.w),
               ),
@@ -38,7 +39,7 @@ class PriceRangeAndRating extends StatelessWidget {
                         ),
                         const Spacer(),
                         Obx(() => Text(
-                            "${controller.minPrice.value} - ${controller.maxPrice.value} ৳",
+                            "${controller.minPrice.value.toStringAsFixed(0)} - ${controller.maxPrice.value.toStringAsFixed(0)} ৳",
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w700,
@@ -57,17 +58,16 @@ class PriceRangeAndRating extends StatelessWidget {
                         controller.updateRangeValues(newValues);
                       },
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
           ),
-        ),
-        Center(
-          child: SizedBox(
+          SizedBox(
             width: 323.w,
-            height: 70.h,
+            height: 80.h,
             child: Card(
+              elevation: 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.w),
               ),
@@ -107,9 +107,9 @@ class PriceRangeAndRating extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        SizedBox(height: 12.h),
-      ],
+          SizedBox(height: 12.h),
+        ],
+      ),
     );
   }
 
@@ -120,8 +120,8 @@ class PriceRangeAndRating extends StatelessWidget {
         controller.toggleLike(index);
       },
       child: SizedBox(
-        width: 50.w,
-        height: 30.h,
+        width: 55.w,
+        height: 35.h,
         child: Card(
           color: isLiked ? const Color(0xff8847a1) : Colors.grey,
           shape: RoundedRectangleBorder(
@@ -133,11 +133,11 @@ class PriceRangeAndRating extends StatelessWidget {
             children: [
               Text(
                 index.toString(),
-                style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                style: TextStyle(fontSize: 16.sp, color: Colors.white),
               ),
               Icon(
                 Icons.star,
-                size: 14.w,
+                size: 16.w,
                 color: Colors.white,
               ),
             ],

@@ -1,26 +1,30 @@
+import 'package:BookBin/application/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../application/globals.dart';
+import 'package:get/get.dart';
 
 AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
+  final UserController userController = Get.find<UserController>();
   return AppBar(
     backgroundColor: Colors.transparent,
     elevation: 0,
-    title: ListTile(
-      title: Text(
-        userFullName,
-        style: TextStyle(
-          fontSize: 20.sp,
-          fontWeight: FontWeight.w500,
-          color: Colors.black,
+    title: Obx(
+      () => ListTile(
+        title: Text(
+          userController.userFullName.toString(),
+          style: TextStyle(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
         ),
-      ),
-      subtitle: Text(
-        userEmail,
-        style: TextStyle(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w500,
-          color: const Color(0xff8847A1),
+        subtitle: Text(
+          userController.userEmail.toString(),
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xff8847A1),
+          ),
         ),
       ),
     ),

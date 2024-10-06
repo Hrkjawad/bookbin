@@ -1,3 +1,4 @@
+import 'package:BookBin/application/globals.dart';
 import 'package:BookBin/screens/other_ui/chat_inbox_ui.dart';
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/booklist_appbar.dart';
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/bottom_nav.dart';
@@ -8,7 +9,6 @@ import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../application/globals.dart';
 
 class SwapChatRequest extends StatefulWidget {
   const SwapChatRequest(
@@ -113,7 +113,7 @@ class _SwapChatRequestState extends State<SwapChatRequest> {
                           receiverName: widget.receiverName,
                           requestCheck: true,
                           requestMessage:
-                              "Hello ${widget.receiverName}, I’m $userFullName.\nI’m interested in exchanging my book:\n *'${_myBookName.text}'*\n\nWith your book:\n*'${widget.bookName}'*.\n\nAnd my location is: ${_myLocation.text}\n\nIf this sounds good to you, let’s discuss the details further. Thank you!",
+                              "Hello ${widget.receiverName}, I’m ${UserController().userFullName}.\nI’m interested in exchanging my book:\n *'${_myBookName.text}'*\n\nWith your book:\n*'${widget.bookName}'*.\n\nAnd my location is: ${_myLocation.text}\n\nIf this sounds good to you, let’s discuss the details further. Thank you!",
                         ));
                         _myLocation.clear();
                         _myBookName.clear();

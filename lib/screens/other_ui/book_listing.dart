@@ -1,4 +1,4 @@
-import 'package:BookBin/application/globals.dart%20';
+import 'package:BookBin/application/globals.dart';
 import 'package:BookBin/screens/auth_ui/login_page.dart';
 import 'package:BookBin/screens/widgets/TextFields/book_details_textform.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../other_ui_controllers/categories_controller.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/Buttons/icon_elevatedbutton.dart';
@@ -22,6 +23,7 @@ class BookListing extends StatefulWidget {
 }
 
 class _BookListingState extends State<BookListing> {
+  final UserController userController = Get.find<UserController>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _bookName = TextEditingController();
   final TextEditingController _bookUrl = TextEditingController();
@@ -355,7 +357,7 @@ class _BookListingState extends State<BookListing> {
                             "stock": _stock.text,
                             "swapLocation": _swapLocation.text,
                             "writerName": _writerName.text,
-                            "listerEmail": userEmail
+                            "listerEmail": userController.userEmail.toString()
                           });
                           formController.setLoading(false);
                           Get.to(const LoginPage());

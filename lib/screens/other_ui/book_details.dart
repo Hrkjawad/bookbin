@@ -1,11 +1,11 @@
 import 'package:BookBin/screens/other_ui/buy_books.dart';
 import 'package:BookBin/screens/other_ui/swap_chat_request.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../application/globals.dart';
 import '../widgets/Appbar_and_BottomNav/booklist_appbar.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/notification_end_drawer.dart';
@@ -62,6 +62,7 @@ class BookDetails extends StatefulWidget {
 }
 class _BookDetails extends State<BookDetails> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String userUID = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

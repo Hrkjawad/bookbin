@@ -1,19 +1,16 @@
 import 'package:BookBin/screens/other_ui/book_listing.dart';
 import 'package:BookBin/screens/other_ui/see_all_page.dart';
+import 'package:BookBin/screens/widgets/search_filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../application/globals.dart';
-import '../../utilitis/app_main_color.dart';
 import '../other_ui_controllers/homepage_controller.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/Appbar_and_BottomNav/custom_drawer.dart';
 import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
-import '../widgets/Buttons/icon_elevatedbutton.dart';
 import '../widgets/Categories/categories.dart';
 import '../widgets/notification_end_drawer.dart';
-import '../widgets/pricerange_and_rating.dart';
 import '../widgets/recommended_book_card.dart';
 import '../widgets/screen_background.dart';
 
@@ -25,20 +22,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  CollectionReference business = FirebaseFirestore.instance.collection('Business');
+  CollectionReference business =
+      FirebaseFirestore.instance.collection('Business');
   CollectionReference novels = FirebaseFirestore.instance.collection('Novels');
   CollectionReference health = FirebaseFirestore.instance.collection('Health');
-  CollectionReference language = FirebaseFirestore.instance.collection('Language');
-  CollectionReference science = FirebaseFirestore.instance.collection('Science');
-  CollectionReference history = FirebaseFirestore.instance.collection('History');
+  CollectionReference language =
+      FirebaseFirestore.instance.collection('Language');
+  CollectionReference science =
+      FirebaseFirestore.instance.collection('Science');
+  CollectionReference history =
+      FirebaseFirestore.instance.collection('History');
   CollectionReference cse = FirebaseFirestore.instance.collection('CSE');
-  CollectionReference education = FirebaseFirestore.instance.collection('Education');
+  CollectionReference education =
+      FirebaseFirestore.instance.collection('Education');
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  @override
-  void initState() {
-    super.initState();
-    fetchUserInfo();
-  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,67 +74,7 @@ class _HomePage extends State<HomePage> {
                   SizedBox(
                     height: 30.h,
                   ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 296.w,
-                        height: 48.h,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: "Search Textbooks",
-                            suffixIcon: Icon(
-                              Icons.search,
-                              size: 25.w,
-                              color: const Color(0xff8847a1),
-                            ),
-                            hintStyle: TextStyle(
-                              fontSize: 20.sp,
-                              color: const Color(0xff6B6B6B),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 50.w,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                50.w,
-                              ),
-                              borderSide: const BorderSide(
-                                color: Color(0xff8847a1),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                15.w,
-                              ),
-                              borderSide: const BorderSide(
-                                color: Color(0xff8847a1),
-                              ),
-                            ),
-                            filled: true,
-                            fillColor: const Color(0XFFFFFFFF),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.w),
-                        ),
-                        color: const Color(0xff8847a1),
-                        child: IconButton(
-                            onPressed: () {
-                              _bottomsheetfilter(context);
-                            },
-                            icon: Icon(
-                              Icons.filter_alt_rounded,
-                              color: Colors.white,
-                              size: 30.w,
-                            )),
-                      )
-                    ],
-                  ),
+                  const SearchFilter(),
                   SizedBox(
                     height: 30.h,
                   ),
@@ -149,7 +88,11 @@ class _HomePage extends State<HomePage> {
                   SizedBox(
                     height: 18.h,
                   ),
-                  const Categories(),
+                  const Categories(
+                    minPrice: 0.0,
+                    maxPrice: 1000.0,
+                    rating: 1.0,
+                  ),
                   SizedBox(
                     height: 16.h,
                   ),
@@ -166,9 +109,17 @@ class _HomePage extends State<HomePage> {
                       const Spacer(),
                       TextButton(
                         onPressed: () {
-                          //Get.to(RecommendedBookCardCreate(height: 265.h, collections: [business,novels,health,language],),);
                           Get.to(SeeAllPageRecommendedPage(
-                            collections: [business, novels, health, language, science, history, cse, education],
+                            collections: [
+                              business,
+                              novels,
+                              health,
+                              language,
+                              science,
+                              history,
+                              cse,
+                              education
+                            ],
                             pageName: 'Recommended',
                           ));
                         },
@@ -186,14 +137,20 @@ class _HomePage extends State<HomePage> {
                   SizedBox(
                     height: 15.h,
                   ),
-                  // BookCardCreate(
-                  //   height: 265.h,
-                  //   collection: "Business",
-                  // ),
                   RecommendedBookCardCreate(
                     height: 265.h,
                     itemCount: 6,
-                    collections: [business, novels, health, language, cse, history, science, education]
+                    collections: [
+                      business,
+                      novels,
+                      health,
+                      language,
+                      cse,
+                      history,
+                      science,
+                      education
+                    ],
+                    rating: 4.5,
                   ),
                   SizedBox(
                     height: 16.h,
@@ -249,48 +206,8 @@ class _HomePage extends State<HomePage> {
       bottomNavigationBar: const BottomNav(),
     );
   }
-}
 
-void _bottomsheetfilter(BuildContext context) {
 
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    barrierColor: Colors.transparent.withOpacity(0.8),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-    ),
-    builder: (BuildContext context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Container(
-            height: 430.0,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.purple),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(30.w)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20.h),
-                const PriceRangeAndRating(),
-                SizedBox(height: 20.h),
-                const Center(child: CategoriesSelect()),
-                Center(
-                  child: IconElevatedButton(
-                    text: "Apply",
-                    onPressed: () {
-                      //Get.to(const BuyBooks());
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    },
-  );
 }
 
 Widget buildRatingCard(int rating, bool isLiked, Function setState) {
@@ -331,118 +248,118 @@ Widget buildRatingCard(int rating, bool isLiked, Function setState) {
   );
 }
 
-class CategoriesSelectState extends State<CategoriesSelect> {
-  String? selectedName;
-  int selectedIndex = 0;
-  final List<CategoriesList> _categoriesList = [
-    CategoriesList(
-      icon: Icons.science_outlined,
-      isLiked: true,
-      name: "Science",
-    ),
-    CategoriesList(
-      icon: Icons.history_edu_rounded,
-      isLiked: false,
-      name: "History",
-    ),
-    CategoriesList(
-      icon: Icons.business_center_rounded,
-      isLiked: false,
-      name: "Business",
-    ),
-    CategoriesList(
-      icon: Icons.health_and_safety,
-      isLiked: false,
-      name: "Health",
-    ),
-    CategoriesList(
-      icon: Icons.menu_book_sharp,
-      isLiked: false,
-      name: "Novels",
-    ),
-    CategoriesList(
-      icon: Icons.text_fields_outlined,
-      isLiked: false,
-      name: "Language",
-    ),
-    CategoriesList(
-      icon: Icons.computer,
-      isLiked: false,
-      name: "CSE",
-    ),
-    CategoriesList(
-      icon: Icons.school,
-      isLiked: false,
-      name: "Education",
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 345.w,
-      height: 100.h,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemCount: _categoriesList.length,
-        itemBuilder: (context, index) {
-          final item = _categoriesList[index];
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w),
-            child: Column(
-              children: [
-                Card(
-                  color: selectedIndex == index
-                      ? AppMainColor.primaryColor
-                      : Colors.grey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.w),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedIndex = index;
-                        selectedName = item.name;
-                      });
-                    },
-                    icon: Icon(
-                      item.icon,
-                      size: 33.w,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Text(
-                  item.name,
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class CategoriesSelect extends StatefulWidget {
-  const CategoriesSelect({super.key});
-
-  @override
-  CategoriesSelectState createState() => CategoriesSelectState();
-}
-
-class CategoriesList {
-  late bool isLiked;
-  final String name;
-  final IconData icon;
-
-  CategoriesList({
-    required this.isLiked,
-    required this.name,
-    required this.icon,
-  });
-}
+// class CategoriesSelectState extends State<CategoriesSelect> {
+//   String? selectedName;
+//   int selectedIndex = 0;
+//   final List<CategoriesList> _categoriesList = [
+//     CategoriesList(
+//       icon: Icons.science_outlined,
+//       isLiked: true,
+//       name: "Science",
+//     ),
+//     CategoriesList(
+//       icon: Icons.history_edu_rounded,
+//       isLiked: false,
+//       name: "History",
+//     ),
+//     CategoriesList(
+//       icon: Icons.business_center_rounded,
+//       isLiked: false,
+//       name: "Business",
+//     ),
+//     CategoriesList(
+//       icon: Icons.health_and_safety,
+//       isLiked: false,
+//       name: "Health",
+//     ),
+//     CategoriesList(
+//       icon: Icons.menu_book_sharp,
+//       isLiked: false,
+//       name: "Novels",
+//     ),
+//     CategoriesList(
+//       icon: Icons.text_fields_outlined,
+//       isLiked: false,
+//       name: "Language",
+//     ),
+//     CategoriesList(
+//       icon: Icons.computer,
+//       isLiked: false,
+//       name: "CSE",
+//     ),
+//     CategoriesList(
+//       icon: Icons.school,
+//       isLiked: false,
+//       name: "Education",
+//     ),
+//   ];
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: 345.w,
+//       height: 100.h,
+//       child: ListView.builder(
+//         scrollDirection: Axis.horizontal,
+//         shrinkWrap: true,
+//         itemCount: _categoriesList.length,
+//         itemBuilder: (context, index) {
+//           final item = _categoriesList[index];
+//           return Padding(
+//             padding: EdgeInsets.symmetric(horizontal: 12.w),
+//             child: Column(
+//               children: [
+//                 Card(
+//                   color: selectedIndex == index
+//                       ? AppMainColor.primaryColor
+//                       : Colors.grey,
+//                   shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(15.w),
+//                   ),
+//                   child: IconButton(
+//                     onPressed: () {
+//                       setState(() {
+//                         selectedIndex = index;
+//                         selectedName = item.name;
+//                       });
+//                     },
+//                     icon: Icon(
+//                       item.icon,
+//                       size: 33.w,
+//                       color: Colors.white,
+//                     ),
+//                   ),
+//                 ),
+//                 Text(
+//                   item.name,
+//                   style: TextStyle(
+//                     fontSize: 18.sp,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+//
+// class CategoriesSelect extends StatefulWidget {
+//   const CategoriesSelect({super.key});
+//
+//   @override
+//   CategoriesSelectState createState() => CategoriesSelectState();
+// }
+//
+// class CategoriesList {
+//   late bool isLiked;
+//   final String name;
+//   final IconData icon;
+//
+//   CategoriesList({
+//     required this.isLiked,
+//     required this.name,
+//     required this.icon,
+//   });
+// }

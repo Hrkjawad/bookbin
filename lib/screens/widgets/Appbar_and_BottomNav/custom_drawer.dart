@@ -2,12 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../../application/globals.dart';
 import '../../../utilitis/app_main_color.dart';
-import '../../other_ui_controllers/homepage_controller.dart';
 import '../../welcome_screen.dart';
 
 Drawer customDrawer (BuildContext context){
+  final UserController userController = Get.find<UserController>();
   return Drawer(
     child: Column(
       children: [
@@ -26,21 +27,25 @@ Drawer customDrawer (BuildContext context){
                 color: Colors.white,
               )),
         ),
-        Text(
-          userFullName,
-          style: TextStyle(
-              fontSize: 22.sp,
-              fontWeight: FontWeight.w600,
-              color: AppMainColor.primaryColor),
-          textAlign: TextAlign.center,
+        Obx(
+          ()=> Text(
+            userController.userFullName.toString(),
+            style: TextStyle(
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w600,
+                color: AppMainColor.primaryColor),
+            textAlign: TextAlign.center,
+          ),
         ),
         SizedBox(
           height: 20.h,
         ),
         ListTile(
-          title: Text(
-            userEmail,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          title: Obx(
+            ()=> Text(
+              userController.userEmail.toString(),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            ),
           ),
           leading: Icon(
             Icons.email_rounded,
@@ -48,9 +53,11 @@ Drawer customDrawer (BuildContext context){
           ),
         ),
         ListTile(
-          title: Text(
-            userLocation,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          title: Obx(
+            ()=> Text(
+              userController.userLocation.toString(),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            ),
           ),
           leading: Icon(
             Icons.location_on_sharp,
@@ -58,9 +65,11 @@ Drawer customDrawer (BuildContext context){
           ),
         ),
         ListTile(
-          title: Text(
-            userPhone,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          title: Obx(
+            ()=> Text(
+              userController.userPhone.toString(),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            ),
           ),
           leading: Icon(
             Icons.phone,
@@ -116,10 +125,11 @@ Drawer customDrawer (BuildContext context){
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(onPressed: () async{
+                        final storeData = GetStorage();
                         await FirebaseAuth.instance.signOut().then((value) {
                           Get.snackbar("You are successfully logout", "",
                               snackPosition: SnackPosition.BOTTOM);
-                          deleteUID();
+                          storeData.erase();
                           Get.offAll(const WelcomePage());
                         });
                       }, icon:  Icon(Icons.check_box, color: AppMainColor.primaryColor, size: 40.w,)),

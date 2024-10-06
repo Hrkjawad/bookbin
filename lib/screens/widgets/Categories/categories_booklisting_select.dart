@@ -2,6 +2,7 @@ import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../other_ui_controllers/categories_controller.dart';
 
 class CategoriesSelect extends StatelessWidget {
   final CategoryController categoryController = Get.put(CategoryController());
@@ -111,14 +112,4 @@ class CategoriesList {
     required this.name,
     required this.icon,
   });
-}
-
-class CategoryController extends GetxController {
-  var selectedCategory = ''.obs;
-  var selectedIndex = 0.obs;
-
-  void updateCategory(String category, int index) {
-    selectedCategory.value = category;
-    selectedIndex.value = index;
-  }
 }

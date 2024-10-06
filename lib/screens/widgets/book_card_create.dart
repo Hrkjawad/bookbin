@@ -1,3 +1,4 @@
+import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,15 +7,21 @@ import 'package:BookBin/screens/other_ui/book_details.dart';
 
 class BookCardCreate extends StatelessWidget {
   const BookCardCreate(
-      {super.key, required this.height, required this.collections});
+      {super.key, required this.height, required this.collections, required this.rating, this.itemCount,  required this.priceMin,  required this.priceMax});
 
   final double height;
   final String collections;
+  final int? itemCount;
+  final double priceMin, priceMax, rating;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection(collections).snapshots(),
-      builder: (context, snapshot) {
+      stream: FirebaseFirestore.instance
+          .collection(collections)
+          .where('bookPrice', isGreaterThan: priceMin, isLessThan: priceMax)
+          .where('bookRating', isGreaterThan: rating)
+          .snapshots(),
+        builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Center(child: Text('Something is wrong'));
         }
@@ -30,7 +37,19 @@ class BookCardCreate extends StatelessWidget {
             })
             .toList()
             .obs;
-
+        if (documents.isEmpty) {
+          return Center(
+            child: Text(
+              'No books are available within the price range: ৳${priceMin.toStringAsFixed(0)} - ৳${priceMax.toStringAsFixed(0)} and the rating: $rating',
+              style: TextStyle(
+                fontSize: 24.sp,
+                color: AppMainColor.primaryColor,
+                fontWeight: FontWeight.w600
+              ),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
         return SizedBox(
           height: height,
           child: GridView.builder(
@@ -48,11 +67,10 @@ class BookCardCreate extends StatelessWidget {
                   ? data["bookPicURL"]
                   : "https://i.pinimg.com/736x/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.jpg";
 
-              String bookName =
-                  data.containsKey("bookName") ? data["bookName"] : "No Data";
+              String bookName = data.containsKey("bookName") ? data["bookName"] : "No Data";
 
-              String bookPrice =
-                  data.containsKey("bookPrice") ? data["bookPrice"] : "0";
+              double bookPrice = data.containsKey("bookPrice") ? data["bookPrice"].toDouble() : 0.0;
+
               double bookRating = data.containsKey("bookRating")
                   ? data["bookRating"].toDouble()
                   : 0.0;
@@ -93,7 +111,7 @@ class BookCardCreate extends StatelessWidget {
                     releaseDate: releaseDate,
                     stock: stock,
                     writerName: writerName,
-                    bookPrice: bookPrice,
+                    bookPrice: bookPrice.toString(),
                     bookRating: bookRating,
                     bookName: bookName,
                     bookCategory: bookCategory,
@@ -142,7 +160,6 @@ class BookCardCreate extends StatelessWidget {
                           top: 8.h,
                           left: 10.w,
                           child: SizedBox(
-                            width: 65.w,
                             height: 28.h,
                             child: Card(
                               color: const Color(0xff8847a1),
@@ -152,9 +169,9 @@ class BookCardCreate extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  "৳ $bookPrice",
+                                  "  ৳ $bookPrice  ",
                                   style: TextStyle(
-                                      fontSize: 16.sp, color: Colors.white),
+                                      fontSize: 15.sp, color: Colors.white),
                                 ),
                               ),
                             ),
@@ -164,7 +181,7 @@ class BookCardCreate extends StatelessWidget {
                           bottom: 8.h,
                           right: 11.w,
                           child: SizedBox(
-                            width: 50.w,
+                            width: 55.w,
                             height: 30.h,
                             child: Card(
                               color: const Color(0xff8847a1),
@@ -178,7 +195,7 @@ class BookCardCreate extends StatelessWidget {
                                   Text(
                                     bookRating.toString(),
                                     style: TextStyle(
-                                        fontSize: 14.sp, color: Colors.white),
+                                        fontSize: 15.sp, color: Colors.white),
                                   ),
                                   Icon(
                                     Icons.star,
