@@ -1,11 +1,11 @@
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/custom_drawer.dart';
+import 'package:BookBin/screens/widgets/search_filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
 import '../widgets/notification_end_drawer.dart';
-import '../widgets/pricerange_and_rating.dart';
 import '../widgets/recommended_book_card.dart';
 import '../widgets/screen_background.dart';
 
@@ -36,32 +36,28 @@ class _SeeAllPageAndCategoriesPageState
       body: ScreenBackground(
         child: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(left: 32.w, right: 18.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const PriceRangeAndRating(),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.w),
-                    child: Text(
-                     widget. pageName,
-                      style: TextStyle(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 25.h,),
+                const SearchFilter(),
+                SizedBox(height: 25.h,),
+                Text(
+                 widget. pageName,
+                  style: TextStyle(
+                    fontSize: 32.sp,
+                    fontWeight: FontWeight.w800,
                   ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  RecommendedBookCardCreate(
-                      height: 535.h, collections: widget.collections!, rating: widget.rating ?? 4.5,),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                RecommendedBookCardCreate(
+                    height: 535.h, collections: widget.collections!,),
+                SizedBox(
+                  height: 16.h,
+                ),
+              ],
             ),
           ),
         ),

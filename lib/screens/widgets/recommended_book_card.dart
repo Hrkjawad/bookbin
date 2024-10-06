@@ -13,36 +13,22 @@ class RecommendedBookCardCreate extends StatelessWidget {
     required this.height,
     this.itemCount,
     required this.collections,
-    required this.rating,
-    this.priceMin = 100.0,
-    this.priceMax = 600.0,
   });
 
-  final double height, rating;
+  final double height;
   final int? itemCount;
-  final double priceMin, priceMax;
   final List<CollectionReference> collections;
 
   @override
   Widget build(BuildContext context) {
     List<Stream<QuerySnapshot>> streams = [];
-
-    if (rating > 0) {
-      streams.addAll(
-        collections.map(
-              (collection) =>
-              collection.where('bookRating', isGreaterThan: 4.8).snapshots(),
-        ),
-      );
-    }
     streams.addAll(
       collections.map(
         (collection) => collection
-            .where('bookPrice', isGreaterThan: priceMin, isLessThan: priceMax)
+            .where('bookRating', isGreaterThan: 4.5)
             .snapshots(),
       ),
     );
-
     Stream<List<QuerySnapshot>> combinedStream =
         CombineLatestStream.list(streams);
 
@@ -64,7 +50,7 @@ class RecommendedBookCardCreate extends StatelessWidget {
         if (documents.isEmpty) {
           return Center(
             child: Text(
-              'No books are available within the price range: ৳${priceMin.toStringAsFixed(0)} - ৳${priceMax.toStringAsFixed(0)} and the rating: $rating',
+              'No books are available',
               style: TextStyle(
                 color: AppMainColor.primaryColor,
                 fontWeight: FontWeight.w600,

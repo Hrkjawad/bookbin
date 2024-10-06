@@ -150,7 +150,6 @@ class _HomePage extends State<HomePage> {
                       science,
                       education
                     ],
-                    rating: 4.5,
                   ),
                   SizedBox(
                     height: 16.h,
