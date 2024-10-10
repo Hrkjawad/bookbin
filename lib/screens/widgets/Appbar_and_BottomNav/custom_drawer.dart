@@ -1,3 +1,5 @@
+import 'package:BookBin/screens/other_ui/homepage.dart';
+import 'package:BookBin/screens/widgets/Buttons/elevatedbutton_customised.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +11,10 @@ import '../../../utilitis/app_main_color.dart';
 import '../../other_ui/book_details.dart';
 import '../../other_ui_controllers/homepage_controller.dart';
 import '../../welcome_screen.dart';
+import '../TextFields/textformfield_customized.dart';
 
 Drawer customDrawer(BuildContext context) {
-  final HomeController userController = Get.put(HomeController());
+  final userController = Get.find<HomeController>();
   return Drawer(
     child: Column(
       children: [
@@ -109,7 +112,9 @@ Drawer customDrawer(BuildContext context) {
             width: 250.w,
             height: 60.h,
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  _updateProfileDialog(context);
+                },
                 style: ElevatedButton.styleFrom(
                     elevation: 2,
                     side: BorderSide(color: AppMainColor.primaryColor),
@@ -145,7 +150,8 @@ Drawer customDrawer(BuildContext context) {
                           IconButton(
                               onPressed: () async {
                                 final storage = GetStorage();
-                                final HomeController control = Get.find<HomeController>();
+                                final HomeController control =
+                                    Get.find<HomeController>();
                                 await FirebaseAuth.instance
                                     .signOut()
                                     .then((value) {
@@ -234,8 +240,8 @@ void myBookList(BuildContext context) {
   });
 }
 
-void _showBookListDialog(
-    BuildContext context, List<DocumentSnapshot> documents, List<CollectionReference> collections) {
+void _showBookListDialog(BuildContext context, List<DocumentSnapshot> documents,
+    List<CollectionReference> collections) {
   showDialog(
     context: context,
     builder: (context) {
@@ -256,12 +262,15 @@ void _showBookListDialog(
             itemBuilder: (BuildContext context, int index) {
               final DocumentSnapshot document = documents[index];
               final data = document.data() as Map<String, dynamic>;
-              String bookName = data.containsKey("bookName") ? data["bookName"] : "No Data";
+              String bookName =
+                  data.containsKey("bookName") ? data["bookName"] : "No Data";
               String imageUrl = data.containsKey("bookPicURL")
                   ? data["bookPicURL"]
                   : "https://i.pinimg.com/736x/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.jpg";
 
-              double bookPrice = data.containsKey("bookPrice") ? data["bookPrice"].toDouble() : 0.0;
+              double bookPrice = data.containsKey("bookPrice")
+                  ? data["bookPrice"].toDouble()
+                  : 0.0;
 
               double bookRating = data.containsKey("bookRating")
                   ? data["bookRating"].toDouble()
@@ -269,8 +278,8 @@ void _showBookListDialog(
               String bookCategory = collections
                   .firstWhere(
                     (collection) => document.reference.path
-                    .contains(collection.path.split('/').last),
-              )
+                        .contains(collection.path.split('/').last),
+                  )
                   .id;
 
               String sell = documents[index]['Sell'];
@@ -291,15 +300,15 @@ void _showBookListDialog(
               String listerEmail = documents[index]['listerEmail'];
               RxList<RxBool> isLikedList = documents
                   .map((document) {
-                bool initialValue = document['isLikedList'] ?? false;
-                return RxBool(initialValue);
-              })
+                    bool initialValue = document['isLikedList'] ?? false;
+                    return RxBool(initialValue);
+                  })
                   .toList()
                   .obs;
               return Padding(
                 padding: EdgeInsets.all(10.w),
                 child: ListTile(
-                  onTap: (){
+                  onTap: () {
                     Get.to(BookDetails(
                       listerUID: listerUID,
                       listerEmail: listerEmail,
@@ -333,7 +342,7 @@ void _showBookListDialog(
                     textAlign: TextAlign.center,
                   ),
                   trailing: Text(
-                    (index+1).toString(),
+                    (index + 1).toString(),
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
@@ -341,7 +350,10 @@ void _showBookListDialog(
                     ),
                   ),
                   leading: ClipOval(
-                    child: Image.network(imageUrl, fit: BoxFit.fill,),
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               );
@@ -377,3 +389,160 @@ void _showNoBooksDialog(BuildContext context) {
     },
   );
 }
+
+void _updateProfileDialog(context) {
+  final userController = Get.find<HomeController>();
+  final nameController = TextEditingController();
+  final locationController = TextEditingController();
+  final numberController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final formController = Get.put(FormController());
+
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    builder: (context) {
+      return SizedBox(
+        height: 650.h,
+        child: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 30.h),
+                TextFormFieldCustomized(
+                  hintText: userController.userFullName.value,
+                  icon: Icon(Icons.person),
+                  keyboardType: TextInputType.text,
+                  controller: nameController,
+                  validator: (receiverName) {
+                    if (receiverName == null || receiverName.isEmpty) {}
+                    if (receiverName.length < 3) {
+                      return "Name must be at least 3 characters long";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 30.h),
+                TextFormFieldCustomized(
+                  hintText: userController.userLocation.value,
+                  icon: Icon(Icons.location_on_sharp),
+                  keyboardType: TextInputType.text,
+                  controller: locationController,
+                  validator: (receivedLocation) {
+                    if (receivedLocation == null || receivedLocation.isEmpty) {}
+                    if (receivedLocation.length < 10) {
+                      return "Location must be at least 10 characters long";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 30.h),
+                TextFormFieldCustomized(
+                  hintText: userController.userPhone.value,
+                  icon: Icon(Icons.phone),
+                  keyboardType: TextInputType.number,
+                  controller: numberController,
+                  validator: (phone) {
+                    if (phone == null || phone.isEmpty) {}
+                    if (phone.length != 11) {
+                      return 'Phone number must be 11 digits long';
+                    }
+                    final numValue = int.tryParse(phone);
+                    if (numValue == null) {
+                      return "Please enter a valid phone number";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 30.h),
+                ElevatedButtonCustomised(
+                  onPressed: () async {
+                    final storage = GetStorage();
+                    final HomeController control = Get.find<HomeController>();
+                      FirebaseFirestore firebase = FirebaseFirestore.instance;
+
+                      try {
+                        await firebase
+                            .collection('UserInfo')
+                            .where("UserUID",
+                                isEqualTo: userController.userUID.value)
+                            .get()
+                            .then((querySnapshot) {
+                          for (var doc in querySnapshot.docs) {
+                            Map<String, Object?> updates = {};
+
+                            if (nameController.text.isNotEmpty) {
+                              updates['Full_Name'] = nameController.text;
+                            }
+                            if (locationController.text.isNotEmpty) {
+                              updates['Location'] = locationController.text;
+                            }
+                            if (numberController.text.isNotEmpty) {
+                              updates['Phone'] = numberController.text;
+                            }
+                            if (updates.isNotEmpty) {
+                              doc.reference.update(updates);
+                            }
+                            Get.snackbar(
+                              "Successful",
+                              "Your profile is updated",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                              duration: const Duration(seconds: 4),
+                            );
+                          }
+                        });
+
+                        formController.setLoading(false);
+
+                        control.userFullName.value = '';
+                        control.userLocation.value = '';
+                        control.userPhone.value = '';
+                        storage.remove("Full_Name");
+                        storage.remove("Location");
+                        storage.remove("Phone");
+                        userController
+                            .fetchUserInfo(userController.userUID.value);
+
+                        if(numberController.text.isEmpty && nameController.text.isEmpty && locationController.text.isEmpty){
+                          Get.snackbar(
+                            "No Changes",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: AppMainColor.primaryColor,
+                            colorText: Colors.white,
+                            duration: const Duration(seconds: 4),
+                          );
+                        }
+                        Get.offAll(HomePage());
+                        nameController.clear();
+                        locationController.clear();
+                        numberController.clear();
+                      } catch (e) {
+                        formController.setLoading(false);
+                        Get.snackbar(
+                          "Error",
+                          "Failed to update. Please try again.",
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                          duration: const Duration(seconds: 4),
+                        );
+                      }
+                    formController.setLoading(false);
+                  },
+                  text: "Update",
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+

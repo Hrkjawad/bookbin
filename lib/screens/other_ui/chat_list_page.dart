@@ -1,3 +1,4 @@
+//import 'package:BookBin/application/notification_services.dart';
 import 'package:BookBin/screens/other_ui/chat_inbox_ui.dart';
 import 'package:BookBin/screens/other_ui_controllers/homepage_controller.dart';
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/custom_drawer.dart';
@@ -61,9 +62,6 @@ class ChatListPage extends StatelessWidget {
                     chatData['lastUpdated'] ?? Timestamp.now();
 
                 String currentUserID = _auth.currentUser?.uid ?? '';
-                //User? user = FirebaseAuth.instance.currentUser;
-                //String currentUserID = user!.uid;
-                // Find the index of the current user in the users list
                 int currentUserIndex =
                     users.indexWhere((user) => user == currentUserID);
 
@@ -81,6 +79,13 @@ class ChatListPage extends StatelessWidget {
                   otherUserName = "";
                   receiverID = "";
                 }
+                // if(users.indexWhere((user) => user == currentUserID) == 3 && newMessages == true){
+                //   NotificationServices.showNotification(
+                //     id: chatData.hashCode,
+                //     title: 'Message from $otherUserName',
+                //     body: lastMessage,
+                //   );
+                // }
                 return Padding(
                   padding: EdgeInsets.only(top: 15.w),
                   child: _buildChatListItem(

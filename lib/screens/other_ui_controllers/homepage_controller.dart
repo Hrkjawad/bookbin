@@ -24,7 +24,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
 
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
-        _fetchUserInfo(user.uid);
+        fetchUserInfo(user.uid);
         setStatus("Online", user.uid);
       }
     });
@@ -75,7 +75,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     }
   }
 
-  void _fetchUserInfo(String uid) async {
+  void fetchUserInfo(String uid) async {
     try {
       userUID.value = uid;
       storage.write("UID", uid);
