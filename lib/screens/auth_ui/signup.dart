@@ -28,7 +28,6 @@ class _SignupState extends State<Signup> {
   final TextEditingController _phone = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -145,7 +144,7 @@ class _SignupState extends State<Signup> {
               Center(
                 child: ElevatedButtonCustomised(
                   onPressed: _signup,
-                  text: _isLoading ? "Loading..." : "Create an Account",
+                  text: "Create an Account",
                 ),
               ),
             ],
@@ -156,16 +155,14 @@ class _SignupState extends State<Signup> {
   }
 
   _signup() async {
+    final formController = Get.find<FormController>();
     if (_formKey.currentState?.validate() ?? false) {
       if (_password.text != _confirmPassword.text) {
         Get.snackbar("Error", "Passwords do not match",
             snackPosition: SnackPosition.BOTTOM);
+        formController.setLoading(false);
         return;
       }
-      setState(() {
-        _isLoading = true;
-      });
-
       try {
         final user = await _auth.createUserWithEmailAndPassword(
           _emailController.text, _password.text,
@@ -183,6 +180,7 @@ class _SignupState extends State<Signup> {
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.green,
               colorText: Colors.white);
+          formController.setLoading(false);
           await Future.delayed(const Duration(seconds: 2));
           Get.to( VerificationCode(email: _emailController.text));
           _fullName.clear();
@@ -197,17 +195,16 @@ class _SignupState extends State<Signup> {
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.red,
               colorText: Colors.white);
+          formController.setLoading(false);
         }
       } catch (e) {
         Get.snackbar("Error", "Failed to store in Firebase: $e",
             backgroundColor: Colors.red,
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM);
+        formController.setLoading(false);
       }
-
-      setState(() {
-        _isLoading = false;
-      });
     }
+    formController.setLoading(false);
   }
 }

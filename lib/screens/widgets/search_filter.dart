@@ -12,7 +12,7 @@ class SearchFilter extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          width: 296.w,
+          width: 290.w,
           height: 48.h,
           child: TextFormField(
             decoration: InputDecoration(

@@ -1,5 +1,6 @@
 import 'package:BookBin/application/chat_services.dart';
 import 'package:BookBin/screens/other_ui/chat_list_page.dart';
+import 'package:BookBin/screens/other_ui_controllers/homepage_controller.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,10 +43,14 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
 
   final ScrollController _scrollController = ScrollController();
 
+  final uid = Get.find<HomeController>();
+
   @override
   void initState() {
     super.initState();
+    statusUpdate();
     messageSent();
+    _chatServices.markMessagesAsSeen(widget.receiverID);
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         Future.delayed(
@@ -54,7 +59,6 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
         );
       }
     });
-
     Future.delayed(const Duration(milliseconds: 200), () => scrollToBottom());
   }
 
@@ -69,14 +73,14 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
   void sendMessages() async {
     if (_messagesTextController.text.isNotEmpty) {
       await _chatServices.sendMessage(
-          widget.receiverID, _messagesTextController.text);
+          widget.receiverID, _messagesTextController.text, true);
     }
     scrollToBottom();
   }
 
   void messageSent() async {
     if (widget.requestCheck == true) {
-      await _chatServices.sendMessage(widget.receiverID, widget.requestMessage!);
+      await _chatServices.sendMessage(widget.receiverID, widget.requestMessage!, true);
       Future.delayed(
         const Duration(milliseconds: 200),
         () => scrollToBottom(),
@@ -95,21 +99,40 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
   }
 
   RxBool isDrawerOpen = false.obs;
+  var userStatus = "".obs;
+
   void setDrawerState(bool isOpen) {
     isDrawerOpen.value = isOpen;
   }
+
+  void statusUpdate() {
+    if (widget.receiverID.isNotEmpty) {
+      FirebaseFirestore.instance
+          .collection("UserInfo")
+          .where("UserUID", isEqualTo: widget.receiverID)
+          .snapshots()
+          .listen((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          var userData = snapshot.docs.first.data();
+          userStatus.value = userData['status'] ?? 'offline';
+        }
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        backgroundColor: Colors.white,
+        elevation: 1,
         leading: IconButton(
           onPressed: () {
             Get.back();
           },
           icon: Icon(Icons.arrow_circle_left_rounded,
-              size: 40.w, color: Colors.white),
+              size: 45.w, color: AppMainColor.primaryColor,),
         ),
         title: ListTile(
           title: Text(
@@ -117,14 +140,16 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
             style: TextStyle(
                 fontSize: 22.sp,
                 fontWeight: FontWeight.w800,
-                color: Colors.white),
+              color: AppMainColor.primaryColor,),
           ),
-          subtitle: Text(
-            "Online",
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16.sp,
-                color: Colors.white70),
+          subtitle: Obx(
+            ()=> Text(
+              userStatus.value,
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18.sp,
+                  color: Colors.black54),
+            ),
           ),
         ),
         actions: [
@@ -136,7 +161,7 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                 _scaffoldKey.currentState!.openEndDrawer();
               }
             },
-            icon: Icon(Icons.more_vert_rounded, size: 30.w),
+            icon: Icon(Icons.more_vert_rounded, size: 35.w, color: AppMainColor.primaryColor,),
           )
         ],
       ),
@@ -224,9 +249,10 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                         focusNode: _focusNode,
                         controller: _messagesTextController,
                         keyboardType: TextInputType.multiline,
+                        maxLines: null,
                         style: TextStyle(fontSize: 18.sp),
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(10.w),
+                          contentPadding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 15.h),
                           suffixIcon: IconButton(
                             onPressed: () {},
                             icon: Icon(
@@ -280,6 +306,7 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
       child: StreamBuilder<QuerySnapshot>(
         stream: _chatServices.getMessages(widget.receiverID, senderID),
         builder: (context, snapshot) {
+          _chatServices.markMessagesAsSeen(widget.receiverID);
           if (snapshot.hasError) {
             return const Center(child: Text("Error"));
           }
@@ -311,11 +338,11 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
 
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+    bool isSeen = data?['isSeen'] ?? false;
     String message = data?["message"] ?? "";
     Timestamp timestamp = data?["timestamp"] ?? Timestamp.now();
     DateTime dateTime = timestamp.toDate();
     String formattedTime = DateFormat('h:mm a').format(dateTime);
-
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
       child: Align(
@@ -324,8 +351,8 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
             : Alignment.centerLeft,
         child: Padding(
           padding: data?['senderID'] == _auth.currentUser?.uid
-              ? EdgeInsets.only(left: 25.w)
-              : EdgeInsets.only(right: 25.w),
+              ? EdgeInsets.only(left: 40.w)
+              : EdgeInsets.only(right: 40.w),
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
@@ -378,6 +405,13 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                             : Colors.black87,
                       ),
                     ),
+                    SizedBox(width: 5.w,),
+                    if (data?['senderID'] == uid.userUID.value)
+                      Icon(
+                        isSeen ? Icons.done_all : Icons.done,
+                        color: isSeen ? Colors.white : Colors.white,
+                        size: 20.w,
+                      )
                   ],
                 ),
               ],

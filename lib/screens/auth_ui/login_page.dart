@@ -115,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   login() async {
+    final formController = Get.find<FormController>();
     if (_formKey.currentState?.validate() ?? false) {
       final user = await _auth.loginUserWithEmailAndPassword(
           _email.text, _password.text);
@@ -130,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
               backgroundColor: Colors.green,
               colorText: Colors.white);
           await Future.delayed(const Duration(seconds: 2));
+          formController.setLoading(false);
           Get.put(HomeController());
           Get.offAll(const HomePage());
           _email.clear();
@@ -140,13 +142,16 @@ class _LoginPageState extends State<LoginPage> {
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.red,
               colorText: Colors.white);
+          formController.setLoading(false);
         }
       } catch (e) {
         Get.snackbar("Error", "Error fetching user info.",
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.TOP);
+        formController.setLoading(false);
       }
     }
+    formController.setLoading(false);
   }
 }

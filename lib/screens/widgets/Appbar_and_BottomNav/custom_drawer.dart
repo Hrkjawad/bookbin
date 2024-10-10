@@ -257,6 +257,9 @@ void _showBookListDialog(
               final DocumentSnapshot document = documents[index];
               final data = document.data() as Map<String, dynamic>;
               String bookName = data.containsKey("bookName") ? data["bookName"] : "No Data";
+              String imageUrl = data.containsKey("bookPicURL")
+                  ? data["bookPicURL"]
+                  : "https://i.pinimg.com/736x/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.jpg";
 
               double bookPrice = data.containsKey("bookPrice") ? data["bookPrice"].toDouble() : 0.0;
 
@@ -330,12 +333,15 @@ void _showBookListDialog(
                     textAlign: TextAlign.center,
                   ),
                   trailing: Text(
-                    index.toString(),
+                    (index+1).toString(),
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
                       color: AppMainColor.primaryColor,
                     ),
+                  ),
+                  leading: ClipOval(
+                    child: Image.network(imageUrl, fit: BoxFit.fill,),
                   ),
                 ),
               );

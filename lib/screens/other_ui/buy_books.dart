@@ -232,6 +232,7 @@ class _BuyBooksState extends State<BuyBooks> {
                         final formController = Get.find<FormController>();
                         FirebaseFirestore firebase = FirebaseFirestore.instance;
                         try {
+                          final RadioButtonController radioController = Get.find<RadioButtonController>();
                           await firebase.collection('BuyerInfo').add({
                             "receiverUID" : widget.listerUID.toString(),
                             "buyerUID" : _userInfo.userUID.toString(),
@@ -242,6 +243,7 @@ class _BuyBooksState extends State<BuyBooks> {
                             "bookPicURL": widget.bookPicURL,
                             "bookName": widget.name,
                             'timestamp': FieldValue.serverTimestamp(),
+                            'payment': radioController.selectedOption.value,
                           });
                           formController.setLoading(false);
                           Get.snackbar(

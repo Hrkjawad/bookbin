@@ -5,7 +5,7 @@ class ChatServices {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   String userUID = FirebaseAuth.instance.currentUser!.uid;
   // Send message
-  Future<void> sendMessage(String receiverID, String message) async {
+  Future<void> sendMessage(String receiverID, String message, bool sentMessage) async {
     final Timestamp timestamp = Timestamp.now();
 
     final currentUserSnapshot = await _fireStore
@@ -39,6 +39,7 @@ class ChatServices {
       'receiverID': receiverID,
       'receiverName': receiverUserName,
       'message': message,
+      'isSeen': false,
       'timestamp': timestamp,
     };
 
@@ -49,11 +50,13 @@ class ChatServices {
         .collection("messages")
         .add(newMessage);
 
+    bool newMessages = true;
     // Update chat_rooms metadata with usernames instead of IDs
     await _fireStore.collection("chat_rooms").doc(chatRoomId).set({
       'users': [currentUserName, userUID, receiverUserName, receiverID],
       'lastMessage': message,
       'lastUpdated': timestamp,
+      'newMessages': newMessages
     }, SetOptions(merge: true));
   }
 
@@ -79,8 +82,28 @@ class ChatServices {
     await _fireStore.collection("chat_rooms").doc(chatRoomId).delete();
   }
 
+  Future<void> markMessagesAsSeen(String receiverID) async {
+    List<String> id = [userUID, receiverID];
+    id.sort();
+    String chatRoomId = id.join('_');
+
+    // Get all messages that are sent to the current user and are not yet marked as seen
+    final messagesSnapshot = await _fireStore
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("messages")
+        .where("receiverID", isEqualTo: userUID)
+        .where("isSeen", isEqualTo: false)
+        .get();
+
+    // Mark each of these messages as seen
+    for (var doc in messagesSnapshot.docs) {
+      await doc.reference.update({'isSeen': true});
+    }
+  }
   // Get messages stream for a particular chat
   Stream<QuerySnapshot> getMessages(String userID, otherUserID) {
+
     List<String> id = [userID, otherUserID];
     id.sort();
     String chatRoomId = id.join('_');
@@ -90,6 +113,7 @@ class ChatServices {
         .collection("messages")
         .orderBy("timestamp", descending: false)
         .snapshots();
+
   }
 
   // Fetch inbox list based on the current user
@@ -103,6 +127,14 @@ class ChatServices {
         final chatRoomData = doc.data();
         return chatRoomData;
       }).toList();
+    });
+  }
+  Future<void> updateReadMessage(String userID, String otherUserID) async {
+    List<String> id = [userID, otherUserID];
+    id.sort();
+    String chatRoomId = id.join('_');
+    await FirebaseFirestore.instance.collection('chat_rooms').doc(chatRoomId).update({
+      'newMessages': false,
     });
   }
 }

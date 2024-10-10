@@ -19,6 +19,7 @@ class VerificationCode extends StatefulWidget {
 
 class _SignupVerificationCodeState extends State<VerificationCode> {
   final TextEditingController _otp = TextEditingController();
+  final formController = Get.find<FormController>();
 
   @override
   void initState() {
@@ -114,30 +115,26 @@ class _SignupVerificationCodeState extends State<VerificationCode> {
       bool isVerified = EmailOTP.verifyOTP(otp: _otp.text);
       if (isVerified) {
         Get.snackbar(
-            "Successful",
-            "Your account is created. Now Login in your account",
+            "Successful", "Your account is created. Now Login in your account",
             colorText: Colors.white,
             backgroundColor: Colors.green,
-            snackPosition: SnackPosition.BOTTOM
-        );
+            snackPosition: SnackPosition.BOTTOM);
+        formController.setLoading(false);
+
         Get.off(const LoginPage());
       } else {
-        Get.snackbar(
-            "Failed",
-            "Your OTP was not verified. Please try again",
+        Get.snackbar("Failed", "Your OTP was not verified. Please try again",
             colorText: Colors.white,
             backgroundColor: Colors.red,
-            snackPosition: SnackPosition.BOTTOM
-        );
+            snackPosition: SnackPosition.BOTTOM);
+        formController.setLoading(false);
       }
     } catch (e) {
-      Get.snackbar(
-          "Error",
-          "An error occurred while verifying OTP: $e",
+      Get.snackbar("Error", "An error occurred while verifying OTP: $e",
           colorText: Colors.white,
           backgroundColor: Colors.red,
-          snackPosition: SnackPosition.BOTTOM
-      );
+          snackPosition: SnackPosition.BOTTOM);
+      formController.setLoading(false);
     }
   }
 
@@ -145,31 +142,25 @@ class _SignupVerificationCodeState extends State<VerificationCode> {
     try {
       bool result = await EmailOTP.sendOTP(email: widget.email);
       if (result) {
-        Get.snackbar(
-            "Successfully",
-            "OTP has been sent",
+        Get.snackbar("Successfully", "OTP has been sent",
             colorText: Colors.white,
             backgroundColor: Colors.green,
-            snackPosition: SnackPosition.BOTTOM
-        );
+            snackPosition: SnackPosition.BOTTOM);
+        formController.setLoading(false);
       } else {
-        Get.snackbar(
-            "Failed, OTP has not been sent.",
+        Get.snackbar("Failed, OTP has not been sent.",
             "Please check your email address and try again.",
             colorText: Colors.white,
             backgroundColor: Colors.red,
-            snackPosition: SnackPosition.BOTTOM
-        );
+            snackPosition: SnackPosition.BOTTOM);
+        formController.setLoading(false);
       }
     } catch (e) {
-      Get.snackbar(
-          "Error",
-          "An error occurred while sending OTP",
+      Get.snackbar("Error", "An error occurred while sending OTP",
           colorText: Colors.white,
           backgroundColor: Colors.red,
-          snackPosition: SnackPosition.BOTTOM
-      );
+          snackPosition: SnackPosition.BOTTOM);
+      formController.setLoading(false);
     }
   }
-
 }

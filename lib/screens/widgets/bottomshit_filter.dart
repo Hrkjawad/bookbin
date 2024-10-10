@@ -1,3 +1,4 @@
+import 'package:BookBin/screens/widgets/Buttons/elevatedbutton_customised.dart';
 import 'package:BookBin/screens/widgets/pricerange_and_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,7 @@ import 'Categories/categories_booklisting_select.dart';
 void bottomSheetFilter(BuildContext context) {
   final PriceRangeAndRatingController controller = Get.find<PriceRangeAndRatingController>();
   final CategoryController controller2 = Get.find<CategoryController>();
+  final formController = Get.find<FormController>();
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -39,6 +41,7 @@ void bottomSheetFilter(BuildContext context) {
                         controller.maxPrice.value > 0 &&
                         controller.ratingNumber.value > 0 &&
                         controller2.selectedCategory.isNotEmpty) {
+                      formController.setLoading(false);
                       Get.offAll(
                             () => CategoriesPage(
                           priceMin: controller.minPrice.value,
@@ -56,6 +59,7 @@ void bottomSheetFilter(BuildContext context) {
                         colorText: Colors.white,
                         snackPosition: SnackPosition.BOTTOM,
                       );
+                      formController.setLoading(false);
                     }
                   },
                 ),

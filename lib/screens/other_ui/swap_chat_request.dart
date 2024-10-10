@@ -107,8 +107,10 @@ class _SwapChatRequestState extends State<SwapChatRequest> {
                 ),
                 ElevatedButtonCustomised(
                     onPressed: () {
-                      HomeController userController = Get.put(HomeController());
+                      HomeController userController = Get.find<HomeController>();
+                      final formController = Get.find<FormController>();
                       if (_formKey.currentState!.validate()) {
+                        formController.setLoading(false);
                         Get.to(ChatInboxUi(
                           receiverID: widget.receiverId,
                           receiverName: widget.receiverName,
@@ -119,6 +121,7 @@ class _SwapChatRequestState extends State<SwapChatRequest> {
                         _myLocation.clear();
                         _myBookName.clear();
                       }
+                      formController.setLoading(false);
                     },
                     text: "Request for Chat"),
 

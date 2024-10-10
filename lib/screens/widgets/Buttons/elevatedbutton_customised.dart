@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -27,9 +26,6 @@ class ElevatedButtonCustomised extends StatelessWidget {
               : () {
                   formController.setLoading(true);
                   onPressed();
-                  Timer(const Duration(seconds: 1), () {
-                    formController.setLoading(false);
-                  });
                 },
           child: formController.isLoading.value
               ? const CircularProgressIndicator()

@@ -64,10 +64,20 @@ class _SignupState extends State<Verification> {
                 height: 80.h,
               ),
               TextFormFieldCustomized(
-                  controller: _email,
-                  hintText: "Enter your email address",
-                  icon: const Icon(Icons.email),
-                  keyboardType: TextInputType.emailAddress),
+                controller: _email,
+                hintText: "Enter your email address",
+                icon: const Icon(Icons.email),
+                keyboardType: TextInputType.emailAddress,
+                validator: (email) {
+                  if (email == null || email.isEmpty) {
+                    return "Please fill this";
+                  }
+                  if (email.length < 5) {
+                    return "Please enter a email address";
+                  }
+                  return null;
+                },
+              ),
               SizedBox(
                 height: 80.h,
               ),
@@ -85,36 +95,44 @@ class _SignupState extends State<Verification> {
       ),
     );
   }
-  emailCheck()  async {
-    FirebaseFirestore firebase = FirebaseFirestore.instance;
-    final QuerySnapshot result = await firebase
-        .collection('UserInfo')
-        .where('Email', isEqualTo: _email.text)
-        .get();
-    if (result.docs.isNotEmpty) {
-      if(widget.check == true){
-        auth.sendPasswordResetEmail(email: _email.text).then((value) async {
-          Get.snackbar("Account Found", "A reset link was send into your email",
+
+  emailCheck() async {
+    final formController = Get.find<FormController>();
+    if (_formKey.currentState!.validate()) {
+      FirebaseFirestore firebase = FirebaseFirestore.instance;
+      final QuerySnapshot result = await firebase
+          .collection('UserInfo')
+          .where('Email', isEqualTo: _email.text)
+          .get();
+      if (result.docs.isNotEmpty) {
+        if (widget.check == true) {
+          auth.sendPasswordResetEmail(email: _email.text).then((value) async {
+            Get.snackbar(
+                "Account Found", "A reset link was send into your email",
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Colors.green,
+                colorText: Colors.white);
+            formController.setLoading(false);
+            await Future.delayed(const Duration(seconds: 2));
+            Get.to(const LoginPage());
+          });
+        } else {
+          Get.snackbar("Found", "This email has account",
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.green,
               colorText: Colors.white);
+          formController.setLoading(false);
           await Future.delayed(const Duration(seconds: 2));
-          Get.to(const LoginPage());
-        });
-      }
-      else{
-        Get.snackbar("Found", "This email has account",
+          Get.to(VerificationCode(email: _email.text));
+        }
+      } else {
+        Get.snackbar("Not Found", "This email has no account",
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.red,
             colorText: Colors.white);
-        await Future.delayed(const Duration(seconds: 2));
-        Get.to(VerificationCode(email: _email.text));
+        formController.setLoading(false);
       }
-    } else {
-      Get.snackbar("Not Found", "This email has no account",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
     }
+    formController.setLoading(false);
   }
 }

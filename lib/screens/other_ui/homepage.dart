@@ -22,6 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+
   CollectionReference business =
       FirebaseFirestore.instance.collection('Business');
   CollectionReference novels = FirebaseFirestore.instance.collection('Novels');
@@ -36,12 +37,10 @@ class _HomePage extends State<HomePage> {
   CollectionReference education =
       FirebaseFirestore.instance.collection('Education');
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final HomeController _userController = Get.put(HomeController());
 
 
   @override
   Widget build(BuildContext context) {
-    print(_userController.userFullName);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: mainAppBar(scaffoldKey, context),

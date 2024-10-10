@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with WidgetsBindingObserver {
   final storage = GetStorage();
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   var greeting = ''.obs;
   var userFullName = ''.obs;
@@ -18,15 +20,43 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
 
-    // Initialize the greeting message and start periodic updates.
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        _fetchUserInfo(user.uid);
+        setStatus("Online", user.uid);
+      }
+    });
+
     _updateGreeting();
     Timer.periodic(const Duration(minutes: 1), (timer) {
       _updateGreeting();
     });
+  }
+
+  void setStatus(String status, String uid) async {
+    if (uid.isNotEmpty) {
+      await _firebaseFirestore.collection("UserInfo")
+          .where('UserUID', isEqualTo: uid)
+          .get()
+          .then((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          snapshot.docs.first.reference.update({'status': status});
+        }
+      });
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
-        _fetchUserInfo(user.uid);
+        if (state == AppLifecycleState.resumed) {
+          setStatus("Online", user.uid);
+        } else {
+          setStatus("Offline", user.uid);
+        }
       }
     });
   }
@@ -74,5 +104,4 @@ class HomeController extends GetxController {
       }
     }
   }
-
 }
