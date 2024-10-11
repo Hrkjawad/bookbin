@@ -7,7 +7,7 @@ class ElevatedButtonCustomised extends StatelessWidget {
       {super.key, required this.onPressed, required this.text});
   final VoidCallback onPressed;
   final String text;
-  final formController = Get.put(FormController());
+  final formController = Get.find<FormController>();
 
   @override
   Widget build(BuildContext context) {

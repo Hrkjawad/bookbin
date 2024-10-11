@@ -2,7 +2,7 @@
 import 'package:BookBin/screens/other_ui/chat_inbox_ui.dart';
 import 'package:BookBin/screens/other_ui_controllers/homepage_controller.dart';
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/custom_drawer.dart';
-import 'package:BookBin/screens/widgets/notification_end_drawer.dart';
+import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/notification_end_drawer.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +21,7 @@ class ChatListPage extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final ChatServices _chatServices = ChatServices();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final userController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,8 @@ class ChatListPage extends StatelessWidget {
                 chatList.sort((a, b) {
                   Timestamp aTime = a['lastUpdated'] ?? Timestamp.now();
                   Timestamp bTime = b['lastUpdated'] ?? Timestamp.now();
-                  return bTime.compareTo(aTime); // For latest messages at the top
+                  return bTime
+                      .compareTo(aTime); // For latest messages at the top
                 });
 
                 var chatData = chatList[index];
@@ -79,6 +81,20 @@ class ChatListPage extends StatelessWidget {
                   otherUserName = "";
                   receiverID = "";
                 }
+                final FirebaseFirestore firebaseFirestore =
+                    FirebaseFirestore.instance;
+                firebaseFirestore
+                    .collection('UserInfo')
+                    .where("UserUID", isEqualTo: receiverID)
+                    .get()
+                    .then((querySnapshot) {
+                  if (querySnapshot.docs.isNotEmpty) {
+                    var userDoc = querySnapshot.docs.first;
+                    userController.receiverProfileURL.value =
+                        userDoc.get('profileURL');
+                  }
+                });
+
                 // if(users.indexWhere((user) => user == currentUserID) == 3 && newMessages == true){
                 //   NotificationServices.showNotification(
                 //     id: chatData.hashCode,
@@ -89,14 +105,15 @@ class ChatListPage extends StatelessWidget {
                 return Padding(
                   padding: EdgeInsets.only(top: 15.w),
                   child: _buildChatListItem(
-                      otherUserName,
-                      lastMessage,
-                      lastUpdated,
-                      receiverID,
-                      currentUserIndex,
-                      newMessages,
-                      users,
-                      currentUserID),
+                    otherUserName,
+                    lastMessage,
+                    lastUpdated,
+                    receiverID,
+                    currentUserIndex,
+                    newMessages,
+                    users,
+                    currentUserID,
+                  ),
                 );
               },
             );
@@ -120,66 +137,75 @@ class ChatListPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 18.0),
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
-          borderRadius: BorderRadius.circular(25.w)
-        ),
-        child: ListTile(
-          leading: CircleAvatar(
-            radius: 30.w,
-            backgroundColor: AppMainColor.primaryColor,
-            child: Text(
-              otherUserName[0],
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700),
+            color: Colors.white, borderRadius: BorderRadius.circular(25.w)),
+        child: Obx(
+          ()=> ListTile(
+            leading: userController.receiverProfileURL.value.isNotEmpty
+                ? ClipOval(
+                  child: Image.network(
+                    userController.receiverProfileURL.value,
+                      fit: BoxFit.fill,
+                      width: 50.w,
+                      height: 50.h,
+                    ),
+                )
+                : CircleAvatar(
+                    radius: 30.w,
+                    backgroundColor: AppMainColor.primaryColor,
+                    child: Text(
+                      otherUserName[0],
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+            title: Text(
+              otherUserName,
+              style: const TextStyle(color: Colors.black),
             ),
+            subtitle: Text(
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              lastMessage,
+              style: TextStyle(
+                  fontSize: 18.sp,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.w500),
+            ),
+            trailing: Wrap(
+              children: [
+                Text(
+                  _formatTimestamp(lastUpdated),
+                  style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87),
+                ),
+                SizedBox(
+                  width: 10.w,
+                ),
+                users.indexWhere((user) => user == currentUserID) == 3 &&
+                        newMessages == true
+                    ? Icon(
+                        Icons.circle,
+                        color: AppMainColor.primaryColor,
+                        size: 20.w,
+                      )
+                    : SizedBox(),
+              ],
+            ),
+            onTap: () {
+              if (users.indexWhere((user) => user == currentUserID) == 3) {
+                _chatServices.updateReadMessage(
+                    userController.userUID.value, receiverID);
+              }
+              Get.to(ChatInboxUi(
+                receiverID: receiverID,
+                receiverName: otherUserName,
+              ));
+            },
           ),
-          title: Text(
-            otherUserName,
-            style: const TextStyle(color: Colors.black),
-          ),
-          subtitle: Text(
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            lastMessage,
-            style: TextStyle(
-                fontSize: 18.sp,
-                color: Colors.black54,
-                fontWeight: FontWeight.w500),
-          ),
-          trailing: Wrap(
-            children: [
-              Text(
-                _formatTimestamp(lastUpdated),
-                style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87),
-              ),
-              SizedBox(
-                width: 10.w,
-              ),
-              users.indexWhere((user) => user == currentUserID) == 3 &&
-                      newMessages == true
-                  ? Icon(
-                      Icons.circle,
-                      color: AppMainColor.primaryColor,
-                      size: 20.w,
-                    )
-                  : SizedBox(),
-            ],
-          ),
-          onTap: () {
-            final userID = Get.find<HomeController>();
-            if(users.indexWhere((user) => user == currentUserID) == 3){
-              _chatServices.updateReadMessage(userID.userUID.value, receiverID);
-            }
-            Get.to(ChatInboxUi(
-              receiverID: receiverID,
-              receiverName: otherUserName,
-            ));
-          },
         ),
       ),
     );

@@ -3,7 +3,7 @@ import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/booklist_appbar.dar
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import 'package:BookBin/screens/widgets/Buttons/elevatedbutton_customised.dart';
 import 'package:BookBin/screens/widgets/TextFields/book_details_textform.dart';
-import 'package:BookBin/screens/widgets/notification_end_drawer.dart';
+import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/notification_end_drawer.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

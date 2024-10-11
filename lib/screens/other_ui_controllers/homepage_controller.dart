@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../application/firebase_stroage_services.dart';
+
 class HomeController extends GetxController with WidgetsBindingObserver {
   final storage = GetStorage();
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
@@ -16,12 +18,14 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   var userLocation = ''.obs;
   var userPhone = ''.obs;
   var userUID = ''.obs;
+  var profileURL = ''.obs;
+  var receiverProfileURL = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
-
+    FirebaseStorageService();
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
         fetchUserInfo(user.uid);
@@ -92,11 +96,19 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         storage.write("Email", userData['Email'] ?? 'No Email found');
         storage.write("Location", userData['Location'] ?? 'No Location found');
         storage.write("Phone", userData['Phone'] ?? 'No Phone found');
+        storage.write("profileURL", userData['profileURL'] ?? 'No profile image found');
 
-        userFullName.value = userData['Full_Name'] ?? 'No Name found';
-        userEmail.value = userData['Email'] ?? 'No Email found';
-        userLocation.value = userData['Location'] ?? 'No Location found';
-        userPhone.value = userData['Phone'] ?? 'No Phone found';
+        // userFullName.value = userData['Full_Name'] ?? 'No Name found';
+        // userEmail.value = userData['Email'] ?? 'No Email found';
+        // userLocation.value = userData['Location'] ?? 'No Location found';
+        // userPhone.value = userData['Phone'] ?? 'No Phone found';
+        // profileURL.value = userData["profileURL"] ?? 'No profile image found';
+
+        userFullName.value = storage.read("Full_Name") ?? "No Name";
+        userEmail.value = storage.read("Email") ?? 'No Email found';
+        userLocation.value = storage.read("Location") ?? 'No Location found';
+        userPhone.value = storage.read("Phone") ?? 'No Phone found';
+        profileURL.value = storage.read("profileURL") ?? 'No profile image found';
       }
     } catch (e) {
       if (kDebugMode) {

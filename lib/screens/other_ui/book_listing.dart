@@ -39,7 +39,8 @@ class _BookListingState extends State<BookListing> {
   final TextEditingController _price = TextEditingController();
   final TextEditingController _description = TextEditingController();
   final CategoryController categoryController = Get.put(CategoryController());
-  final RadioButtonController radioButtonController = Get.put(RadioButtonController());
+  final RadioButtonController radioButtonController =
+      Get.put(RadioButtonController());
   final FormController formController = Get.put(FormController());
 
   @override
@@ -110,35 +111,35 @@ class _BookListingState extends State<BookListing> {
                     keyboardType: TextInputType.text,
                     heading: "Writer Name       :",
                     validator: (writerName) =>
-                    writerName!.length < 3 ? "Please fill this" : null,
+                        writerName!.length < 3 ? "Please fill this" : null,
                   ),
                   BookListingTextFormField(
                     controller: _publisherName,
                     keyboardType: TextInputType.text,
                     heading: "Publisher Name :",
                     validator: (publisherName) =>
-                    publisherName!.length < 3 ? "Please fill this" : null,
+                        publisherName!.length < 3 ? "Please fill this" : null,
                   ),
                   BookListingTextFormField(
                     controller: _edition,
                     keyboardType: TextInputType.text,
                     heading: "Edition                 :",
                     validator: (edition) =>
-                    edition!.length < 3 ? "Please fill this" : null,
+                        edition!.length < 3 ? "Please fill this" : null,
                   ),
                   BookListingTextFormField(
                     controller: _releaseDate,
                     keyboardType: TextInputType.number,
                     heading: "Release Date      :",
                     validator: (releaseDate) =>
-                    releaseDate!.length < 3 ? "Please fill this" : null,
+                        releaseDate!.length < 3 ? "Please fill this" : null,
                   ),
                   BookListingTextFormField(
                     controller: _language,
                     keyboardType: TextInputType.text,
                     heading: "Language            :",
                     validator: (language) =>
-                    language!.length < 3 ? "Please fill this" : null,
+                        language!.length < 3 ? "Please fill this" : null,
                   ),
                   BookListingTextFormField(
                     controller: _isbn10,
@@ -157,7 +158,6 @@ class _BookListingState extends State<BookListing> {
                       }
                       return null;
                     },
-
                   ),
                   BookListingTextFormField(
                     controller: _isbn13,
@@ -176,14 +176,21 @@ class _BookListingState extends State<BookListing> {
                       }
                       return null;
                     },
-
                   ),
                   BookListingTextFormField(
                     controller: _stock,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.number,
                     heading: "Stock                   :",
-                    validator: (stock) =>
-                    stock != "Yes" && stock != "No" ? "Type only Yes / No" : null,
+                    validator: (stock) {
+                      if (stock == null || stock.isEmpty) {
+                        return "Please fill this";
+                      }
+                      final numValue = num.tryParse(stock);
+                      if (numValue == null) {
+                        return "Please enter a valid number";
+                      }
+                      return null;
+                    },
                   ),
                   BookListingTextFormField(
                     controller: _price,
@@ -215,60 +222,62 @@ class _BookListingState extends State<BookListing> {
                     height: 20.h,
                   ),
                   SizedBox(
-                    width: 345.w,
-                    child: TextFormField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      controller: _description,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration: InputDecoration(
-                          hintText: "Enter minimum 100 words description.",
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintStyle: TextStyle(
-                            fontSize: 18.sp,
-                            color: const Color(0xff6B6B6B),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 15.w,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.w),
-                            borderSide: BorderSide(
-                              color: AppMainColor.primaryColor,
+                      width: 345.w,
+                      child: TextFormField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        controller: _description,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: InputDecoration(
+                            hintText: "Enter minimum 100 words description.",
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintStyle: TextStyle(
+                              fontSize: 18.sp,
+                              color: const Color(0xff6B6B6B),
                             ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.w),
-                            borderSide: BorderSide(
-                              color: AppMainColor.primaryColor,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15.w,
                             ),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.w),
-                            borderSide: const BorderSide(
-                              color: Colors.red,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.w),
+                              borderSide: BorderSide(
+                                color: AppMainColor.primaryColor,
+                              ),
                             ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.w),
-                            borderSide: const BorderSide(
-                              color: Colors.red,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.w),
+                              borderSide: BorderSide(
+                                color: AppMainColor.primaryColor,
+                              ),
                             ),
-                          ),
-                          errorStyle: TextStyle(fontSize: 14.sp)),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your book description';
-                        }
-                        int wordCount = value.split(' ').where((word) => word.isNotEmpty).length;
-                        if (wordCount < 100) {
-                          return 'Minimum 100 words required.';
-                        }
-                        return null;
-                      },
-                    )
-                  ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.w),
+                              borderSide: const BorderSide(
+                                color: Colors.red,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.w),
+                              borderSide: const BorderSide(
+                                color: Colors.red,
+                              ),
+                            ),
+                            errorStyle: TextStyle(fontSize: 14.sp)),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your book description';
+                          }
+                          int wordCount = value
+                              .split(' ')
+                              .where((word) => word.isNotEmpty)
+                              .length;
+                          if (wordCount < 100) {
+                            return 'Minimum 100 words required.';
+                          }
+                          return null;
+                        },
+                      )),
                   SizedBox(
                     height: 36.h,
                   ),
@@ -303,7 +312,7 @@ class _BookListingState extends State<BookListing> {
                   SizedBox(
                     height: 36.h,
                   ),
-            Text(
+                  Text(
                     "Do you want to swap your books?",
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Theme.of(context).primaryColor,
@@ -336,9 +345,15 @@ class _BookListingState extends State<BookListing> {
                       if (_formKey.currentState!.validate()) {
                         final formController = Get.find<FormController>();
                         FirebaseFirestore firebase = FirebaseFirestore.instance;
-                        String selectedOption = radioButtonController.selectedOption.value == 'Yes' ? 'Yes' : 'No';
+                        String selectedOption =
+                            radioButtonController.selectedOption.value == 'Yes'
+                                ? 'Yes'
+                                : 'No';
                         try {
-                          await firebase.collection(categoryController.selectedCategory.value).add({
+                          await firebase
+                              .collection(
+                                  categoryController.selectedCategory.value)
+                              .add({
                             "Sell": "Yes",
                             "Swap": selectedOption,
                             "bookName": _bookName.text,
@@ -351,7 +366,7 @@ class _BookListingState extends State<BookListing> {
                             "isbn_10": _isbn10.text,
                             "isbn_13": _isbn13.text,
                             "language": _language.text,
-                            "listerName": "listerName",
+                            "listerName": userController.userFullName.toString(),
                             "publisherName": _publisherName.text,
                             "releaseDate": _releaseDate.text,
                             "stock": _stock.text,
@@ -378,8 +393,7 @@ class _BookListingState extends State<BookListing> {
                               message: "Now your book is online",
                               snackPosition: SnackPosition.TOP,
                               backgroundColor: Colors.green,
-                              duration: Duration(seconds: 4)
-                          ));
+                              duration: Duration(seconds: 4)));
                         } catch (error) {
                           formController.setLoading(false);
                           Get.showSnackbar(const GetSnackBar(
@@ -387,13 +401,11 @@ class _BookListingState extends State<BookListing> {
                               message: "Please try again",
                               snackPosition: SnackPosition.TOP,
                               backgroundColor: Colors.red,
-                              duration: Duration(seconds: 4)
-                          ));
+                              duration: Duration(seconds: 4)));
                         }
                       }
                     },
                   ),
-
                   SizedBox(
                     height: 20.h,
                   ),

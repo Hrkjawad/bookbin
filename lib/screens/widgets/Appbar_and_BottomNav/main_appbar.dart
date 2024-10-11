@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../other_ui_controllers/homepage_controller.dart';
 
 AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
   final HomeController userController = Get.put(HomeController());
+
   return AppBar(
     backgroundColor: Colors.transparent,
     elevation: 0,
@@ -29,16 +29,20 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
         ),
       ),
     ),
-    leading: IconButton(
-      icon: CircleAvatar(
-        child: Icon(
-          Icons.person,
-          size: 30.w,
-        ),
+    leading: Obx(
+      ()=> IconButton(
+        icon: userController.profileURL.isEmpty ? CircleAvatar(
+          child: Icon(
+            Icons.person,
+            size: 30.w,
+          ),
+        ) : ClipOval(
+            child: Image.network(userController.profileURL.value,
+              height: 50, width: 50, fit: BoxFit.fill,)),
+        onPressed: () {
+          scaffoldKey.currentState!.openDrawer();
+        },
       ),
-      onPressed: () {
-        scaffoldKey.currentState!.openDrawer();
-      },
     ),
     actions: [
       IconButton(

@@ -10,7 +10,7 @@ import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/Appbar_and_BottomNav/custom_drawer.dart';
 import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
 import '../widgets/Categories/categories.dart';
-import '../widgets/notification_end_drawer.dart';
+import '../widgets/Appbar_and_BottomNav/notification_end_drawer.dart';
 import '../widgets/recommended_book_card.dart';
 import '../widgets/screen_background.dart';
 
@@ -92,7 +92,7 @@ class _HomePage extends State<HomePage> {
                   const Categories(
                     minPrice: 0.0,
                     maxPrice: 1000.0,
-                    rating: 1.0,
+                    rating: 5.0,
                   ),
                   SizedBox(
                     height: 16.h,

@@ -1,4 +1,5 @@
 import 'package:BookBin/screens/other_ui/homepage.dart';
+import 'package:BookBin/screens/other_ui_controllers/profile_upload_image_controller.dart';
 import 'package:BookBin/screens/widgets/Buttons/elevatedbutton_customised.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,31 +16,61 @@ import '../TextFields/textformfield_customized.dart';
 
 Drawer customDrawer(BuildContext context) {
   final userController = Get.find<HomeController>();
+  final profileController = Get.find<ProfileController>();
   return Drawer(
+    backgroundColor: Colors.white.withOpacity(0.9),
+    elevation: 4,
     child: Column(
       children: [
-        Padding(
-          padding: EdgeInsets.only(top: 60.w, bottom: 15.w),
-          child: Ink(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50.w),
-                color: AppMainColor.primaryColor,
+        Stack(
+          children: [
+            Obx(
+              () => userController.profileURL.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(top: 60.w, bottom: 15.w),
+                      child: Ink(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50.w),
+                            color: Colors.white,
+                          ),
+                          height: 100.h,
+                          width: 100.w,
+                          child: Icon(
+                            Icons.person,
+                            size: 80.w,
+                            color: Colors.white,
+                          )),
+                    )
+                  : Padding(
+                    padding: EdgeInsets.only(top: 60.w, bottom: 15.w),
+                    child: ClipOval(
+                        child: Image.network(userController.profileURL.value,
+                            height: 100, width: 100, fit: BoxFit.fill,)),
+                  ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: -12,
+              child: IconButton(
+                onPressed: () async {
+                  await profileController.pickAndUploadImage(userController.userUID.value);
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: Colors.black87,
+                ),
               ),
-              height: 80.h,
-              width: 80.w,
-              child: Icon(
-                Icons.person,
-                size: 60.w,
-                color: Colors.white,
-              )),
+            ),
+          ],
         ),
         Obx(
           () => Text(
             userController.userFullName.toString(),
             style: TextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w600,
-                color: AppMainColor.primaryColor),
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w800,
+              color: AppMainColor.primaryColor
+            ),
             textAlign: TextAlign.center,
           ),
         ),
@@ -50,19 +81,19 @@ Drawer customDrawer(BuildContext context) {
           title: Obx(
             () => Text(
               userController.userEmail.toString(),
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600,),
             ),
           ),
           leading: Icon(
             Icons.email_rounded,
-            color: AppMainColor.primaryColor,
+            color: AppMainColor.primaryColor
           ),
         ),
         ListTile(
           title: Obx(
             () => Text(
               userController.userLocation.toString(),
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600,),
             ),
           ),
           leading: Icon(
@@ -74,7 +105,7 @@ Drawer customDrawer(BuildContext context) {
           title: Obx(
             () => Text(
               userController.userPhone.toString(),
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600,),
             ),
           ),
           leading: Icon(
@@ -93,15 +124,15 @@ Drawer customDrawer(BuildContext context) {
                 },
                 style: ElevatedButton.styleFrom(
                     elevation: 2,
-                    backgroundColor: Colors.white70,
-                    side: BorderSide(color: AppMainColor.primaryColor),
+                    backgroundColor: Colors.white,
+                    side: BorderSide(color:AppMainColor.primaryColor),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.w))),
                 child: Text(
                   "My Added BookLists",
                   style: TextStyle(
                       fontSize: 19.sp,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: AppMainColor.primaryColor),
                 )),
           ),
@@ -117,15 +148,15 @@ Drawer customDrawer(BuildContext context) {
                 },
                 style: ElevatedButton.styleFrom(
                     elevation: 2,
-                    side: BorderSide(color: AppMainColor.primaryColor),
-                    backgroundColor: Colors.white70,
+                    side: BorderSide(color: AppMainColor.primaryColor ),
+                    backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.w))),
                 child: Text(
                   "Update Profile",
                   style: TextStyle(
                       fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: AppMainColor.primaryColor),
                 )),
           ),
@@ -149,9 +180,11 @@ Drawer customDrawer(BuildContext context) {
                         children: [
                           IconButton(
                               onPressed: () async {
-                                final storage = GetStorage();
                                 final HomeController control =
                                     Get.find<HomeController>();
+                                control.setStatus(
+                                    "Offline", control.userUID.value);
+                                final storage = GetStorage();
                                 await FirebaseAuth.instance
                                     .signOut()
                                     .then((value) {
@@ -165,6 +198,7 @@ Drawer customDrawer(BuildContext context) {
                                   storage.remove("Email");
                                   storage.remove("Location");
                                   storage.remove("Phone");
+                                  storage.remove("profileURL");
                                   storage.erase();
                                   Get.snackbar(
                                       "You are successfully logout", "",
@@ -292,7 +326,7 @@ void _showBookListDialog(BuildContext context, List<DocumentSnapshot> documents,
               String language = documents[index]['language'];
               String publisherName = documents[index]['publisherName'];
               String releaseDate = documents[index]['releaseDate'];
-              String stock = documents[index]['stock'];
+              int stock = documents[index]['stock'];
               String writerName = documents[index]['writerName'];
               String listerName = documents[index]['listerName'];
               String listerLocation = documents[index]['listerLocation'];
@@ -345,7 +379,7 @@ void _showBookListDialog(BuildContext context, List<DocumentSnapshot> documents,
                     (index + 1).toString(),
                     style: TextStyle(
                       fontSize: 18.sp,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                       color: AppMainColor.primaryColor,
                     ),
                   ),
@@ -461,77 +495,79 @@ void _updateProfileDialog(context) {
                   onPressed: () async {
                     final storage = GetStorage();
                     final HomeController control = Get.find<HomeController>();
-                      FirebaseFirestore firebase = FirebaseFirestore.instance;
+                    FirebaseFirestore firebase = FirebaseFirestore.instance;
 
-                      try {
-                        await firebase
-                            .collection('UserInfo')
-                            .where("UserUID",
-                                isEqualTo: userController.userUID.value)
-                            .get()
-                            .then((querySnapshot) {
-                          for (var doc in querySnapshot.docs) {
-                            Map<String, Object?> updates = {};
+                    try {
+                      await firebase
+                          .collection('UserInfo')
+                          .where("UserUID",
+                              isEqualTo: userController.userUID.value)
+                          .get()
+                          .then((querySnapshot) {
+                        for (var doc in querySnapshot.docs) {
+                          Map<String, Object?> updates = {};
 
-                            if (nameController.text.isNotEmpty) {
-                              updates['Full_Name'] = nameController.text;
-                            }
-                            if (locationController.text.isNotEmpty) {
-                              updates['Location'] = locationController.text;
-                            }
-                            if (numberController.text.isNotEmpty) {
-                              updates['Phone'] = numberController.text;
-                            }
-                            if (updates.isNotEmpty) {
-                              doc.reference.update(updates);
-                            }
-                            Get.snackbar(
-                              "Successful",
-                              "Your profile is updated",
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Colors.green,
-                              colorText: Colors.white,
-                              duration: const Duration(seconds: 4),
-                            );
+                          if (nameController.text.isNotEmpty) {
+                            updates['Full_Name'] = nameController.text;
                           }
-                        });
-
-                        formController.setLoading(false);
-
-                        control.userFullName.value = '';
-                        control.userLocation.value = '';
-                        control.userPhone.value = '';
-                        storage.remove("Full_Name");
-                        storage.remove("Location");
-                        storage.remove("Phone");
-                        userController
-                            .fetchUserInfo(userController.userUID.value);
-
-                        if(numberController.text.isEmpty && nameController.text.isEmpty && locationController.text.isEmpty){
+                          if (locationController.text.isNotEmpty) {
+                            updates['Location'] = locationController.text;
+                          }
+                          if (numberController.text.isNotEmpty) {
+                            updates['Phone'] = numberController.text;
+                          }
+                          if (updates.isNotEmpty) {
+                            doc.reference.update(updates);
+                          }
                           Get.snackbar(
-                            "No Changes",
-                            "",
+                            "Successful",
+                            "Your profile is updated",
                             snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: AppMainColor.primaryColor,
+                            backgroundColor: Colors.green,
                             colorText: Colors.white,
                             duration: const Duration(seconds: 4),
                           );
                         }
-                        Get.offAll(HomePage());
-                        nameController.clear();
-                        locationController.clear();
-                        numberController.clear();
-                      } catch (e) {
-                        formController.setLoading(false);
+                      });
+
+                      formController.setLoading(false);
+
+                      control.userFullName.value = '';
+                      control.userLocation.value = '';
+                      control.userPhone.value = '';
+                      storage.remove("Full_Name");
+                      storage.remove("Location");
+                      storage.remove("Phone");
+                      userController
+                          .fetchUserInfo(userController.userUID.value);
+
+                      if (numberController.text.isEmpty &&
+                          nameController.text.isEmpty &&
+                          locationController.text.isEmpty) {
                         Get.snackbar(
-                          "Error",
-                          "Failed to update. Please try again.",
+                          "No Changes",
+                          "",
                           snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.white,
                           colorText: Colors.white,
                           duration: const Duration(seconds: 4),
                         );
                       }
+                      Get.offAll(HomePage());
+                      nameController.clear();
+                      locationController.clear();
+                      numberController.clear();
+                    } catch (e) {
+                      formController.setLoading(false);
+                      Get.snackbar(
+                        "Error",
+                        "Failed to update. Please try again.",
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                        duration: const Duration(seconds: 4),
+                      );
+                    }
                     formController.setLoading(false);
                   },
                   text: "Update",
@@ -544,5 +580,3 @@ void _updateProfileDialog(context) {
     },
   );
 }
-
-

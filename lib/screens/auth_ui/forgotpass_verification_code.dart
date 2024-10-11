@@ -1,12 +1,7 @@
-import '../auth_ui/login_page.dart';
-import '../auth_ui/verify_code.dart';
+import '../auth_ui_controllers/forgotpass_controller.dart';
 import '../widgets/Buttons/backbutton_with_logo.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-
 import '../widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/TextFields/textformfield_customized.dart';
 import '../widgets/screen_background.dart';
@@ -22,7 +17,12 @@ class Verification extends StatefulWidget {
 class _SignupState extends State<Verification> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
-  final auth = FirebaseAuth.instance;
+
+  @override
+  void dispose(){
+    super.dispose();
+    _email.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,9 +83,7 @@ class _SignupState extends State<Verification> {
               ),
               Center(
                 child: ElevatedButtonCustomised(
-                  onPressed: () {
-                    emailCheck();
-                  },
+                  onPressed: () => emailCheck(_formKey, _email, widget.check),
                   text: "Send",
                 ),
               ),
@@ -94,45 +92,5 @@ class _SignupState extends State<Verification> {
         ),
       ),
     );
-  }
-
-  emailCheck() async {
-    final formController = Get.find<FormController>();
-    if (_formKey.currentState!.validate()) {
-      FirebaseFirestore firebase = FirebaseFirestore.instance;
-      final QuerySnapshot result = await firebase
-          .collection('UserInfo')
-          .where('Email', isEqualTo: _email.text)
-          .get();
-      if (result.docs.isNotEmpty) {
-        if (widget.check == true) {
-          auth.sendPasswordResetEmail(email: _email.text).then((value) async {
-            Get.snackbar(
-                "Account Found", "A reset link was send into your email",
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: Colors.green,
-                colorText: Colors.white);
-            formController.setLoading(false);
-            await Future.delayed(const Duration(seconds: 2));
-            Get.to(const LoginPage());
-          });
-        } else {
-          Get.snackbar("Found", "This email has account",
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.green,
-              colorText: Colors.white);
-          formController.setLoading(false);
-          await Future.delayed(const Duration(seconds: 2));
-          Get.to(VerificationCode(email: _email.text));
-        }
-      } else {
-        Get.snackbar("Not Found", "This email has no account",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white);
-        formController.setLoading(false);
-      }
-    }
-    formController.setLoading(false);
   }
 }

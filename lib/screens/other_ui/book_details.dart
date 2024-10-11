@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../widgets/Appbar_and_BottomNav/booklist_appbar.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
-import '../widgets/notification_end_drawer.dart';
+import '../widgets/Appbar_and_BottomNav/notification_end_drawer.dart';
 import '../widgets/screen_background.dart';
 
 class BookDetails extends StatefulWidget {
@@ -47,7 +47,7 @@ class BookDetails extends StatefulWidget {
   final String language;
   final String publisherName;
   final String releaseDate;
-  final String stock;
+  final int stock;
   final String writerName;
   final double bookPrice;
   final double bookRating;
@@ -317,7 +317,7 @@ class _BookDetails extends State<BookDetails> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Stock                   : ${widget.stock}",
+                          "Stock                   : ${widget.stock.toString()}",
                           style: TextStyle(
                             fontSize: 20.sp,
                           ),

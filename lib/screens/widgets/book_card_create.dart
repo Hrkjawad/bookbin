@@ -19,7 +19,7 @@ class BookCardCreate extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection(collections)
           .where('bookPrice', isGreaterThan: priceMin, isLessThan: priceMax)
-          .where('bookRating', isGreaterThan: rating)
+          .where('bookRating', isLessThanOrEqualTo: rating)
           .snapshots(),
         builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -86,7 +86,7 @@ class BookCardCreate extends StatelessWidget {
               String language = documents[index]['language'];
               String publisherName = documents[index]['publisherName'];
               String releaseDate = documents[index]['releaseDate'];
-              String stock = documents[index]['stock'];
+              int stock = documents[index]['stock'];
               String writerName = documents[index]['writerName'];
               String listerName = documents[index]['listerName'];
               String listerLocation = documents[index]['listerLocation'];
@@ -138,23 +138,20 @@ class BookCardCreate extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          right: 12.w,
-                          top: 8.h,
-                          child: GestureDetector(
-                            onTap: () {
+                          right: 0.w,
+                          top: 0.h,
+                          child: Obx(() => IconButton(
+                            onPressed: (){
                               isLikedList[index].toggle();
-                              // Update with new wishlist status
                               document.reference.update({
                                 'isLikedList': isLikedList[index].value,
                               });
                             },
-                            child: Obx(() => Icon(
-                                  Icons.favorite,
-                                  color: isLikedList[index].value
-                                      ? Colors.red
-                                      : Colors.grey,
-                                )),
-                          ),
+                               icon:  Icon(Icons.favorite),
+                                color: isLikedList[index].value
+                                    ? Colors.red
+                                    : Colors.grey,
+                              )),
                         ),
                         Positioned(
                           top: 8.h,

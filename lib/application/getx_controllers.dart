@@ -2,6 +2,8 @@ import 'package:BookBin/screens/other_ui_controllers/price_range_and_rating_cont
 import 'package:get/get.dart';
 import '../screens/other_ui_controllers/categories_controller.dart';
 import '../screens/other_ui_controllers/homepage_controller.dart';
+import '../screens/other_ui_controllers/profile_upload_image_controller.dart';
+import '../screens/widgets/Buttons/elevatedbutton_customised.dart';
 
 
 class GetXBindings extends Bindings {
@@ -10,5 +12,7 @@ class GetXBindings extends Bindings {
     Get.put(HomeController());
     Get.put(PriceRangeAndRatingController());
     Get.put(CategoryController());
+    Get.put(FormController());
+    Get.put(ProfileController());
   }
 }

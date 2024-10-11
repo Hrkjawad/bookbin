@@ -93,7 +93,7 @@ Future bottomSheetWishlist(BuildContext context) {
                       String language = documents[index]['language'];
                       String publisherName = documents[index]['publisherName'];
                       String releaseDate = documents[index]['releaseDate'];
-                      String stock = documents[index]['stock'];
+                      int stock = documents[index]['stock'];
                       String writerName = documents[index]['writerName'];
                       String listerName = documents[index]['listerName'];
                       String listerLocation = documents[index]['listerLocation'];

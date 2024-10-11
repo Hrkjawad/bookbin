@@ -1,11 +1,8 @@
 import 'package:BookBin/screens/widgets/screen_background.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../auth_ui_controllers/signup_controller.dart';
-import '../other_ui/homepage.dart';
-import '../other_ui_controllers/homepage_controller.dart';
+import '../auth_ui_controllers/login_controller.dart';
 import '../widgets/Buttons/backbutton_with_logo.dart';
 import '../widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/TextFields/password_textfield.dart';
@@ -20,7 +17,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _auth = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
@@ -37,121 +33,82 @@ class _LoginPageState extends State<LoginPage> {
       body: ScreenBackground(
           child: Form(
         key: _formKey,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            const BackButtonAndLogo(),
-            SizedBox(
-              height: 96.h,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 31.w),
-              child: Text(
-                "Login",
-                style: TextStyle(
-                  fontSize: 40.sp,
-                  fontWeight: FontWeight.w800,
-                ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const BackButtonAndLogo(),
+              SizedBox(
+                height: 96.h,
               ),
-            ),
-            SizedBox(
-              height: 65.h,
-            ),
-            TextFormFieldCustomized(
-              controller: _email,
-              hintText: "Enter your email address",
-              icon: const Icon(Icons.email),
-              keyboardType: TextInputType.emailAddress,
-              validator: (email) {
-                if (email == null || email.isEmpty) {
-                  return "Please fill this";
-                }
-                if (email.length < 5) {
-                  return "Please enter a email address";
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 40.h,
-            ),
-            PasswordTextField(
-              passwordController: _password,
-              hintText: 'Enter your password',
-            ),
-            SizedBox(
-              height: 65.h,
-            ),
-            Center(
-              child: ElevatedButtonCustomised(
-                onPressed: login,
-                text: "Login",
-              ),
-            ),
-            SizedBox(
-              height: 40.h,
-            ),
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Get.to(const Verification(
-                    check: true,
-                  ));
-                },
+              Padding(
+                padding: EdgeInsets.only(left: 31.w),
                 child: Text(
-                  'Forgot Password?',
+                  "Login",
                   style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
+                    fontSize: 40.sp,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                height: 65.h,
+              ),
+              TextFormFieldCustomized(
+                controller: _email,
+                hintText: "Enter your email address",
+                icon: const Icon(Icons.email),
+                keyboardType: TextInputType.emailAddress,
+                validator: (email) {
+                  if (email == null || email.isEmpty) {
+                    return "Please fill this";
+                  }
+                  if (email.length < 5) {
+                    return "Please enter a email address";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 40.h,
+              ),
+              PasswordTextField(
+                passwordController: _password,
+                hintText: 'Enter your password',
+              ),
+              SizedBox(
+                height: 65.h,
+              ),
+              Center(
+                child: ElevatedButtonCustomised(
+                  onPressed: () => login(_formKey, _email, _password),
+                  text: "Login",
+                ),
+              ),
+              SizedBox(
+                height: 40.h,
+              ),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    Get.to(const Verification(
+                      check: true,
+                    ));
+                  },
+                  child: Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       )),
     );
-  }
-
-  login() async {
-    final formController = Get.find<FormController>();
-    if (_formKey.currentState?.validate() ?? false) {
-      final user = await _auth.loginUserWithEmailAndPassword(
-          _email.text, _password.text);
-      FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-      final QuerySnapshot result = await firebaseFirestore
-          .collection("UserInfo")
-          .where("Email", isEqualTo: _email.text)
-          .get();
-      try {
-        if (user != null && result.docs.isNotEmpty) {
-          Get.snackbar("Login", "User Logged In Successfully.",
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.green,
-              colorText: Colors.white);
-          await Future.delayed(const Duration(seconds: 2));
-          formController.setLoading(false);
-          Get.put(HomeController());
-          Get.offAll(const HomePage());
-          _email.clear();
-          _password.clear();
-        }
-        else {
-          Get.snackbar("User not found", "Email or Password are not matched",
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.red,
-              colorText: Colors.white);
-          formController.setLoading(false);
-        }
-      } catch (e) {
-        Get.snackbar("Error", "Error fetching user info.",
-            colorText: Colors.white,
-            backgroundColor: Colors.red,
-            snackPosition: SnackPosition.TOP);
-        formController.setLoading(false);
-      }
-    }
-    formController.setLoading(false);
   }
 }

@@ -18,7 +18,6 @@ class ChatInboxUi extends StatefulWidget {
     this.requestCheck,
     this.requestMessage,
   });
-
   bool? requestCheck;
   String? requestMessage;
   final String receiverID;
@@ -80,7 +79,8 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
 
   void messageSent() async {
     if (widget.requestCheck == true) {
-      await _chatServices.sendMessage(widget.receiverID, widget.requestMessage!, true);
+      await _chatServices.sendMessage(
+          widget.receiverID, widget.requestMessage!, true);
       Future.delayed(
         const Duration(milliseconds: 200),
         () => scrollToBottom(),
@@ -120,7 +120,6 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,19 +130,23 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(Icons.arrow_circle_left_rounded,
-              size: 45.w, color: AppMainColor.primaryColor,),
+          icon: Icon(
+            Icons.arrow_circle_left_rounded,
+            size: 45.w,
+            color: AppMainColor.primaryColor,
+          ),
         ),
         title: ListTile(
           title: Text(
             widget.receiverName,
             style: TextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w800,
-              color: AppMainColor.primaryColor,),
+              fontSize: 22.sp,
+              fontWeight: FontWeight.w800,
+              color: AppMainColor.primaryColor,
+            ),
           ),
           subtitle: Obx(
-            ()=> Text(
+            () => Text(
               userStatus.value,
               style: TextStyle(
                   fontWeight: FontWeight.w500,
@@ -161,7 +164,11 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                 _scaffoldKey.currentState!.openEndDrawer();
               }
             },
-            icon: Icon(Icons.more_vert_rounded, size: 35.w, color: AppMainColor.primaryColor,),
+            icon: Icon(
+              Icons.more_vert_rounded,
+              size: 35.w,
+              color: AppMainColor.primaryColor,
+            ),
           )
         ],
       ),
@@ -185,7 +192,7 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                 child: TextButton(
                   onPressed: () {
                     showDialog(
-                      barrierColor: Colors.transparent,
+                        barrierColor: Colors.transparent,
                         context: context,
                         builder: (context) {
                           return AlertDialog(
@@ -205,8 +212,8 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-                                    onPressed: () async {
-                                      await _chatServices.deleteChatRoom(widget.receiverID);
+                                    onPressed: () {
+                                      _chatServices.deleteChatRoom(widget.receiverID);
                                       Get.offAll(ChatListPage());
                                     },
                                     icon: Icon(
@@ -252,14 +259,8 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                         maxLines: null,
                         style: TextStyle(fontSize: 18.sp),
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 15.h),
-                          suffixIcon: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.attach_file_rounded,
-                              size: 30.w,
-                            ),
-                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 20.w, horizontal: 15.h),
                           hintText: "Type Message",
                           hintStyle: TextStyle(fontSize: 18.sp),
                           enabledBorder: OutlineInputBorder(
@@ -356,7 +357,9 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: data?['senderID'] == _auth.currentUser?.uid ? const Color(0x00000000) : Colors.grey.shade400,
+                color: data?['senderID'] == _auth.currentUser?.uid
+                    ? const Color(0x00000000)
+                    : Colors.grey.shade400,
               ),
               color: data?['senderID'] == _auth.currentUser?.uid
                   ? appColor.color[800]
@@ -405,7 +408,9 @@ class _ChatInboxUiState extends State<ChatInboxUi> {
                             : Colors.black87,
                       ),
                     ),
-                    SizedBox(width: 5.w,),
+                    SizedBox(
+                      width: 5.w,
+                    ),
                     if (data?['senderID'] == uid.userUID.value)
                       Icon(
                         isSeen ? Icons.done_all : Icons.done,
