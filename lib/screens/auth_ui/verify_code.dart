@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../widgets/Buttons/backbutton_with_logo.dart';
-import '../widgets/Buttons/elevatedbutton_customised.dart';
+import '../../screens/widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/TextFields/textformfield_customized.dart';
 
 class VerificationCode extends StatefulWidget {

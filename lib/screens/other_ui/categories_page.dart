@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
-import '../widgets/book_card_create.dart';
+import '../widgets/BookCards/book_card_create.dart';
 import '../widgets/Appbar_and_BottomNav/notification_end_drawer.dart';
 import '../widgets/screen_background.dart';
-import '../widgets/search_filter.dart';
+import '../widgets/Filters/search_filter.dart';
 
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({super.key, required this.name, required this.collection, required this.priceMin, required this.priceMax, required this.rating});

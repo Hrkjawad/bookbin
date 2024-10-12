@@ -1,6 +1,6 @@
 //import 'package:BookBin/application/notification_services.dart';
 import 'package:BookBin/screens/other_ui/chat_inbox_ui.dart';
-import 'package:BookBin/screens/other_ui_controllers/homepage_controller.dart';
+import '../../controllers/other_ui_controllers/homepage_controller.dart';
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/custom_drawer.dart';
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/notification_end_drawer.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';

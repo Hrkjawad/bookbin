@@ -1,5 +1,4 @@
 import 'package:BookBin/screens/other_ui/homepage.dart';
-import 'package:BookBin/screens/other_ui_controllers/profile_upload_image_controller.dart';
 import 'package:BookBin/screens/widgets/Buttons/elevatedbutton_customised.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,9 +9,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:rxdart/rxdart.dart';
+import '../../../controllers/other_ui_controllers/profile_upload_image_controller.dart';
 import '../../../utilitis/app_main_color.dart';
 import '../../other_ui/book_details.dart';
-import '../../other_ui_controllers/homepage_controller.dart';
+import '../../../controllers/other_ui_controllers/homepage_controller.dart';
 import '../../welcome_screen.dart';
 import '../TextFields/textformfield_customized.dart';
 

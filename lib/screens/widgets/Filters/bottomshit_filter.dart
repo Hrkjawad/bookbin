@@ -1,14 +1,13 @@
 import 'package:BookBin/screens/widgets/Buttons/elevatedbutton_customised.dart';
-import 'package:BookBin/screens/widgets/pricerange_and_rating.dart';
+import 'package:BookBin/screens/widgets/Filters/pricerange_and_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../other_ui/categories_page.dart';
-import '../other_ui_controllers/categories_controller.dart';
-import '../other_ui_controllers/price_range_and_rating_controller.dart';
-import 'Buttons/icon_elevatedbutton.dart';
-import 'Categories/categories_booklisting_select.dart';
+import '../../../controllers/other_ui_controllers/price_range_and_rating_controller.dart';
+import '../../other_ui/categories_page.dart';
+import '../../../controllers/other_ui_controllers/categories_controller.dart';
+import '../Buttons/icon_elevatedbutton.dart';
+import '../Categories/categories_booklisting_select.dart';
 
 void bottomSheetFilter(BuildContext context) {
   final PriceRangeAndRatingController controller = Get.find<PriceRangeAndRatingController>();

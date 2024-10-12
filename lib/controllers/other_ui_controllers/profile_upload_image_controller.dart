@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:BookBin/screens/other_ui_controllers/homepage_controller.dart';
+import 'homepage_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';

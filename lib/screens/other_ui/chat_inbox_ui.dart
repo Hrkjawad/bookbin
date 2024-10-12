@@ -1,6 +1,6 @@
 import 'package:BookBin/application/chat_services.dart';
 import 'package:BookBin/screens/other_ui/chat_list_page.dart';
-import 'package:BookBin/screens/other_ui_controllers/homepage_controller.dart';
+import '../../controllers/other_ui_controllers/homepage_controller.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

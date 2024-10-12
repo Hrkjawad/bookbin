@@ -8,7 +8,7 @@ import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../other_ui_controllers/homepage_controller.dart';
+import '../../controllers/other_ui_controllers/homepage_controller.dart';
 
 class SwapChatRequest extends StatefulWidget {
   const SwapChatRequest(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../other_ui_controllers/price_range_and_rating_controller.dart';
+import '../../../controllers/other_ui_controllers/price_range_and_rating_controller.dart';
 
 class PriceRangeAndRating extends StatelessWidget {
   const PriceRangeAndRating({super.key});

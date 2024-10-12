@@ -2,7 +2,7 @@ import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../other_ui_controllers/categories_controller.dart';
+import '../../../controllers/other_ui_controllers/categories_controller.dart';
 
 class CategoriesSelect extends StatelessWidget {
   final CategoryController categoryController = Get.put(CategoryController());

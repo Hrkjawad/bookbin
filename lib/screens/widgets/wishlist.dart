@@ -1,4 +1,4 @@
-import 'package:BookBin/screens/other_ui_controllers/homepage_controller.dart';
+import '../../controllers/other_ui_controllers/homepage_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

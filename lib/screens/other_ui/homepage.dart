@@ -1,16 +1,16 @@
 import 'package:BookBin/screens/other_ui/see_all_page.dart';
-import 'package:BookBin/screens/widgets/search_filter.dart';
+import 'package:BookBin/screens/widgets/Filters/search_filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../other_ui_controllers/homepage_controller.dart';
+import '../../controllers/other_ui_controllers/homepage_controller.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/Appbar_and_BottomNav/custom_drawer.dart';
 import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
 import '../widgets/Categories/categories.dart';
 import '../widgets/Appbar_and_BottomNav/notification_end_drawer.dart';
-import '../widgets/recommended_book_card.dart';
+import '../widgets/BookCards/recommended_book_card.dart';
 import '../widgets/screen_background.dart';
 
 class HomePage extends StatefulWidget {

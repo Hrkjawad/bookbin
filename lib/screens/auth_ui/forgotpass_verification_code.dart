@@ -1,8 +1,8 @@
-import '../auth_ui_controllers/forgotpass_controller.dart';
+import '../../controllers/auth_ui_controllers/forgotpass_controller.dart';
 import '../widgets/Buttons/backbutton_with_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/Buttons/elevatedbutton_customised.dart';
+import '../../screens/widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/TextFields/textformfield_customized.dart';
 import '../widgets/screen_background.dart';
 

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:BookBin/screens/other_ui/book_details.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../utilitis/app_main_color.dart';
+import '../../../utilitis/app_main_color.dart';
 
 class RecommendedBookCardCreate extends StatelessWidget {
   const RecommendedBookCardCreate({

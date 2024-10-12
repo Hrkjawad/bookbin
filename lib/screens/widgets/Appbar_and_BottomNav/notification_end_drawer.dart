@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../other_ui_controllers/homepage_controller.dart';
+import '../../../controllers/other_ui_controllers/homepage_controller.dart';
 
 class NotificationEndDrawer extends StatelessWidget {
   NotificationEndDrawer({super.key});

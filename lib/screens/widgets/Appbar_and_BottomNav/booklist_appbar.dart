@@ -3,8 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../other_ui_controllers/homepage_controller.dart';
+import '../../../controllers/other_ui_controllers/homepage_controller.dart';
 
 HomeController myUID = Get.find<HomeController>();
 AppBar bookListAppBar(

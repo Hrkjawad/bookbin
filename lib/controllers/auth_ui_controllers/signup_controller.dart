@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../auth_ui/verify_code.dart';
-import '../widgets/Buttons/elevatedbutton_customised.dart';
+import '../../screens/auth_ui/verify_code.dart';
+import '../../screens/widgets/Buttons/elevatedbutton_customised.dart';
 import 'auth_service.dart';
 
 final _auth = AuthService();

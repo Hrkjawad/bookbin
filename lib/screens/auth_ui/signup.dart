@@ -1,9 +1,9 @@
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../auth_ui_controllers/signup_controller.dart';
+import '../../controllers/auth_ui_controllers/signup_controller.dart';
 import '../widgets/Buttons/backbutton_with_logo.dart';
-import '../widgets/Buttons/elevatedbutton_customised.dart';
+import '../../screens/widgets/Buttons/elevatedbutton_customised.dart';
 import '../widgets/TextFields/confirm_password_textfield.dart';
 import '../widgets/TextFields/password_textfield.dart';
 import '../widgets/TextFields/textformfield_customized.dart';

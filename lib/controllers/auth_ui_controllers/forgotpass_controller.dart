@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../auth_ui/login_page.dart';
-import '../auth_ui/verify_code.dart';
-import '../widgets/Buttons/elevatedbutton_customised.dart';
+import '../../screens/auth_ui/login_page.dart';
+import '../../screens/auth_ui/verify_code.dart';
+import '../../screens/widgets/Buttons/elevatedbutton_customised.dart';
 
 final auth = FirebaseAuth.instance;
 emailCheck(

@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../other_ui/homepage.dart';
-import '../other_ui_controllers/homepage_controller.dart';
-import '../widgets/Buttons/elevatedbutton_customised.dart';
+import '../../screens/other_ui/homepage.dart';
+import '../../controllers/other_ui_controllers/homepage_controller.dart';
+import '../../screens/widgets/Buttons/elevatedbutton_customised.dart';
 import 'auth_service.dart';
 
 final _auth = AuthService();
