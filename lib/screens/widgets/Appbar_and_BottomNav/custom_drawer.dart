@@ -1,12 +1,14 @@
 import 'package:BookBin/screens/other_ui/homepage.dart';
 import 'package:BookBin/screens/other_ui_controllers/profile_upload_image_controller.dart';
 import 'package:BookBin/screens/widgets/Buttons/elevatedbutton_customised.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../utilitis/app_main_color.dart';
 import '../../other_ui/book_details.dart';
@@ -31,7 +33,7 @@ Drawer customDrawer(BuildContext context) {
                       child: Ink(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50.w),
-                            color: Colors.white,
+                            color: AppMainColor.primaryColor,
                           ),
                           height: 100.h,
                           width: 100.w,
@@ -42,18 +44,40 @@ Drawer customDrawer(BuildContext context) {
                           )),
                     )
                   : Padding(
-                    padding: EdgeInsets.only(top: 60.w, bottom: 15.w),
-                    child: ClipOval(
-                        child: Image.network(userController.profileURL.value,
-                            height: 100, width: 100, fit: BoxFit.fill,)),
-                  ),
+                      padding: EdgeInsets.only(top: 60.w, bottom: 15.w),
+                      child: ClipOval(
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.dialog(
+                              barrierColor: Colors.transparent,
+                              Center(
+                                child: PhotoView(
+                                  imageProvider: NetworkImage(
+                                    userController.profileURL.value,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: userController.profileURL.value,
+                            fit: BoxFit.fill,
+                            width: 100.w,
+                            height: 100.h,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                    ),
             ),
             Positioned(
               bottom: 0,
               right: -12,
               child: IconButton(
                 onPressed: () async {
-                  await profileController.pickAndUploadImage(userController.userUID.value);
+                  await profileController
+                      .pickAndUploadImage(userController.userUID.value);
                 },
                 icon: Icon(
                   Icons.edit,
@@ -69,8 +93,7 @@ Drawer customDrawer(BuildContext context) {
             style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w800,
-              color: AppMainColor.primaryColor
-            ),
+                color: AppMainColor.primaryColor),
             textAlign: TextAlign.center,
           ),
         ),
@@ -81,19 +104,22 @@ Drawer customDrawer(BuildContext context) {
           title: Obx(
             () => Text(
               userController.userEmail.toString(),
-              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600,),
+              style: TextStyle(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          leading: Icon(
-            Icons.email_rounded,
-            color: AppMainColor.primaryColor
-          ),
+          leading: Icon(Icons.email_rounded, color: AppMainColor.primaryColor),
         ),
         ListTile(
           title: Obx(
             () => Text(
               userController.userLocation.toString(),
-              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600,),
+              style: TextStyle(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           leading: Icon(
@@ -105,7 +131,10 @@ Drawer customDrawer(BuildContext context) {
           title: Obx(
             () => Text(
               userController.userPhone.toString(),
-              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600,),
+              style: TextStyle(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           leading: Icon(
@@ -125,7 +154,7 @@ Drawer customDrawer(BuildContext context) {
                 style: ElevatedButton.styleFrom(
                     elevation: 2,
                     backgroundColor: Colors.white,
-                    side: BorderSide(color:AppMainColor.primaryColor),
+                    side: BorderSide(color: AppMainColor.primaryColor),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.w))),
                 child: Text(
@@ -148,7 +177,7 @@ Drawer customDrawer(BuildContext context) {
                 },
                 style: ElevatedButton.styleFrom(
                     elevation: 2,
-                    side: BorderSide(color: AppMainColor.primaryColor ),
+                    side: BorderSide(color: AppMainColor.primaryColor),
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.w))),
@@ -274,8 +303,7 @@ void myBookList(BuildContext context) {
   });
 }
 
-void _showBookListDialog(BuildContext context, List<DocumentSnapshot> documents,
-    List<CollectionReference> collections) {
+void _showBookListDialog(BuildContext context, List<DocumentSnapshot> documents, List<CollectionReference> collections) {
   showDialog(
     context: context,
     builder: (context) {
@@ -332,13 +360,7 @@ void _showBookListDialog(BuildContext context, List<DocumentSnapshot> documents,
               String listerLocation = documents[index]['listerLocation'];
               String listerUID = documents[index]['listerUID'];
               String listerEmail = documents[index]['listerEmail'];
-              RxList<RxBool> isLikedList = documents
-                  .map((document) {
-                    bool initialValue = document['isLikedList'] ?? false;
-                    return RxBool(initialValue);
-                  })
-                  .toList()
-                  .obs;
+              RxList<RxBool> isLikedList = List.generate(documents.length, (index) => false.obs).obs;
               return Padding(
                 padding: EdgeInsets.all(10.w),
                 child: ListTile(
@@ -364,7 +386,8 @@ void _showBookListDialog(BuildContext context, List<DocumentSnapshot> documents,
                       bookRating: bookRating,
                       bookName: bookName,
                       bookCategory: bookCategory,
-                      wishlist: isLikedList[index].value,
+                      isLikedList: isLikedList,
+                      index: index,
                     ));
                   },
                   title: Text(

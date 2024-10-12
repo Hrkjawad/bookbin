@@ -96,7 +96,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         storage.write("Email", userData['Email'] ?? 'No Email found');
         storage.write("Location", userData['Location'] ?? 'No Location found');
         storage.write("Phone", userData['Phone'] ?? 'No Phone found');
-        storage.write("profileURL", userData['profileURL'] ?? 'No profile image found');
+        storage.write("profileURL", userData['profileURL']);
 
         // userFullName.value = userData['Full_Name'] ?? 'No Name found';
         // userEmail.value = userData['Email'] ?? 'No Email found';
@@ -108,7 +108,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         userEmail.value = storage.read("Email") ?? 'No Email found';
         userLocation.value = storage.read("Location") ?? 'No Location found';
         userPhone.value = storage.read("Phone") ?? 'No Phone found';
-        profileURL.value = storage.read("profileURL") ?? 'No profile image found';
+        profileURL.value = storage.read("profileURL");
       }
     } catch (e) {
       if (kDebugMode) {

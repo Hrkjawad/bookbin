@@ -35,7 +35,7 @@ class _SeeAllPageAndCategoriesPageState extends State<CategoriesPage> {
             child: Column(
               children: [
                 SizedBox(height: 25.h,),
-                const SearchFilter(),
+                const BookListAndFilter(),
                 SizedBox(height: 25.h,),
                 Text(
                   widget.name,

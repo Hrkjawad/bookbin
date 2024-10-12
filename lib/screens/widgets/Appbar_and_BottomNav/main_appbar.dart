@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -37,8 +38,14 @@ AppBar mainAppBar(GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
             size: 30.w,
           ),
         ) : ClipOval(
-            child: Image.network(userController.profileURL.value,
-              height: 50, width: 50, fit: BoxFit.fill,)),
+            child: CachedNetworkImage(
+              imageUrl: userController.profileURL.value,
+              fit: BoxFit.fill,
+              width: 50.w,
+              height: 50.h,
+              placeholder: (context, url) =>
+                  CircularProgressIndicator(),
+            ),),
         onPressed: () {
           scaffoldKey.currentState!.openDrawer();
         },

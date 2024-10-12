@@ -1,3 +1,4 @@
+import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -27,9 +28,10 @@ class CategoryPage1 extends StatelessWidget {
 
   Widget _buildCard(String? name, IconData iconData) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Card(
-          color: const Color(0xff8847a1),
+          color: AppMainColor.primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.w),
           ),

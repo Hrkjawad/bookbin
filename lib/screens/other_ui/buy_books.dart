@@ -96,67 +96,61 @@ class _BuyBooksState extends State<BuyBooks> {
                 SizedBox(
                   height: 20.h,
                 ),
-                Center(
-                  child: TextFormFieldCustomized(
-                    controller: _receiverName,
-                    hintText: "Enter receiver name",
-                    icon: const Icon(Icons.person),
-                    keyboardType: TextInputType.text,
-                    validator: (receiverName) {
-                      if (receiverName == null || receiverName.isEmpty) {
-                        return "Please enter name";
-                      }
-                      if (receiverName.length < 3) {
-                        return "Name must be at least 3 characters long";
-                      }
-                      return null;
-                    },
-                  ),
+                TextFormFieldCustomized(
+                  controller: _receiverName,
+                  hintText: "Enter receiver name",
+                  icon: const Icon(Icons.person),
+                  keyboardType: TextInputType.text,
+                  validator: (receiverName) {
+                    if (receiverName == null || receiverName.isEmpty) {
+                      return "Please enter name";
+                    }
+                    if (receiverName.length < 3) {
+                      return "Name must be at least 3 characters long";
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                Center(
-                  child: TextFormFieldCustomized(
-                    controller: _phone,
-                    hintText: "Enter your phone number",
-                    icon: const Icon(Icons.phone),
-                    keyboardType: TextInputType.number,
-                    validator: (phone) {
-                      if (phone == null || phone.isEmpty) {
-                        return 'Please enter your phone number';
-                      }
-                      if (phone.length != 11) {
-                        return 'Phone number must be 11 digits long';
-                      }
-                      final numValue = int.tryParse(phone);
-                      if (numValue == null) {
-                        return "Please enter a valid phone number";
-                      }
-                      return null;
-                    },
-                  ),
+                TextFormFieldCustomized(
+                  controller: _phone,
+                  hintText: "Enter your phone number",
+                  icon: const Icon(Icons.phone),
+                  keyboardType: TextInputType.number,
+                  validator: (phone) {
+                    if (phone == null || phone.isEmpty) {
+                      return 'Please enter your phone number';
+                    }
+                    if (phone.length != 11) {
+                      return 'Phone number must be 11 digits long';
+                    }
+                    final numValue = int.tryParse(phone);
+                    if (numValue == null) {
+                      return "Please enter a valid phone number";
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                Center(
-                  child: TextFormFieldCustomized(
-                    controller: _receivedLocation,
-                    hintText: "Enter your received Location",
-                    icon: const Icon(Icons.location_on),
-                    keyboardType: TextInputType.text,
-                    validator: (receivedLocation) {
-                      if (receivedLocation == null ||
-                          receivedLocation.isEmpty) {
-                        return "Please enter the received location";
-                      }
-                      if (receivedLocation.length < 10) {
-                        return "Location must be at least 10 characters long";
-                      }
-                      return null;
-                    },
-                  ),
+                TextFormFieldCustomized(
+                  controller: _receivedLocation,
+                  hintText: "Enter your received Location",
+                  icon: const Icon(Icons.location_on),
+                  keyboardType: TextInputType.text,
+                  validator: (receivedLocation) {
+                    if (receivedLocation == null ||
+                        receivedLocation.isEmpty) {
+                      return "Please enter the received location";
+                    }
+                    if (receivedLocation.length < 10) {
+                      return "Location must be at least 10 characters long";
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 20.h,
@@ -166,7 +160,7 @@ class _BuyBooksState extends State<BuyBooks> {
                     "Choose your payment option",
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 22.sp,
+                        fontSize: 24.sp,
                         color: AppMainColor.primaryColor),
                   ),
                 ),
@@ -174,14 +168,14 @@ class _BuyBooksState extends State<BuyBooks> {
                   height: 5.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 50.w),
+                  padding: EdgeInsets.only(right: 18.w),
                   child: RadioButton(
                     nameOption1: 'Cash on delivery',
                     nameOption2: 'Bkash',
                   ),
                 ),
                 SizedBox(
-                  height: 8.h,
+                  height: 12.h,
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 170.w),
@@ -222,7 +216,7 @@ class _BuyBooksState extends State<BuyBooks> {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 15.h,
                 ),
                 Center(
                   child: IconElevatedButton(

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../widgets/Appbar_and_BottomNav/booklist_appbar.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
@@ -30,11 +31,12 @@ class BookDetails extends StatefulWidget {
       required this.bookRating,
       required this.bookName,
       required this.bookCategory,
-      required this.wishlist,
       required this.listerName,
       required this.listerLocation,
       required this.listerUID,
-      required this.listerEmail});
+      required this.listerEmail,
+      required this.isLikedList,
+      required this.index});
   final String sell;
   final String swap;
   final String bookName;
@@ -51,15 +53,17 @@ class BookDetails extends StatefulWidget {
   final String writerName;
   final double bookPrice;
   final double bookRating;
-  final bool wishlist;
   final String listerName;
   final String listerLocation;
   final String listerUID;
   final String listerEmail;
+  final RxList<RxBool> isLikedList;
+  final int index;
 
   @override
   State<BookDetails> createState() => _BookDetails();
 }
+
 class _BookDetails extends State<BookDetails> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String userUID = FirebaseAuth.instance.currentUser!.uid;
@@ -67,8 +71,17 @@ class _BookDetails extends State<BookDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: bookListAppBar(scaffoldKey, context, widget.listerName,
-          widget.listerLocation, widget.wishlist),
+      appBar: bookListAppBar(
+          scaffoldKey,
+          context,
+          widget.listerName,
+          widget.listerLocation,
+          widget.isbn_10,
+          widget.bookPicURL,
+          widget.bookCategory,
+          widget.bookName,
+          widget.isLikedList,
+          widget.index),
       endDrawer: NotificationEndDrawer(),
       body: ScreenBackground(
         child: SafeArea(
@@ -177,19 +190,20 @@ class _BookDetails extends State<BookDetails> {
                         SizedBox(
                           width: 59.w,
                         ),
-                        widget.listerUID == userUID ? Card(
-                          color: Colors.green,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.w),
-                            child: Text("This is added by me",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white)),
-                          ),
-                        ) : const SizedBox(),
-                        widget.swap == "Yes" &&
-                                widget.listerUID != userUID
+                        widget.listerUID == userUID
+                            ? Card(
+                                color: Colors.green,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.w),
+                                  child: Text("This is added by me",
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white)),
+                                ),
+                              )
+                            : const SizedBox(),
+                        widget.swap == "Yes" && widget.listerUID != userUID
                             ? ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     elevation: 0,
@@ -201,11 +215,18 @@ class _BookDetails extends State<BookDetails> {
                                     )),
                                 onPressed: () {
                                   Get.to(SwapChatRequest(
-                                      receiverId: widget.listerUID,
-                                      receiverEmail: widget.listerEmail,
-                                      bookName: widget.bookName,
-                                      bookPicURL: widget.bookPicURL,
-                                      receiverName: widget.listerName));
+                                    receiverId: widget.listerUID,
+                                    receiverEmail: widget.listerEmail,
+                                    bookName: widget.bookName,
+                                    bookPicURL: widget.bookPicURL,
+                                    receiverName: widget.listerName,
+                                    listerLocation: widget.listerLocation,
+                                    listerName: widget.listerName,
+                                    isbn_10: widget.isbn_10,
+                                    isLikedList: widget.isLikedList,
+                                    index: widget.index,
+                                    bookCategory: widget.bookCategory,
+                                  ));
                                 },
                                 child: Text(
                                   "Swap",
@@ -230,7 +251,10 @@ class _BookDetails extends State<BookDetails> {
                                     )),
                                 onPressed: () {
                                   Get.to(BuyBooks(
-                                    bookCost: widget.bookPrice, name: widget.bookName, bookPicURL: widget.bookPicURL, listerUID: widget.listerUID,
+                                    bookCost: widget.bookPrice,
+                                    name: widget.bookName,
+                                    bookPicURL: widget.bookPicURL,
+                                    listerUID: widget.listerUID,
                                   ));
                                 },
                                 child: Text(
@@ -242,7 +266,6 @@ class _BookDetails extends State<BookDetails> {
                                   ),
                                 ))
                             : const SizedBox(),
-
                       ],
                     ),
                     SizedBox(
@@ -391,9 +414,19 @@ class _ImageSlidersState extends State<ImageSliders> {
             child: PageView(
               controller: _pageController,
               children: [
-                Image.network(
-                  widget.bookPicURL,
-                  fit: BoxFit.fill,
+                GestureDetector(
+                  onTap: () {
+                    Get.dialog(
+                      barrierColor: Colors.transparent,
+                      PhotoView(
+                        imageProvider: NetworkImage(widget.bookPicURL),
+                      ),
+                    );
+                  },
+                  child: Image.network(
+                    widget.bookPicURL,
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 Image.network(
                   'https://nomore.org.au/sites/default/files/logo-fb.png',

@@ -26,8 +26,7 @@ class RadioButton extends StatelessWidget {
               radioButtonController.updateSelection(value!);
             },
           ),
-          Text(nameOption1, style: TextStyle(fontSize: 18.sp),),
-          SizedBox(width: 20.w),
+          Text(nameOption1, style: TextStyle(fontSize: 20.sp),),
           Radio<String>(
             value: nameOption2,
             groupValue: radioButtonController.selectedOption.value,
@@ -35,7 +34,7 @@ class RadioButton extends StatelessWidget {
               radioButtonController.updateSelection(value!);
             },
           ),
-          Text(nameOption2, style: TextStyle(fontSize: 18.sp),),
+          Text(nameOption2, style: TextStyle(fontSize: 20.sp),),
         ],
       );
     });

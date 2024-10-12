@@ -40,7 +40,7 @@ class _SeeAllPageAndCategoriesPageState
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 25.h,),
-                const SearchFilter(),
+                const BookListAndFilter(),
                 SizedBox(height: 25.h,),
                 Text(
                  widget. pageName,

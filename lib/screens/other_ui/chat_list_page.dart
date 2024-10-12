@@ -5,12 +5,14 @@ import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/custom_drawer.dart'
 import 'package:BookBin/screens/widgets/Appbar_and_BottomNav/notification_end_drawer.dart';
 import 'package:BookBin/screens/widgets/screen_background.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 import '../../application/chat_services.dart';
 import '../widgets/Appbar_and_BottomNav/bottom_nav.dart';
 import '../widgets/Appbar_and_BottomNav/main_appbar.dart';
@@ -70,50 +72,46 @@ class ChatListPage extends StatelessWidget {
                 // Determine the other user's name based on the index
                 String otherUserName, receiverID;
                 if (currentUserIndex == 1) {
-                  // If the current user is the first sender
                   otherUserName = users[2]; // Receiver's name
                   receiverID = users[3];
                 } else if (currentUserIndex == 3) {
-                  // If the current user is the second sender
                   otherUserName = users[0]; // Sender's name
                   receiverID = users[1];
                 } else {
                   otherUserName = "";
                   receiverID = "";
                 }
-                final FirebaseFirestore firebaseFirestore =
-                    FirebaseFirestore.instance;
-                firebaseFirestore
-                    .collection('UserInfo')
-                    .where("UserUID", isEqualTo: receiverID)
-                    .get()
-                    .then((querySnapshot) {
-                  if (querySnapshot.docs.isNotEmpty) {
-                    var userDoc = querySnapshot.docs.first;
-                    userController.receiverProfileURL.value =
-                        userDoc.get('profileURL');
-                  }
-                });
 
-                // if(users.indexWhere((user) => user == currentUserID) == 3 && newMessages == true){
-                //   NotificationServices.showNotification(
-                //     id: chatData.hashCode,
-                //     title: 'Message from $otherUserName',
-                //     body: lastMessage,
-                //   );
-                // }
-                return Padding(
-                  padding: EdgeInsets.only(top: 15.w),
-                  child: _buildChatListItem(
-                    otherUserName,
-                    lastMessage,
-                    lastUpdated,
-                    receiverID,
-                    currentUserIndex,
-                    newMessages,
-                    users,
-                    currentUserID,
-                  ),
+                return StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('UserInfo')
+                      .where("UserUID", isEqualTo: receiverID)
+                      .snapshots(),
+                  builder: (context, userSnapshot) {
+                    if (userSnapshot.hasData &&
+                        userSnapshot.data!.docs.isNotEmpty) {
+                      var userDoc = userSnapshot.data!.docs.first;
+                      userController.receiverProfileURL.value =
+                          userDoc.get('profileURL');
+                      String profileURL = userDoc.get('profileURL');
+                      otherUserName = userDoc.get('Full_Name');
+                      return Padding(
+                        padding: EdgeInsets.only(top: 15.w),
+                        child: _buildChatListItem(
+                            otherUserName,
+                            lastMessage,
+                            lastUpdated,
+                            receiverID,
+                            currentUserIndex,
+                            newMessages,
+                            users,
+                            currentUserID,
+                            profileURL
+                        ),
+                      );
+                    }
+                    return SizedBox.shrink();
+                  }
                 );
               },
             );
@@ -132,80 +130,96 @@ class ChatListPage extends StatelessWidget {
       int currentUserIndex,
       bool newMessages,
       List users,
-      String currentUserID) {
+      String currentUserID,
+      String profileURL) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18.0),
       child: Container(
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(25.w)),
-        child: Obx(
-          ()=> ListTile(
-            leading: userController.receiverProfileURL.value.isNotEmpty
-                ? ClipOval(
-                  child: Image.network(
-                    userController.receiverProfileURL.value,
-                      fit: BoxFit.fill,
-                      width: 50.w,
-                      height: 50.h,
-                    ),
-                )
-                : CircleAvatar(
-                    radius: 30.w,
-                    backgroundColor: AppMainColor.primaryColor,
-                    child: Text(
-                      otherUserName[0],
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w700),
+        child: ListTile(
+          leading: userController.receiverProfileURL.value.isNotEmpty
+              ? GestureDetector(
+                  onTap: () {
+                    Get.dialog(
+                      barrierColor: Colors.transparent,
+                      Center(
+                        child: PhotoView(
+                          imageProvider: NetworkImage(profileURL),
+                        ),
+                      ),
+                    );
+                  },
+                  child: ClipOval(
+                    child: GetBuilder<HomeController>(
+                      init: userController,
+                      builder: (controller) => CachedNetworkImage(
+                        imageUrl: controller.receiverProfileURL.value,
+                        fit: BoxFit.fill,
+                        width: 50.w,
+                        height: 50.h,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
+                      ),
                     ),
                   ),
-            title: Text(
-              otherUserName,
-              style: const TextStyle(color: Colors.black),
-            ),
-            subtitle: Text(
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              lastMessage,
-              style: TextStyle(
-                  fontSize: 18.sp,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w500),
-            ),
-            trailing: Wrap(
-              children: [
-                Text(
-                  _formatTimestamp(lastUpdated),
-                  style: TextStyle(
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87),
+                )
+              : CircleAvatar(
+                  radius: 30.w,
+                  backgroundColor: AppMainColor.primaryColor,
+                  child: Text(
+                    otherUserName.isNotEmpty ? otherUserName[0] : '',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w700),
+                  ),
                 ),
-                SizedBox(
-                  width: 10.w,
-                ),
-                users.indexWhere((user) => user == currentUserID) == 3 &&
-                        newMessages == true
-                    ? Icon(
-                        Icons.circle,
-                        color: AppMainColor.primaryColor,
-                        size: 20.w,
-                      )
-                    : SizedBox(),
-              ],
-            ),
-            onTap: () {
-              if (users.indexWhere((user) => user == currentUserID) == 3) {
-                _chatServices.updateReadMessage(
-                    userController.userUID.value, receiverID);
-              }
-              Get.to(ChatInboxUi(
-                receiverID: receiverID,
-                receiverName: otherUserName,
-              ));
-            },
+          title: Text(
+            otherUserName,
+            style: const TextStyle(color: Colors.black),
           ),
+          subtitle: Text(
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            lastMessage,
+            style: TextStyle(
+                fontSize: 18.sp,
+                color: Colors.black54,
+                fontWeight: FontWeight.w500),
+          ),
+          trailing: Wrap(
+            children: [
+              Text(
+                _formatTimestamp(lastUpdated),
+                style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87),
+              ),
+              SizedBox(
+                width: 10.w,
+              ),
+              users.indexWhere((user) => user == currentUserID) == 3 &&
+                      newMessages == true
+                  ? Icon(
+                      Icons.circle,
+                      color: AppMainColor.primaryColor,
+                      size: 20.w,
+                    )
+                  : SizedBox(),
+            ],
+          ),
+          onTap: () {
+            if (users.indexWhere((user) => user == currentUserID) == 3) {
+              _chatServices.updateReadMessage(
+                  userController.userUID.value, receiverID);
+            }
+            Get.to(ChatInboxUi(
+              receiverID: receiverID,
+              receiverName: otherUserName,
+            ));
+          },
         ),
       ),
     );

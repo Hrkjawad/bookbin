@@ -200,13 +200,13 @@ class NotificationEndDrawer extends StatelessWidget {
                   text: TextSpan(
                       text: "Status      : ",
                       style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.w600, color: Colors.black),
                       children: [
                         TextSpan(
                             text: title,
                             style: TextStyle(
-                                fontSize: 18.sp,
+                                fontSize: 17.sp,
                                 color: Colors.black87 ,
                                 fontWeight: FontWeight.w600)
                         ),
@@ -216,13 +216,13 @@ class NotificationEndDrawer extends StatelessWidget {
                   text: TextSpan(
                       text: "Price        : ",
                       style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.w600, color: Colors.black),
                       children: [
                         TextSpan(
                             text: "${price.toString()}৳",
                             style: TextStyle(
-                                fontSize: 18.sp,
+                                fontSize: 17.sp,
                                 color: Colors.black87 ,
                                 fontWeight: FontWeight.w600)
                         ),
@@ -232,13 +232,13 @@ class NotificationEndDrawer extends StatelessWidget {
                   text: TextSpan(
                       text: "Date         : ",
                       style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.w600, color: Colors.black),
                       children: [
                         TextSpan(
                             text: date,
                             style: TextStyle(
-                                fontSize: 18.sp,
+                                fontSize: 17.sp,
                                 color: Colors.black87 ,
                                 fontWeight: FontWeight.w600)
                         ),
@@ -248,13 +248,13 @@ class NotificationEndDrawer extends StatelessWidget {
                   text: TextSpan(
                       text: "Time        : ",
                       style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.w600, color: Colors.black),
                       children: [
                         TextSpan(
                             text: formattedTime,
                             style: TextStyle(
-                                fontSize: 18.sp,
+                                fontSize: 17.sp,
                                 color: Colors.black87 ,
                                 fontWeight: FontWeight.w600)
                         ),
@@ -264,13 +264,13 @@ class NotificationEndDrawer extends StatelessWidget {
                   text: TextSpan(
                       text: "Payment : ",
                       style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 17.sp,
                           fontWeight: FontWeight.w600, color: Colors.black),
                       children: [
                         TextSpan(
                             text: payment,
                             style: TextStyle(
-                                fontSize: 18.sp,
+                                fontSize: 17.sp,
                                 color: Colors.black87 ,
                                 fontWeight: FontWeight.w600)
                         ),

@@ -163,19 +163,6 @@ class _BookListingState extends State<BookListing> {
                     controller: _isbn13,
                     keyboardType: TextInputType.number,
                     heading: "ISBN-13               :",
-                    validator: (isbn13) {
-                      if (isbn13 == null || isbn13.isEmpty) {
-                        return "Please fill this";
-                      }
-                      if (isbn13.length != 13) {
-                        return "Please enter a 13-digit ISBN Number";
-                      }
-                      final numValue = int.tryParse(isbn13);
-                      if (numValue == null) {
-                        return "Please enter a valid number";
-                      }
-                      return null;
-                    },
                   ),
                   BookListingTextFormField(
                     controller: _stock,
@@ -229,7 +216,7 @@ class _BookListingState extends State<BookListing> {
                         controller: _description,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: InputDecoration(
-                            hintText: "Enter minimum 100 words description.",
+                            hintText: "Enter minimum 25 words description.",
                             fillColor: Colors.white,
                             filled: true,
                             hintStyle: TextStyle(
@@ -272,8 +259,8 @@ class _BookListingState extends State<BookListing> {
                               .split(' ')
                               .where((word) => word.isNotEmpty)
                               .length;
-                          if (wordCount < 100) {
-                            return 'Minimum 100 words required.';
+                          if (wordCount < 25) {
+                            return 'Minimum 25 words required.';
                           }
                           return null;
                         },
@@ -321,9 +308,12 @@ class _BookListingState extends State<BookListing> {
                   SizedBox(
                     height: 5.h,
                   ),
-                  RadioButton(
-                    nameOption1: 'Yes',
-                    nameOption2: 'No',
+                  Padding(
+                    padding: EdgeInsets.only(right: 18.w),
+                    child: RadioButton(
+                      nameOption1: 'Yes',
+                      nameOption2: 'No',
+                    ),
                   ),
                   SizedBox(
                     height: 36.h,

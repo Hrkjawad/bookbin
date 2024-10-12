@@ -28,14 +28,13 @@ signup(
         password.text,
       );
       if (user != null) {
-        CollectionReference collRef =
-            FirebaseFirestore.instance.collection('UserInfo');
-        await collRef.add({
+        FirebaseFirestore.instance.collection('UserInfo').doc(user.uid).set({
           'Full_Name': fullName.text,
           'Location': location.text,
           'Email': email.text,
           'Phone': phone.text,
           'UserUID': user.uid,
+          'profileURL': "",
         });
         Get.snackbar("Success", "Please verify your email first",
             snackPosition: SnackPosition.BOTTOM,

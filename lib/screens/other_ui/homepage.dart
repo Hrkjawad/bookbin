@@ -1,4 +1,3 @@
-import 'package:BookBin/screens/other_ui/book_listing.dart';
 import 'package:BookBin/screens/other_ui/see_all_page.dart';
 import 'package:BookBin/screens/widgets/search_filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -65,7 +64,7 @@ class _HomePage extends State<HomePage> {
                         return Text(
                           'Hey, $greeting!',
                           style: TextStyle(
-                            fontSize: 26.sp,
+                            fontSize: 28.sp,
                             fontWeight: FontWeight.w800,
                           ),
                         );
@@ -73,16 +72,16 @@ class _HomePage extends State<HomePage> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.h,
+                    height: 40.h,
                   ),
-                  const SearchFilter(),
+                  const BookListAndFilter(),
                   SizedBox(
-                    height: 30.h,
+                    height: 40.h,
                   ),
                   Text(
                     "Categories",
                     style: TextStyle(
-                      fontSize: 26.sp,
+                      fontSize: 28.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -95,7 +94,7 @@ class _HomePage extends State<HomePage> {
                     rating: 5.0,
                   ),
                   SizedBox(
-                    height: 16.h,
+                    height: 20.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +102,7 @@ class _HomePage extends State<HomePage> {
                       Text(
                         "Recommended",
                         style: TextStyle(
-                          fontSize: 26.sp,
+                          fontSize: 28.sp,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -127,7 +126,7 @@ class _HomePage extends State<HomePage> {
                         child: Text(
                           "See All",
                           style: TextStyle(
-                            fontSize: 18.sp,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.w400,
                             color: const Color(0xff6B6B6B),
                           ),
@@ -139,7 +138,7 @@ class _HomePage extends State<HomePage> {
                     height: 15.h,
                   ),
                   RecommendedBookCardCreate(
-                    height: 265.h,
+                    height: 270.h,
                     itemCount: 6,
                     collections: [
                       business,
@@ -152,51 +151,7 @@ class _HomePage extends State<HomePage> {
                       education
                     ],
                   ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(const BookListing());
-                    },
-                    child: Center(
-                      child: Stack(children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 10.w),
-                          child: SizedBox(
-                            height: 55.h,
-                            width: 211.w,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.w),
-                              ),
-                              color: const Color(0xff8847a1),
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 15.w),
-                                child: Center(
-                                  child: Text(
-                                    "List my books",
-                                    style: TextStyle(
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w800,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Icon(
-                          Icons.add_circle_rounded,
-                          color: Colors.white,
-                          size: 55.w,
-                        ),
-                      ]),
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -206,160 +161,4 @@ class _HomePage extends State<HomePage> {
       bottomNavigationBar: const BottomNav(),
     );
   }
-
-
 }
-
-Widget buildRatingCard(int rating, bool isLiked, Function setState) {
-  return SizedBox(
-    width: 50.w,
-    height: 30.h,
-    child: GestureDetector(
-      onTap: () {
-        setState(() {
-          isLiked = !isLiked;
-        });
-      },
-      child: Card(
-        color: isLiked ? const Color(0xff8847a1) : Colors.grey,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(20.w),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "$rating",
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.white,
-              ),
-            ),
-            Icon(
-              Icons.star,
-              size: 14.w,
-              color: Colors.white,
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-// class CategoriesSelectState extends State<CategoriesSelect> {
-//   String? selectedName;
-//   int selectedIndex = 0;
-//   final List<CategoriesList> _categoriesList = [
-//     CategoriesList(
-//       icon: Icons.science_outlined,
-//       isLiked: true,
-//       name: "Science",
-//     ),
-//     CategoriesList(
-//       icon: Icons.history_edu_rounded,
-//       isLiked: false,
-//       name: "History",
-//     ),
-//     CategoriesList(
-//       icon: Icons.business_center_rounded,
-//       isLiked: false,
-//       name: "Business",
-//     ),
-//     CategoriesList(
-//       icon: Icons.health_and_safety,
-//       isLiked: false,
-//       name: "Health",
-//     ),
-//     CategoriesList(
-//       icon: Icons.menu_book_sharp,
-//       isLiked: false,
-//       name: "Novels",
-//     ),
-//     CategoriesList(
-//       icon: Icons.text_fields_outlined,
-//       isLiked: false,
-//       name: "Language",
-//     ),
-//     CategoriesList(
-//       icon: Icons.computer,
-//       isLiked: false,
-//       name: "CSE",
-//     ),
-//     CategoriesList(
-//       icon: Icons.school,
-//       isLiked: false,
-//       name: "Education",
-//     ),
-//   ];
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: 345.w,
-//       height: 100.h,
-//       child: ListView.builder(
-//         scrollDirection: Axis.horizontal,
-//         shrinkWrap: true,
-//         itemCount: _categoriesList.length,
-//         itemBuilder: (context, index) {
-//           final item = _categoriesList[index];
-//           return Padding(
-//             padding: EdgeInsets.symmetric(horizontal: 12.w),
-//             child: Column(
-//               children: [
-//                 Card(
-//                   color: selectedIndex == index
-//                       ? AppMainColor.primaryColor
-//                       : Colors.grey,
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(15.w),
-//                   ),
-//                   child: IconButton(
-//                     onPressed: () {
-//                       setState(() {
-//                         selectedIndex = index;
-//                         selectedName = item.name;
-//                       });
-//                     },
-//                     icon: Icon(
-//                       item.icon,
-//                       size: 33.w,
-//                       color: Colors.white,
-//                     ),
-//                   ),
-//                 ),
-//                 Text(
-//                   item.name,
-//                   style: TextStyle(
-//                     fontSize: 18.sp,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-//
-// class CategoriesSelect extends StatefulWidget {
-//   const CategoriesSelect({super.key});
-//
-//   @override
-//   CategoriesSelectState createState() => CategoriesSelectState();
-// }
-//
-// class CategoriesList {
-//   late bool isLiked;
-//   final String name;
-//   final IconData icon;
-//
-//   CategoriesList({
-//     required this.isLiked,
-//     required this.name,
-//     required this.icon,
-//   });
-// }

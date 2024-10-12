@@ -1,10 +1,23 @@
-import 'package:BookBin/screens/widgets/wishlist.dart';
 import 'package:BookBin/utilitis/app_main_color.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-AppBar bookListAppBar(scaffoldKey, BuildContext context, String listerName, String listerLocation, [bool wishList = false]) {
+import '../../other_ui_controllers/homepage_controller.dart';
+
+HomeController myUID = Get.find<HomeController>();
+AppBar bookListAppBar(
+    scaffoldKey,
+    BuildContext context,
+    String listerName,
+    String listerLocation,
+    String isbn_10,
+    String bookPicURL,
+    String bookCategory,
+    String bookName,
+    RxList<RxBool> isLikedList,
+    int index) {
   return AppBar(
     key: scaffoldKey,
     automaticallyImplyLeading: false,
@@ -42,32 +55,74 @@ AppBar bookListAppBar(scaffoldKey, BuildContext context, String listerName, Stri
         ),
       ],
     ),
-    leading:  Padding(
-      padding:  EdgeInsets.only(left: 8.w),
+    leading: Padding(
+      padding: EdgeInsets.only(left: 8.w),
       child: IconButton(
-        onPressed: (){
+        onPressed: () {
           Get.back();
         },
-        icon: Icon(Icons.arrow_circle_left_rounded, size: 40.w, color: AppMainColor.primaryColor,),
+        icon: Icon(
+          Icons.arrow_circle_left_rounded,
+          size: 40.w,
+          color: AppMainColor.primaryColor,
+        ),
       ),
     ),
     actions: [
-      wishList == true ? IconButton(
-        icon: Icon(
-          Icons.favorite,
-          color: Colors.red,
-          size: 40.w,
-        ),
-        onPressed: () {
-          bottomSheetWishlist(context);
-        },
-      ) : const SizedBox(),
+      IconButton(
+            onPressed: () {
+              if (isLikedList[index].value == false) {
+                isLikedList[index].value = true;
+                Get.snackbar("", "",
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.white,
+                    titleText: Text(
+                      "Added in your wishlist", textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 22.sp, color: Colors.green, fontWeight: FontWeight.bold),
+                    ),
+                    );
+                FirebaseFirestore.instance
+                    .collection("UserInfo")
+                    .doc(myUID.userUID.value)
+                    .collection("wishlist")
+                    .doc(isbn_10)
+                    .set({
+                  'Isbn-10': isbn_10,
+                  'isLikedList': true,
+                  'bookPicURL': bookPicURL,
+                  'category': bookCategory,
+                  'bookName': bookName,
+                });
+              } else {
+                isLikedList[index].value = false;
+                Get.snackbar("", "",
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.white,
+                    titleText: Text(
+                      "Removed from your wishlist", textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 22.sp, color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                   );
+                FirebaseFirestore.instance
+                    .collection("UserInfo")
+                    .doc(myUID.userUID.value)
+                    .collection("wishlist")
+                    .doc(isbn_10)
+                    .delete();
+              }
+            },
+            icon: Icon(
+              Icons.favorite,
+              size: 40.w,
+            ),
+            color: Colors.red,
+          ),
       Padding(
-        padding:  EdgeInsets.only(right: 10.w),
+        padding: EdgeInsets.only(right: 10.w),
         child: IconButton(
           icon: Icon(
             Icons.notifications,
-            color: const Color(0xff8847A1),
+            color: AppMainColor.primaryColor,
             size: 40.w,
           ),
           onPressed: () {

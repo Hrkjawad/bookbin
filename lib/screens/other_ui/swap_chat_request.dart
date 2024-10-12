@@ -17,8 +17,15 @@ class SwapChatRequest extends StatefulWidget {
       required this.receiverEmail,
       required this.bookName,
       required this.bookPicURL,
-      required this.receiverName});
+      required this.receiverName, required this.isbn_10, required this.bookCategory, required this.listerName, required this.listerLocation, required this.isLikedList, required this.index,
+      });
   final String receiverId, receiverEmail, bookName, bookPicURL, receiverName;
+  final String isbn_10;
+  final String bookCategory;
+  final String listerName;
+  final String listerLocation;
+  final RxList<RxBool> isLikedList;
+  final int index;
 
   @override
   State<SwapChatRequest> createState() => _SwapChatRequestState();
@@ -44,7 +51,7 @@ class _SwapChatRequestState extends State<SwapChatRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: bookListAppBar(scaffoldKey, context, widget.receiverName, widget.receiverEmail),
+      appBar: bookListAppBar(scaffoldKey, context, widget.listerName, widget.listerLocation, widget.isbn_10, widget.bookPicURL, widget.bookCategory, widget.bookName, widget.isLikedList, widget.index),
       endDrawer: NotificationEndDrawer(),
       bottomNavigationBar: const BottomNav(),
       body: ScreenBackground(

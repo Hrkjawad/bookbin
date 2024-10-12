@@ -1,63 +1,67 @@
+import 'package:BookBin/utilitis/app_main_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:get/get.dart';
+import '../other_ui/book_listing.dart';
 import 'bottomshit_filter.dart';
 
-class SearchFilter extends StatelessWidget {
-  const SearchFilter({super.key});
+class BookListAndFilter extends StatelessWidget {
+  const BookListAndFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AppMainColor color = AppMainColor();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          width: 290.w,
-          height: 48.h,
-          child: TextFormField(
-            decoration: InputDecoration(
-              hintText: "Search Textbooks",
-              suffixIcon: Icon(
-                Icons.search,
-                size: 25.w,
-                color: const Color(0xff8847a1),
-              ),
-              hintStyle: TextStyle(
-                fontSize: 20.sp,
-                color: const Color(0xff6B6B6B),
-              ),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 50.w,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(
-                  50.w,
-                ),
-                borderSide: const BorderSide(
-                  color: Color(0xff8847a1),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(
-                  15.w,
-                ),
-                borderSide: const BorderSide(
-                  color: Color(0xff8847a1),
+        GestureDetector(
+          onTap: () {
+            Get.to(const BookListing());
+          },
+          child: Center(
+            child: Stack(children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10.w),
+                child: SizedBox(
+                  height: 55.h,
+                  width: 211.w,
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.w),
+                    ),
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 15.w),
+                      child: Center(
+                        child: Text(
+                          "List my books",
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.w800,
+                              color: AppMainColor.primaryColor),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              filled: true,
-              fillColor: const Color(0XFFFFFFFF),
-            ),
+              Icon(
+                Icons.add_circle_rounded,
+                color: color.color[800],
+                size: 57.w,
+              ),
+            ]),
           ),
         ),
         SizedBox(
-          width: 8.w,
+          width: 20.w,
         ),
         Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.w),
           ),
-          color: const Color(0xff8847a1),
+          color: color.color[800],
           child: IconButton(
               onPressed: () {
                 bottomSheetFilter(context);
