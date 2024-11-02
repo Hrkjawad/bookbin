@@ -1,16 +1,28 @@
-# bookbin
+# Bookbin
+Bookbin is a Flutter app using Firebase, created to make it easy to buy, sell, and swap books. Users can create an account to list books for sale or browse available books. By default, books are set to "buy" mode, but users can also choose a "swap" option to trade books with others. 
 
-A new Flutter project.
+Payments are cash-on-delivery, meaning the seller sends the book to the buyer’s address. When a book is bought, both the buyer and seller receive a notification: buyers see it in their "My Cart," and sellers see it in the "Seller Requests" section. 
 
-## Getting Started
+If users want to swap books, they can chat to discuss and arrange the exchange. 
 
-This project is a starting point for a Flutter application.
+Users can view the books they've added, save favorite books to a wishlist, browse by category, and use filters to find books that match their interests.
 
-A few resources to get you started if this is your first Flutter project:
+## Features
+- Sign Up and Sign In with verification
+- Homepage Messages that change based on the time of day
+- Book Categories for easy browsing
+- Top-Rated Book Recommendations
+- Filter Options for rating and price
+- Custom Options (buy, swap, added by me) based on each user's role
+- Swap Requests to trade books with others
+- In-app chat for discussing swaps
+- New unread chat shows indicators
+- Chat seen and online/offline show
+- Add and Sell Books in the app
+- Profile Updates for user information
+- Wishlist for favorite books
+- Optimized Image Storage: Stores images in .webp format to save space and load faster
+- Notifications for transactions and swap requests
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![Bookbin app ss](https://github.com/user-attachments/assets/e199da72-ed38-4103-99a6-8c2438ee3e64)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
