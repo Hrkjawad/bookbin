@@ -35,5 +35,7 @@ State Management: Getx
 
 IDE: Android Studio
 
+Database & Auth: Firebase
+
 ![Bookbin app ss](https://github.com/user-attachments/assets/e199da72-ed38-4103-99a6-8c2438ee3e64)
 
