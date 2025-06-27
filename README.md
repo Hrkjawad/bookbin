@@ -16,6 +16,7 @@ Users can view the books they've added, save favorite books to a wishlist, brows
 - Custom Options (buy, swap, added by me) based on each user's role
 - Swap Requests to trade books with others
 - In-app chat for discussing swaps
+- Store offline images.
 - New unread chat shows indicators
 - Chat seen and online/offline show
 - Add and Sell Books in the app
@@ -23,6 +24,16 @@ Users can view the books they've added, save favorite books to a wishlist, brows
 - Wishlist for favorite books
 - Optimized Image Storage: Stores images in .webp format to save space and load faster
 - Notifications for transactions and swap requests
+
+## Tech Stack
+
+Framework: Flutter
+
+Language: Dart
+
+State Management: Getx
+
+IDE: Android Studio
 
 ![Bookbin app ss](https://github.com/user-attachments/assets/e199da72-ed38-4103-99a6-8c2438ee3e64)
 
